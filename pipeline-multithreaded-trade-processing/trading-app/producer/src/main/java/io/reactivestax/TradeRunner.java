@@ -23,7 +23,7 @@ public class Main {
 
         new ChunkGeneratorService().
                 generateAndSubmitChunks(readFromApplicationPropertiesStringFormat("trade.file.path"),
-                        BeanFactory.readFromApplicationPropertiesIntegerFormat("number.chunks"));
+                        BeanFactory.readFromApplicationPropertiesIntegerFormat("chunks.count"));
 
         //process chunks
         ExecutorService chunkProcessorThreadPool = Executors.newFixedThreadPool(Integer.parseInt(readFromApplicationPropertiesStringFormat("chunk.processor.thread.pool.size")));
