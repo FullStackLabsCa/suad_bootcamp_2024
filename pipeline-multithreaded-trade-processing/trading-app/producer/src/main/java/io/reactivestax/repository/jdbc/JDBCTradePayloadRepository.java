@@ -11,6 +11,7 @@ import io.reactivestax.utility.database.DBUtils;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Optional;
 
 import static io.reactivestax.utility.Utility.prepareTrade;
 
@@ -54,7 +55,7 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
 
 
     @Override
-    public void insertTradeIntoTradePayloadTable(String payload) throws Exception {
+    public Optional<Long> insertTradeIntoTradePayloadTable(String payload) throws Exception {
         Connection connection = DBUtils.getInstance().getConnection();
         String insertQuery = "INSERT INTO trade_payloads (trade_id, validity_status, status_reason, lookup_status, je_status, payload) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
@@ -66,6 +67,7 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
             statement.setString(5, "not_posted");
             statement.setString(6, payload);
             statement.executeUpdate();
+            return Optional.ofNullable(getIdFromTradeId(trade.getTradeIdentifier()));
         }
     }
 
@@ -79,6 +81,18 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
             if (resultSet.next()) return resultSet.getString(1);
         }
         return "";
+    }
+
+
+    public Long getIdFromTradeId(String tradeId) throws IOException, SQLException {
+        String insertQuery = "SELECT id FROM trade_payloads WHERE trade_id = ?";
+        Connection connection = DBUtils.getInstance().getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+            statement.setString(1, tradeId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) return resultSet.getLong(1);
+        }
+        return 0L;
     }
 
     public Integer selectTradePayload() throws Exception {

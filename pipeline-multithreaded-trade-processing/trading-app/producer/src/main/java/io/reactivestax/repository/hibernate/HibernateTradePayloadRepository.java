@@ -13,6 +13,8 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static io.reactivestax.utility.Utility.prepareTrade;
 
@@ -32,7 +34,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     }
 
     @Override
-    public void insertTradeIntoTradePayloadTable(String payload) throws Exception {
+    public Optional<Long> insertTradeIntoTradePayloadTable(String payload) throws Exception {
         Session session = HibernateUtil.getInstance().getConnection();
         Trade trade = prepareTrade(payload);
         TradePayload tradePayload = new TradePayload();
@@ -43,6 +45,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED));
         tradePayload.setPayload(payload);
         session.persist(tradePayload);
+       return Optional.ofNullable(tradePayload.getId());
     }
 
     //using the criteria api for returning the count
@@ -99,6 +102,5 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
                 .setMaxResults(1)
                 .getSingleResult();
     }
-
 
 }

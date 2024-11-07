@@ -12,7 +12,7 @@ import java.util.Date;
 public class TradePayload {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "trade_id")
     private String tradeId;

@@ -42,14 +42,13 @@ public class BeanFactory {
     private static final String ERROR_MESSAGE = "Invalid messaging technology";
 
 
-
     public static MessageSender getQueueMessageSender() throws IOException {
 
         Map<String, Supplier<MessageSender>> messageSenderMap = new HashMap<>();
         messageSenderMap.put(RABBITMQ_MESSAGING_TECHNOLOGY, RabbitMQMessageSender::getInstance);
         messageSenderMap.put(IN_MEMORY_MESSAGING_TECHNOLOGY, null);
         Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
-       return optionalPersistenceTechnology
+        return optionalPersistenceTechnology
                 .map(messageSenderMap::get)
                 .map(Supplier::get)
                 .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
@@ -65,7 +64,7 @@ public class BeanFactory {
         return optionalPersistenceTechnology
                 .map(payloadRepositoryMap::get)
                 .map(Supplier::get)
-                .orElseThrow(()->new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
 
     }
 
@@ -76,10 +75,10 @@ public class BeanFactory {
         transactionUtilMap.put(JDBC_PERSISTENCE_TECHNOLOGY, DBUtils::getInstance);
 
         Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
-       return optionalPersistenceTechnology
+        return optionalPersistenceTechnology
                 .map(transactionUtilMap::get)
                 .map(Supplier::get)
-                .orElseThrow(()->new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
 
     }
 
