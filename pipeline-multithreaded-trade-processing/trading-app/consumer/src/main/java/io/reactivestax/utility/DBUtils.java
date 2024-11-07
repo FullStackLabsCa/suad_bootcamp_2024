@@ -28,7 +28,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
     private void createDataSource() throws FileNotFoundException {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(BeanFactory.readFromApplicationPropertiesStringFormat("db.url"));
-        config.setUsername(BeanFactory.readFromApplicationPropertiesStringFormat("db.user.name"));
+        config.setUsername(BeanFactory.readFromApplicationPropertiesStringFormat("db.username"));
         config.setPassword(BeanFactory.readFromApplicationPropertiesStringFormat("db.password"));
 
         // Optional HikariCP settings

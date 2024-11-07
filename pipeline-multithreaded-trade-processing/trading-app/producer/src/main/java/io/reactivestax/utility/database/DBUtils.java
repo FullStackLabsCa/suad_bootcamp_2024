@@ -7,12 +7,15 @@ import io.reactivestax.types.contract.repository.TransactionUtil;
 import io.reactivestax.types.exceptions.HikariCPConnectionException;
 import io.reactivestax.types.exceptions.TransactionHandlingException;
 import io.reactivestax.factory.BeanFactory;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 
 
 @Slf4j
@@ -20,16 +23,17 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
 
     private static DBUtils instance;
     private DataSource dataSource;
+    @Getter
     private final ThreadLocal<Connection> connectionHolder = new ThreadLocal<>();
 
     private DBUtils() {
     }
 
-    private void createDataSource() throws FileNotFoundException {
+    private void createDataSource() throws IOException {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(BeanFactory.readFromApplicationPropertiesStringFormat("db.url"));
-        config.setUsername(BeanFactory.readFromApplicationPropertiesStringFormat("db.user.name"));
-        config.setPassword(BeanFactory.readFromApplicationPropertiesStringFormat("db.password"));
+        config.setJdbcUrl(readFromApplicationPropertiesStringFormat("db.url"));
+        config.setUsername(readFromApplicationPropertiesStringFormat("db.username"));
+        config.setPassword(readFromApplicationPropertiesStringFormat("db.password"));
 
         // Optional HikariCP settings
         config.setMaximumPoolSize(50); // Max 50 connections in the pool
@@ -49,7 +53,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
         return instance;
     }
 
-    public Connection getConnection() throws FileNotFoundException {
+    public Connection getConnection() throws IOException {
         Connection connection = connectionHolder.get();
         if (connection == null) {
             dataSource = getHikkariDataSource();
@@ -65,7 +69,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
         return connection;
     }
 
-    private synchronized DataSource getHikkariDataSource() throws FileNotFoundException {
+    private synchronized DataSource getHikkariDataSource() throws IOException {
         if (dataSource == null) {
             createDataSource();
         }
@@ -89,7 +93,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
     public void startTransaction() {
         try {
             getConnection().setAutoCommit(false);
-        } catch (SQLException | FileNotFoundException e) {
+        } catch (SQLException | IOException e) {
             log.error(e.getMessage());
         }
     }
@@ -97,7 +101,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
     public void commitTransaction() {
         try {
             connectionHolder.get().commit();
-            connectionHolder.get().setAutoCommit(false);
+            connectionHolder.get().setAutoCommit(true);
             closeConnection();
         } catch (SQLException e) {
             log.error(e.getMessage());
@@ -108,7 +112,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
     public void rollbackTransaction() {
         try {
             connectionHolder.get().rollback();
-            connectionHolder.get().setAutoCommit(false);
+            connectionHolder.get().setAutoCommit(true);
             closeConnection();
         } catch (SQLException e) {
             log.error(e.getMessage());

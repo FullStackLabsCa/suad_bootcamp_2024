@@ -9,6 +9,7 @@ import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.DBUtils;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
 
 import static io.reactivestax.utility.Utility.prepareTrade;
@@ -28,7 +29,7 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
     }
 
     @Override
-    public void updateLookUpStatus(String tradeId) throws SQLException, FileNotFoundException {
+    public void updateLookUpStatus(String tradeId) throws SQLException, IOException {
         Connection connection = DBUtils.getInstance().getConnection();
         String updateQuery = "UPDATE trade_payloads SET lookup_status  = ? WHERE trade_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
@@ -41,7 +42,7 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
 
 
     @Override
-    public void updateJournalStatus(String tradeId) throws SQLException, FileNotFoundException {
+    public void updateJournalStatus(String tradeId) throws SQLException, IOException {
         Connection connection = DBUtils.getInstance().getConnection();
         String updateQuery = "UPDATE trade_payloads SET je_status  = ? WHERE trade_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
@@ -69,7 +70,7 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
     }
 
     @Override
-    public String readTradePayloadByTradeId(String tradeId) throws FileNotFoundException, SQLException {
+    public String readTradePayloadByTradeId(String tradeId) throws IOException, SQLException {
         String insertQuery = "SELECT payload FROM trade_payloads WHERE trade_id = ?";
         Connection connection = DBUtils.getInstance().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {

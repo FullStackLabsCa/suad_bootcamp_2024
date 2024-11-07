@@ -1,4 +1,4 @@
-package io.reactivestax;
+package io.reactivestax.utility;
 
 import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.enums.LookUpStatusEnum;
@@ -7,9 +7,10 @@ import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
+
+import java.util.concurrent.*;
 
 import static org.junit.Assert.*;
 
@@ -31,7 +32,7 @@ public class HibernateUtilTest {
 
 
     @Test
-    public void testSingleInstanceCreation(){
+    public void testSingleInstanceCreation() {
         HibernateUtil instance = HibernateUtil.getInstance();
         HibernateUtil instance1 = HibernateUtil.getInstance();
         assertEquals(instance.hashCode(), instance1.hashCode());
@@ -79,8 +80,8 @@ public class HibernateUtilTest {
     }
 
 
-   @Test
-    public void testCloseConnection(){
+    @Test
+    public void testCloseConnection() {
         Session session = HibernateUtil.getInstance().getConnection();
         assertNotNull(session);
         assertTrue("session should be open", session.isOpen());
@@ -90,6 +91,52 @@ public class HibernateUtilTest {
         Session currentSession = HibernateUtil.getThreadLocalSession().get();
         assertNull("Thread Local should no longer hold the session ", currentSession);
     }
+
+    @Test
+    public void testThreadLocalSessionIsolation() throws InterruptedException {
+
+        ConcurrentHashMap<String, Session> sessionsByThread = new ConcurrentHashMap<>();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+        //Runnable that each threads will execute
+        Runnable task = () -> {
+            try {
+                latch.await();
+                HibernateUtil instance = HibernateUtil.getInstance();
+                Session session = instance.getConnection();
+                assertNotNull(session);
+                sessionsByThread.put(Thread.currentThread().getName(), session);
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().isInterrupted();
+            }
+        };
+
+        //Start multiple threads
+        for (int i = 0; i < 10; i++) {
+            executorService.submit(task);
+        }
+
+
+        //Release the latch to start all threads
+        latch.countDown();
+
+        executorService.shutdown();
+        executorService.awaitTermination(5, TimeUnit.SECONDS);
+
+        for (Session session1 : sessionsByThread.values()) {
+            for (Session session2 : sessionsByThread.values()) {
+                if (session1 != session2) {
+                    assertNotSame(session1, session2);
+                }
+            }
+        }
+
+
+    }
+
 
     public void cleanUp() {
         Session session = HibernateUtil.getInstance().getConnection();

@@ -20,7 +20,7 @@ public class Main {
     private static void startConsumer() throws FileNotFoundException {
         log.info("Starting in Consumer Mode...");
         ExecutorService executorService = Executors.newFixedThreadPool(Integer.parseInt(readFromApplicationPropertiesStringFormat("tradeProcessorThreadPoolSize")));
-        for (int i = 0; i < BeanFactory.readFromApplicationPropertiesIntegerFormat("number.queues"); i++) {
+        for (int i = 0; i < BeanFactory.readFromApplicationPropertiesIntegerFormat("queue.count"); i++) {
             ConsumerSubmitterService.startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i);
         }
     }

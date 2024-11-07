@@ -1,26 +1,31 @@
 package io.reactivestax.utility;
 
-import io.reactivestax.factory.BeanFactory;
 import io.reactivestax.types.dto.Trade;
 
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
 
 public class Utility {
 
     public static AtomicInteger roundRobinIndex = new AtomicInteger(0);
-    static int numberOfQueues = BeanFactory.readFromApplicationPropertiesIntegerFormat("number.queues");
+
+    public static int getNumberOfQueues() {
+        try {
+          return readFromApplicationPropertiesIntegerFormat("queue.count");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static int roundRobin() {
-        return roundRobinIndex.incrementAndGet() % numberOfQueues + 1;
+        return roundRobinIndex.incrementAndGet() % getNumberOfQueues() + 1;
     }
 
     public static int random() {
-        return ThreadLocalRandom.current().nextInt(1, numberOfQueues + 1);
-    }
-
-    public static boolean checkValidity(String[] split) {
-        return (split[0] != null && split[1] != null && split[2] != null && split[3] != null && split[4] != null && split[5] != null);
+        return ThreadLocalRandom.current().nextInt(1, getNumberOfQueues() + 1);
     }
 
     public static Trade prepareTrade(String payload) {

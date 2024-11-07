@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
-import static io.reactivestax.factory.BeanFactory.readFromApplicationPropertiesStringFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+
 
 @Slf4j
 public class RabbitMQMessageSender implements MessageSender {
@@ -22,15 +23,20 @@ public class RabbitMQMessageSender implements MessageSender {
     }
 
     @Override
-    public Boolean sendMessageToQueue(String queueName, String message) throws IOException, TimeoutException {
-
-        RabbitMQUtils.getRabbitMQChannel().basicPublish(
-                readFromApplicationPropertiesStringFormat("queue.exchange.name"),
-                queueName,
-                null,
-                message.getBytes(StandardCharsets.UTF_8)
-        );
-        log.info(" [x] Sent  {}  with routing key {} ", message, queueName);
-        return true;
+    public Boolean sendMessageToQueue(String queueName, String message) {
+        try {
+            RabbitMQUtils.getRabbitMQChannel().basicPublish(
+                    readFromApplicationPropertiesStringFormat("queue.exchange.name"),
+                    queueName,
+                    null,
+                    message.getBytes(StandardCharsets.UTF_8)
+            );
+            log.info(" [x] Sent  {}  with routing key {} ", message, queueName);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
     }
+
 }

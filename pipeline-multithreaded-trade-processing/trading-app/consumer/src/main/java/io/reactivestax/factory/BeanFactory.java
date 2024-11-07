@@ -52,7 +52,7 @@ public class BeanFactory {
     static {
         try {
             MESSAGING_TECHNOLOGY = readFromApplicationPropertiesStringFormat("persistence.technology");
-            QUEUES_NUMBER = readFromApplicationPropertiesIntegerFormat("number.queues");
+            QUEUES_NUMBER = readFromApplicationPropertiesIntegerFormat("queue.count");
 
         } catch (FileNotFoundException e) {
             log.error(e.getMessage());

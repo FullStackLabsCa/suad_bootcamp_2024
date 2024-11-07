@@ -12,6 +12,7 @@ import java.io.*;
 import java.util.List;
 import java.util.concurrent.*;
 
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
 import static io.reactivestax.utility.Utility.prepareTrade;
 
 @Slf4j
@@ -27,7 +28,7 @@ public class ChunkProcessorService implements ChunkProcessor {
 
     @Override
     public void processChunk() throws Exception {
-        int chunkProcessorThreadPoolSize = io.reactivestax.factory.BeanFactory.readFromApplicationPropertiesIntegerFormat("chunk.processor.thread.pool.size");
+        int chunkProcessorThreadPoolSize = readFromApplicationPropertiesIntegerFormat("chunk.processor.thread.count");
         for (int i = 0; i < chunkProcessorThreadPoolSize; i++) {
             //consulting to the queue for reading the chunksFile
             String chunkFileName = BeanFactory.getChunksFileMappingQueue().take();

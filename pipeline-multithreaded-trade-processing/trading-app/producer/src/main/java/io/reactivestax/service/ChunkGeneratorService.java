@@ -11,13 +11,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.reactivestax.factory.BeanFactory.readFromApplicationPropertiesStringFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+
 
 @Slf4j
 public class ChunkGeneratorService implements ChunkGenerator {
 
     @Override
-    public Integer generateAndSubmitChunks(String filePath, Integer numberOfChunks) throws FileNotFoundException {
+    public Integer generateAndSubmitChunks(String filePath, Integer numberOfChunks) throws IOException {
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -36,7 +37,7 @@ public class ChunkGeneratorService implements ChunkGenerator {
     }
 
 
-    private static void generateChunks(Integer numberOfChunks, String header, int linesPerChunk, int totalLines, List<String> lines) throws FileNotFoundException {
+    private static void generateChunks(Integer numberOfChunks, String header, int linesPerChunk, int totalLines, List<String> lines) throws IOException {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         //creating the chunks and submitting to the executorService

@@ -10,7 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeoutException;
 
 import static io.reactivestax.factory.BeanFactory.getQueueMessageSender;
-import static io.reactivestax.factory.BeanFactory.readFromApplicationPropertiesStringFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+import static io.reactivestax.utility.Utility.roundRobin;
 
 @Slf4j
 public class MessagePublisherService {
@@ -21,16 +22,16 @@ public class MessagePublisherService {
     public static void figureTheNextQueue(Trade trade) throws InterruptedException, IOException, TimeoutException {
 
         ConcurrentHashMap<String, Integer> queueDistributorMap = new ConcurrentHashMap<>();
-        String distributionCriteria = readFromApplicationPropertiesStringFormat("distributionLogic.Criteria");
-        String useMap = readFromApplicationPropertiesStringFormat("distributionLogic.useMap");
-        String distributionAlgorithm = readFromApplicationPropertiesStringFormat("distributionLogic.algorithm");
+        String distributionCriteria = readFromApplicationPropertiesStringFormat("trade.distribution.criteria");
+        String useMap = readFromApplicationPropertiesStringFormat("trade.distribution.use.map");
+        String distributionAlgorithm = readFromApplicationPropertiesStringFormat("trade.distribution.algorithm");
 
 
         if (Boolean.parseBoolean(useMap)) {
             int partitionNumber = 0;
             if (Objects.equals(distributionAlgorithm, "round-robin")) {
                 partitionNumber = queueDistributorMap.computeIfAbsent(distributionCriteria.equals("accountNumber") ? trade.getAccountNumber() : trade.getTradeIdentifier(),
-                        k -> Utility.roundRobin()); //generate 1,2,3
+                        k -> roundRobin()); //generate 1,2,3
             } else if (Objects.equals(distributionAlgorithm, "random")) {
                 partitionNumber = queueDistributorMap.computeIfAbsent(distributionCriteria.equals("accountNumber") ? trade.getAccountNumber() : trade.getTradeIdentifier(),
                         k -> Utility.random()); //generate 1,2,3
@@ -43,7 +44,7 @@ public class MessagePublisherService {
         if (!Boolean.parseBoolean(useMap)) {
             int queueNumber = 0;
             if (distributionAlgorithm.equals("round-robin")) {
-                queueNumber = Utility.roundRobin();
+                queueNumber = roundRobin();
             }
 
             if (distributionAlgorithm.equals("random")) {
