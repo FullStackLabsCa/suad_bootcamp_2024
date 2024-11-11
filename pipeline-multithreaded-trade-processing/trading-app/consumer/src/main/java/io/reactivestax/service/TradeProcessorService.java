@@ -53,9 +53,9 @@ public class TradeProcessorService implements Callable<Void>, TradeProcessor {
 
     public static void processJournalWithPosition(String tradeId) throws Exception {
         PayloadRepository tradePayloadRepository = getTradePayloadRepository();
-        String payload = tradePayloadRepository.readTradePayloadByTradeId(tradeId);
         SecuritiesReferenceRepository lookupSecuritiesRepository = getLookupSecuritiesRepository();
         JournalEntryRepository journalEntryRepository = getJournalEntryRepository();
+        String payload = tradePayloadRepository.readTradePayloadByTradeId(tradeId).get();
         Trade trade = prepareTrade(payload);
         log.info("result journal{}", payload);
         if (!lookupSecuritiesRepository.lookupSecurities(trade.getCusip())) {

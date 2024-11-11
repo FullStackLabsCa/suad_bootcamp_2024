@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 
@@ -42,7 +43,8 @@ public class ChunkGeneratorService implements ChunkGenerator {
 
         //creating the chunks and submitting to the executorService
         AtomicInteger startLine = new AtomicInteger(1);
-        for (int i = 0; i < numberOfChunks; i++) {
+
+        IntStream.range(0, numberOfChunks).forEach(i -> {
             String outputFile = readFromApplicationPropertiesStringFormat("chunks.file.path") + "trades_chunk_" + (i + 1) + ".csv";
             executorService.submit(() -> {
 
@@ -62,7 +64,7 @@ public class ChunkGeneratorService implements ChunkGenerator {
                     log.info("Error in chunks generation {}", e.getMessage());
                 }
             });
-        }
+        });
         executorService.shutdown();
     }
 }

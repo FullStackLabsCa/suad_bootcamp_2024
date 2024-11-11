@@ -1,14 +1,14 @@
 package io.reactivestax.utility;
 
+import io.reactivestax.factory.BeanFactory;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
-
-import io.reactivestax.factory.BeanFactory;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j

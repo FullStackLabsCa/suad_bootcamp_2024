@@ -4,9 +4,14 @@ import io.reactivestax.types.contract.repository.JournalEntryRepository;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.repository.hibernate.entity.JournalEntries;
 import io.reactivestax.utility.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.Optional;
+
+
+@Slf4j
 public class HibernateJournalEntryRepository implements JournalEntryRepository {
 
     private static HibernateJournalEntryRepository instance;
@@ -23,22 +28,22 @@ public class HibernateJournalEntryRepository implements JournalEntryRepository {
 
     @Override
     public void saveJournalEntry(Trade trade) {
-      Session session = HibernateUtil.getInstance().getConnection();
-            Transaction transaction = null;
-            try {
-                transaction = session.beginTransaction();
-                JournalEntries journalEntries = getJournalEntries(trade);
-                session.persist(journalEntries);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) {
-                    transaction.rollback();
-                    System.out.println(e.getMessage());
-                }
+        Session session = HibernateUtil.getInstance().getConnection();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            Optional<JournalEntries> journalEntries = getJournalEntries(trade);
+            session.persist(journalEntries);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+                log.error(e.getMessage());
             }
+        }
     }
 
-    private static JournalEntries getJournalEntries(Trade trade) {
+    private static Optional<JournalEntries> getJournalEntries(Trade trade) {
         JournalEntries journalEntries = new JournalEntries();
         journalEntries.setTradeId(trade.getTradeIdentifier());
         journalEntries.setTradeDate(trade.getTradeDateTime());
@@ -47,7 +52,7 @@ public class HibernateJournalEntryRepository implements JournalEntryRepository {
         journalEntries.setDirection(trade.getDirection());
         journalEntries.setQuantity(trade.getQuantity());
         journalEntries.setPrice(trade.getPrice());
-        return journalEntries;
+        return Optional.of(journalEntries);
     }
 
 

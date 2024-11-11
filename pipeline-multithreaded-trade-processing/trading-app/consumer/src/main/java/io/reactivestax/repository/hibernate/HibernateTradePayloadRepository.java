@@ -13,6 +13,7 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 
 import java.util.List;
+import java.util.Optional;
 
 import static io.reactivestax.utility.Utility.prepareTrade;
 
@@ -61,12 +62,16 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     public void updateLookUpStatus(String tradeId) {
         Session session = HibernateUtil.getInstance().getConnection();
         session.beginTransaction();
-        TradePayload tradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
+        Optional<TradePayload> optionalTradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
                 .setParameter("tradeId", tradeId)
-                .uniqueResult();
+                .stream()
+                .findFirst();
 
-        tradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.PASS));
-        session.persist(tradePayload);
+        optionalTradePayload.ifPresent(tradePayload -> {
+            tradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.PASS));
+            session.persist(tradePayload);
+        });
+
         session.getTransaction().commit();
 
     }
@@ -76,18 +81,21 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     public void updateJournalStatus(String tradeId) {
         Session session = HibernateUtil.getInstance().getConnection();
         session.beginTransaction();
-        TradePayload tradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
+        Optional<TradePayload> optionalTradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
                 .setParameter("tradeId", tradeId)
-                .uniqueResult();
-        tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.POSTED));
-        session.persist(tradePayload);
+                .stream()
+                .findFirst();
+        optionalTradePayload.ifPresent(tradePayload -> {
+            tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.POSTED));
+            session.persist(tradePayload);
+        });
         session.getTransaction().commit();
     }
 
 
     //using the criteria api for returning the payloadByTradeId
     @Override
-    public String readTradePayloadByTradeId(String tradeId) {
+    public Optional<String> readTradePayloadByTradeId(String tradeId) {
         Session session = HibernateUtil.getInstance().getConnection();
         final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
@@ -96,9 +104,10 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         query.where(criteriaBuilder.equal(root.get("tradeId"), tradeId));
 
         // Limit the result to only 1 record
-        return session.createQuery(query)
+        return Optional.ofNullable(session.createQuery(query)
                 .setMaxResults(1)
-                .getSingleResult();
+                .getSingleResult()
+        );
     }
 
 

@@ -12,7 +12,7 @@ import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplica
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 
 @Slf4j
-public class TradeRunner {
+public class TradeProducerRunner {
 
     public static void main(String[] args) throws Exception {
         startProducer();

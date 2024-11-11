@@ -47,7 +47,7 @@ public class BeanFactory {
         Map<String, Supplier<MessageSender>> messageSenderMap = new HashMap<>();
         messageSenderMap.put(RABBITMQ_MESSAGING_TECHNOLOGY, RabbitMQMessageSender::getInstance);
         messageSenderMap.put(IN_MEMORY_MESSAGING_TECHNOLOGY, null);
-        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("messaging.technology"));
         return optionalPersistenceTechnology
                 .map(messageSenderMap::get)
                 .map(Supplier::get)

@@ -6,8 +6,33 @@
   <component name="ChangeListManager">
     <list default="true" id="2ab0675b-db66-4fcb-9f1c-9dea4eca9c64" name="Changes" comment="feat: code cleanup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/TradeConsumerRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/factory/BeanFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/factory/BeanFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateJournalEntryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateJournalEntryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/service/TradeProcessorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/service/TradeProcessorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/types/contract/repository/PayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/types/contract/repository/PayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/HibernateJournalEntryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/HibernateJournalEntryRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/TradeRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/TradeProducerRunner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/factory/BeanFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/factory/BeanFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkGeneratorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkGeneratorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkProcessorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkProcessorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/types/contract/repository/PayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/types/contract/repository/PayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/utility/ApplicationPropertiesUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/utility/ApplicationPropertiesUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/TradeRunner.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/factory/BeanFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/factory/BeanFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/repository/hibernate/entity/TradePayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/repository/hibernate/entity/TradePayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/ChunkProcessorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/ChunkProcessorService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/types/contract/repository/PayloadRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/types/contract/repository/PayloadRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/utility/ApplicationPropertiesUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/utility/ApplicationPropertiesUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,65 +81,68 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.org.example.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in producer (1).executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.All in producer.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.ApplicationPropertiesUtilsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldReturnApplicationPropertiesInIntegerFormat.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldReturnNullWithoutPropertiesInFile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldReturnNullWithoutPropertiesInFileForIntegerFormat.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldThrowExceptionWithoutPropertiesFile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldThrowIOException.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldAddPassFileNameToQueue.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldReturnApplicationPropertiesInStringFormat.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldReturnHibernateTradeRepository.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldReturnHibernateTransactionUtilInstance.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldReturnJdbcTransactionUtilInstance.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldReturnMQInstance.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldReturnNullInstanceForInMemoryQueue.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldThrowExceptionWithoutPropertiesFile.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.BeanFactoryTest.shouldThrowFileNotFoundException.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.whenTechnologyIsJdbcShouldReturnJdbcInstance.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.whenTechnologyIsUnknownShouldThrowException.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DBUtilsTest.commitTransaction.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DBUtilsTest.commitTransactionCatchBlockTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.DBUtilsTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.DBUtilsTest.getConnection.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.DBUtilsTest.getInstance.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.DBUtilsTest.startTransaction.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.DBUtilsTest.testGetConnectionCatchBlock.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DBUtilsTest.whenExceptionOccuredShouldThrowHikkariException.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HibernateUtilTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.HibernateUtilTest.testThreadLocalSessionIsolation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RabbitMQMessageSenderTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.RabbitMQMessageSenderTest.returnFalseForMessageDeliveryFailure.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RabbitMQMessageSenderTest.returnTrueForSuccessMessageDelivery.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RabbitMQMessageSenderTest.testSingleton.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RabbitMQUtilsTest.testRabbitMQChannelAndSettingChannelInThreadLocal.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.UtilityTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.UtilityTest.prepareTrade.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UtilityTest.random.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UtilityTest.roundRobin.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.reactivestax in producer.executor&quot;: &quot;Coverage&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;version-4.8&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.3632184&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main (1).executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.TradeConsumerRunner.executor": "Run",
+    "Application.TradeProducerRunner.executor": "Run",
+    "Application.TradeRunner.executor": "Run",
+    "Application.org.example.Main.executor": "Run",
+    "JUnit.All in producer (1).executor": "Coverage",
+    "JUnit.All in producer.executor": "Coverage",
+    "JUnit.ApplicationPropertiesUtilsTest.executor": "Run",
+    "JUnit.ApplicationPropertiesUtilsTest.shouldReturnApplicationPropertiesInIntegerFormat.executor": "Run",
+    "JUnit.ApplicationPropertiesUtilsTest.shouldReturnNullWithoutPropertiesInFile.executor": "Run",
+    "JUnit.ApplicationPropertiesUtilsTest.shouldReturnNullWithoutPropertiesInFileForIntegerFormat.executor": "Run",
+    "JUnit.ApplicationPropertiesUtilsTest.shouldThrowExceptionWithoutPropertiesFile.executor": "Run",
+    "JUnit.ApplicationPropertiesUtilsTest.shouldThrowIOException.executor": "Run",
+    "JUnit.BeanFactoryTest.executor": "Coverage",
+    "JUnit.BeanFactoryTest.shouldAddPassFileNameToQueue.executor": "Run",
+    "JUnit.BeanFactoryTest.shouldReturnApplicationPropertiesInStringFormat.executor": "Run",
+    "JUnit.BeanFactoryTest.shouldReturnHibernateTradeRepository.executor": "Run",
+    "JUnit.BeanFactoryTest.shouldReturnHibernateTransactionUtilInstance.executor": "Run",
+    "JUnit.BeanFactoryTest.shouldReturnJdbcTransactionUtilInstance.executor": "Run",
+    "JUnit.BeanFactoryTest.shouldReturnMQInstance.executor": "Run",
+    "JUnit.BeanFactoryTest.shouldReturnNullInstanceForInMemoryQueue.executor": "Run",
+    "JUnit.BeanFactoryTest.shouldThrowExceptionWithoutPropertiesFile.executor": "Debug",
+    "JUnit.BeanFactoryTest.shouldThrowFileNotFoundException.executor": "Run",
+    "JUnit.BeanFactoryTest.whenTechnologyIsJdbcShouldReturnJdbcInstance.executor": "Run",
+    "JUnit.BeanFactoryTest.whenTechnologyIsUnknownShouldThrowException.executor": "Run",
+    "JUnit.DBUtilsTest.commitTransaction.executor": "Run",
+    "JUnit.DBUtilsTest.commitTransactionCatchBlockTest.executor": "Coverage",
+    "JUnit.DBUtilsTest.executor": "Coverage",
+    "JUnit.DBUtilsTest.getConnection.executor": "Coverage",
+    "JUnit.DBUtilsTest.getInstance.executor": "Coverage",
+    "JUnit.DBUtilsTest.startTransaction.executor": "Coverage",
+    "JUnit.DBUtilsTest.testGetConnectionCatchBlock.executor": "Run",
+    "JUnit.DBUtilsTest.whenExceptionOccuredShouldThrowHikkariException.executor": "Run",
+    "JUnit.HibernateUtilTest.executor": "Coverage",
+    "JUnit.HibernateUtilTest.testThreadLocalSessionIsolation.executor": "Run",
+    "JUnit.RabbitMQMessageSenderTest.executor": "Coverage",
+    "JUnit.RabbitMQMessageSenderTest.returnFalseForMessageDeliveryFailure.executor": "Run",
+    "JUnit.RabbitMQMessageSenderTest.returnTrueForSuccessMessageDelivery.executor": "Run",
+    "JUnit.RabbitMQMessageSenderTest.testSingleton.executor": "Run",
+    "JUnit.RabbitMQUtilsTest.testRabbitMQChannelAndSettingChannelInThreadLocal.executor": "Coverage",
+    "JUnit.UtilityTest.executor": "Coverage",
+    "JUnit.UtilityTest.prepareTrade.executor": "Run",
+    "JUnit.UtilityTest.random.executor": "Run",
+    "JUnit.UtilityTest.roundRobin.executor": "Run",
+    "JUnit.reactivestax in producer.executor": "Coverage",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "version-4.8",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.3632184",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\suraj\source\full-stack-student-mode\suad-bootcamp-2024\pipeline-multithreaded-trade-processing\trading-app\src\main\java\io\reactivestax\dlq" />
@@ -133,7 +161,33 @@
       <recent name="io.reactivestax.utility.database" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.DBUtilsTest">
+  <component name="RunManager" selected="Application.TradeConsumerRunner">
+    <configuration name="TradeConsumerRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.TradeConsumerRunner" />
+      <module name="consumer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.reactivestax.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TradeProducerRunner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.TradeProducerRunner" />
+      <module name="producer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.reactivestax.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BeanFactoryTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
       <module name="producer" />
       <extension name="coverage">
@@ -197,45 +251,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DBUtilsTest.getConnection" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.reactivestax.utility.database.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.utility.database" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.utility.database.DBUtilsTest" />
-      <option name="METHOD_NAME" value="getConnection" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DBUtilsTest.startTransaction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.reactivestax.utility.database.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.utility.database" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.utility.database.DBUtilsTest" />
-      <option name="METHOD_NAME" value="startTransaction" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TradeConsumerRunner" />
+        <item itemvalue="Application.TradeProducerRunner" />
         <item itemvalue="JUnit.DBUtilsTest" />
         <item itemvalue="JUnit.DBUtilsTest.commitTransactionCatchBlockTest" />
         <item itemvalue="JUnit.DBUtilsTest.commitTransaction" />
-        <item itemvalue="JUnit.DBUtilsTest.startTransaction" />
-        <item itemvalue="JUnit.DBUtilsTest.getConnection" />
       </list>
     </recent_temporary>
   </component>

@@ -19,12 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Supplier;
+
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 
 
 @Slf4j
@@ -37,7 +38,7 @@ public class BeanFactory {
     private static final LinkedBlockingQueue<String> chunksFileMappingQueue = new LinkedBlockingQueue<>();
     @Getter
     private static final List<LinkedBlockingDeque<String>> QUEUE_LIST = new ArrayList<>();
-    private static final Integer QUEUES_NUMBER;
+    private static final Integer QUEUES_NUMBER = 0;
 
 
     private static final String RABBITMQ_MESSAGING_TECHNOLOGY = "rabbitmq";
@@ -46,19 +47,6 @@ public class BeanFactory {
     private static final String HIBERNATE_PERSISTENCE_TECHNOLOGY = "hibernate";
     private static final String JDBC_PERSISTENCE_TECHNOLOGY = "jdbc";
     private static final String ERROR_MESSAGE = "Invalid messaging technology";
-
-    private static final String MESSAGING_TECHNOLOGY;
-
-    static {
-        try {
-            MESSAGING_TECHNOLOGY = readFromApplicationPropertiesStringFormat("persistence.technology");
-            QUEUES_NUMBER = readFromApplicationPropertiesIntegerFormat("queue.count");
-
-        } catch (FileNotFoundException e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
 
 
     public static QueueLoader getQueueSetUp() throws FileNotFoundException {
@@ -74,96 +62,75 @@ public class BeanFactory {
 
 
     public static PayloadRepository getTradePayloadRepository() {
-        if (HIBERNATE_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return HibernateTradePayloadRepository.getInstance();
-        } else if (JDBC_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return JDBCTradePayloadRepository.getInstance();
-        } else {
-            throw new InvalidPersistenceTechnologyException(ERROR_MESSAGE);
-        }
+        Map<String, Supplier<PayloadRepository>> payloadRepositoryMap = new HashMap<>();
+        payloadRepositoryMap.put(HIBERNATE_PERSISTENCE_TECHNOLOGY, HibernateTradePayloadRepository::getInstance);
+        payloadRepositoryMap.put(JDBC_PERSISTENCE_TECHNOLOGY, JDBCTradePayloadRepository::getInstance);
+
+        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        return optionalPersistenceTechnology
+                .map(payloadRepositoryMap::get)
+                .map(Supplier::get)
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
+
     }
 
     public static SecuritiesReferenceRepository getLookupSecuritiesRepository() {
-        if (HIBERNATE_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return HibernateSecuritiesReferenceRepository.getInstance();
-        } else if (JDBC_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return JDBCSecuritiesReferenceRepository.getInstance();
-        } else {
-            throw new InvalidPersistenceTechnologyException(ERROR_MESSAGE);
-        }
+        Map<String, Supplier<SecuritiesReferenceRepository>> payloadRepositoryMap = new HashMap<>();
+        payloadRepositoryMap.put(HIBERNATE_PERSISTENCE_TECHNOLOGY, HibernateSecuritiesReferenceRepository::getInstance);
+        payloadRepositoryMap.put(JDBC_PERSISTENCE_TECHNOLOGY, JDBCSecuritiesReferenceRepository::getInstance);
+
+        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        return optionalPersistenceTechnology
+                .map(payloadRepositoryMap::get)
+                .map(Supplier::get)
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
     }
 
     public static JournalEntryRepository getJournalEntryRepository() {
-        if (HIBERNATE_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return HibernateJournalEntryRepository.getInstance();
-        } else if (JDBC_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return JDBCJournalEntryRepository.getInstance();
-        } else {
-            throw new InvalidPersistenceTechnologyException(ERROR_MESSAGE);
-        }
+
+        Map<String, Supplier<JournalEntryRepository>> payloadRepositoryMap = new HashMap<>();
+        payloadRepositoryMap.put(HIBERNATE_PERSISTENCE_TECHNOLOGY, HibernateJournalEntryRepository::getInstance);
+        payloadRepositoryMap.put(JDBC_PERSISTENCE_TECHNOLOGY, JDBCJournalEntryRepository::getInstance);
+
+        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        return optionalPersistenceTechnology
+                .map(payloadRepositoryMap::get)
+                .map(Supplier::get)
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
     }
 
     public static PositionRepository getPositionsRepository() {
-        if (HIBERNATE_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return HibernateTradePositionRepository.getInstance();
-        } else if (JDBC_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return JDBCTradePositionRepository.getInstance();
-        } else {
-            throw new InvalidPersistenceTechnologyException(ERROR_MESSAGE);
-        }
+
+        Map<String, Supplier<PositionRepository>> payloadRepositoryMap = new HashMap<>();
+        payloadRepositoryMap.put(HIBERNATE_PERSISTENCE_TECHNOLOGY, HibernateTradePositionRepository::getInstance);
+        payloadRepositoryMap.put(JDBC_PERSISTENCE_TECHNOLOGY, JDBCTradePositionRepository::getInstance);
+
+        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        return optionalPersistenceTechnology
+                .map(payloadRepositoryMap::get)
+                .map(Supplier::get)
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
     }
 
 
     public static TransactionUtil getTransactionUtil() {
-        if (HIBERNATE_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return HibernateUtil.getInstance();
-        } else if (JDBC_PERSISTENCE_TECHNOLOGY.equals(MESSAGING_TECHNOLOGY)) {
-            return DBUtils.getInstance();
-        } else {
-            throw new InvalidPersistenceTechnologyException(ERROR_MESSAGE);
-        }
+        Map<String, Supplier<TransactionUtil>> transactionUtilMap = new HashMap<>();
+        transactionUtilMap.put(HIBERNATE_PERSISTENCE_TECHNOLOGY, HibernateUtil::getInstance);
+        transactionUtilMap.put(JDBC_PERSISTENCE_TECHNOLOGY, DBUtils::getInstance);
+
+        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        return optionalPersistenceTechnology
+                .map(transactionUtilMap::get)
+                .map(Supplier::get)
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
+
     }
 
-    public static String readFromApplicationPropertiesStringFormat(String propertyName) throws FileNotFoundException {
-        Properties properties = new Properties();
-        String propName = "";
-
-        try (InputStream inputStream = BeanFactory.class.getClassLoader().getResourceAsStream("application.properties")) {
-            if (inputStream == null) {
-                throw new FileNotFoundException("Property file 'application.properties' not found in the classpath");
-            }
-
-            properties.load(inputStream);
-            return properties.getProperty(propertyName);
-        } catch (IOException e) {
-            log.error("Error reading application properties: {}", e.getMessage());
-        }
-
-        return propName;
-    }
-
-
-    public static int readFromApplicationPropertiesIntegerFormat(String propertyName) {
-        Properties properties = new Properties();
-
-        // Use class loader to load the file from the resources folder
-        try (InputStream inputStream = BeanFactory.class.getClassLoader().getResourceAsStream("application.properties")) {
-            if (inputStream == null) {
-                throw new FileNotFoundException("Property file 'application.properties' not found in the classpath");
-            }
-            properties.load(inputStream);
-            return Integer.parseInt(properties.getProperty(propertyName));
-        } catch (IOException e) {
-            log.error("Error reading application properties: {}", e.getMessage());
-        }
-
-        return 0;
-    }
 
     //current version is using queueList
     //Make sure to call this method to get the queues before launching the queues in chunkProcessor.
-    public static List<LinkedBlockingDeque<String>> addToQueueList() {
-        for (int i = 0; i < QUEUES_NUMBER; i++) {
+    public static List<LinkedBlockingDeque<String>> addToQueueList() throws IOException {
+        for (int i = 0; i < readFromApplicationPropertiesIntegerFormat("queue.count"); i++) {
             QUEUE_LIST.add(new LinkedBlockingDeque<>());
         }
         return QUEUE_LIST;
@@ -172,6 +139,5 @@ public class BeanFactory {
     public static void setChunksFileMappingQueue(String fileName) {
         chunksFileMappingQueue.add(fileName);
     }
-
 
 }

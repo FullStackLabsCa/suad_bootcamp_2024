@@ -10,6 +10,7 @@ import io.reactivestax.utility.DBUtils;
 
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.Optional;
 
 import static io.reactivestax.utility.Utility.prepareTrade;
 
@@ -69,15 +70,17 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
     }
 
     @Override
-    public String readTradePayloadByTradeId(String tradeId) throws FileNotFoundException, SQLException {
+    public Optional<String> readTradePayloadByTradeId(String tradeId) throws FileNotFoundException, SQLException {
         String insertQuery = "SELECT payload FROM trade_payloads WHERE trade_id = ?";
         Connection connection = DBUtils.getInstance().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
             statement.setString(1, tradeId);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) return resultSet.getString(1);
+            if (resultSet.next()) {
+                return Optional.ofNullable(resultSet.getString(1));
+            }
+            return Optional.empty();
         }
-        return "";
     }
 
     public Integer selectTradePayload() throws Exception {

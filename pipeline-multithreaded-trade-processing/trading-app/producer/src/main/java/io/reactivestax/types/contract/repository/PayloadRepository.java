@@ -12,5 +12,5 @@ public interface PayloadRepository {
 
     void updateJournalStatus(String tradeId) throws SQLException, IOException;
 
-     String readTradePayloadByTradeId(String tradeId) throws IOException, SQLException;
+     Optional<String> readTradePayloadByTradeId(String tradeId) throws IOException, SQLException;
 }

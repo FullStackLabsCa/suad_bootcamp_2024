@@ -2,6 +2,7 @@ package io.reactivestax.types.contract.repository;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public interface PayloadRepository {
     void updateLookUpStatus(String tradeId) throws SQLException, FileNotFoundException;
@@ -10,5 +11,5 @@ public interface PayloadRepository {
 
     void updateJournalStatus(String tradeId) throws SQLException, FileNotFoundException;
 
-     String readTradePayloadByTradeId(String tradeId) throws FileNotFoundException, SQLException;
+     Optional<String> readTradePayloadByTradeId(String tradeId) throws FileNotFoundException, SQLException;
 }

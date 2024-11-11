@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import static io.reactivestax.factory.BeanFactory.readFromApplicationPropertiesStringFormat;
 
 @Slf4j
-public class Main {
+public class TradeConsumerRunner {
 
     public static void main(String[] args) throws Exception {
         startConsumer();
