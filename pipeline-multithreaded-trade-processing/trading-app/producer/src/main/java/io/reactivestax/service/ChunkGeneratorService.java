@@ -38,7 +38,7 @@ public class ChunkGeneratorService implements ChunkGenerator {
     }
 
 
-    private static void generateChunks(Integer numberOfChunks, String header, int linesPerChunk, int totalLines, List<String> lines) throws IOException {
+    private static void generateChunks(Integer numberOfChunks, String header, int linesPerChunk, int totalLines, List<String> lines) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         //creating the chunks and submitting to the executorService
