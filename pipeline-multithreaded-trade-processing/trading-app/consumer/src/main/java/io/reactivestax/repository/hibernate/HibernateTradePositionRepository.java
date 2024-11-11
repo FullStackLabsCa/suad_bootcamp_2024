@@ -52,7 +52,7 @@ public class HibernateTradePositionRepository implements PositionRepository {
         return true;
     }
 
-    public boolean updatePosition(Trade trade, int version) throws Exception {
+    public boolean updatePosition(Trade trade, int version) {
         Session session = HibernateUtil.getInstance().getConnection();
         Transaction transaction = null;
         try {

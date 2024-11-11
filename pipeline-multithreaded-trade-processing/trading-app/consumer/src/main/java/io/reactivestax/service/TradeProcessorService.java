@@ -78,5 +78,4 @@ public class TradeProcessorService implements Callable<Void>, TradeProcessor {
             positionsRepository.insertPosition(trade);
         }
     }
-
 }

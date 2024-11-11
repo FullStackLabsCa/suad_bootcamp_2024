@@ -38,8 +38,6 @@ public class BeanFactory {
     private static final LinkedBlockingQueue<String> chunksFileMappingQueue = new LinkedBlockingQueue<>();
     @Getter
     private static final List<LinkedBlockingDeque<String>> QUEUE_LIST = new ArrayList<>();
-    private static final Integer QUEUES_NUMBER = 0;
-
 
     private static final String RABBITMQ_MESSAGING_TECHNOLOGY = "rabbitmq";
     private static final String IN_MEMORY_MESSAGING_TECHNOLOGY = "inmemory";
@@ -49,7 +47,7 @@ public class BeanFactory {
     private static final String ERROR_MESSAGE = "Invalid messaging technology";
 
 
-    public static QueueLoader getQueueSetUp() throws FileNotFoundException {
+    public static QueueLoader getQueueSetUp() {
         String messagingTechnology = readFromApplicationPropertiesStringFormat("messaging.technology");
         if (RABBITMQ_MESSAGING_TECHNOLOGY.equals(messagingTechnology)) {
             return RabbitMQLoader.getInstance();
