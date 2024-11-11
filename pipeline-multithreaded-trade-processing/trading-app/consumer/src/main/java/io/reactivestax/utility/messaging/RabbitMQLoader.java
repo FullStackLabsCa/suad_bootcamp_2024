@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-import static io.reactivestax.factory.BeanFactory.readFromApplicationPropertiesStringFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 
 public class RabbitMQLoader implements QueueLoader {
 

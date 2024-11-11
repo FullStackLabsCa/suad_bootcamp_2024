@@ -4,7 +4,6 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
 import io.reactivestax.types.enums.RabbitMQHeaders;
-import io.reactivestax.factory.BeanFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -12,8 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.reactivestax.factory.BeanFactory.readFromApplicationPropertiesStringFormat;
 import static io.reactivestax.service.TradeProcessorService.processJournalWithPosition;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 
 @Slf4j
 public class RabbitMQMessageCallBack implements DeliverCallback {
@@ -47,7 +47,7 @@ public class RabbitMQMessageCallBack implements DeliverCallback {
                     ? (int) headers.get(RabbitMQHeaders.X_RETRIES.getHeaderKey())
                     : 0;
 
-            if (retries >= BeanFactory.readFromApplicationPropertiesIntegerFormat("max.retry.count")) {
+            if (retries >= readFromApplicationPropertiesIntegerFormat("max.retry.count")) {
                 log.info(" [x] Max retries reached: {} . Discarding message: {}", retries, message);
                 try {
                     channel.basicPublish(RabbitMQHeaders.X_DLE.getHeaderKey(), "dead-routing-key", null, delivery.getBody());

@@ -14,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+
 
 @Slf4j
 public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
@@ -27,9 +29,9 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
 
     private void createDataSource() throws FileNotFoundException {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(BeanFactory.readFromApplicationPropertiesStringFormat("db.url"));
-        config.setUsername(BeanFactory.readFromApplicationPropertiesStringFormat("db.username"));
-        config.setPassword(BeanFactory.readFromApplicationPropertiesStringFormat("db.password"));
+        config.setJdbcUrl(readFromApplicationPropertiesStringFormat("db.url"));
+        config.setUsername(readFromApplicationPropertiesStringFormat("db.username"));
+        config.setPassword(readFromApplicationPropertiesStringFormat("db.password"));
 
         // Optional HikariCP settings
         config.setMaximumPoolSize(50); // Max 50 connections in the pool
