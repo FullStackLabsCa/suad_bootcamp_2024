@@ -18,7 +18,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Supplier;
 
-import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readOptionalFeaturesFromApplicationProperties;
 
 
 @Slf4j
@@ -47,7 +47,8 @@ public class BeanFactory {
         Map<String, Supplier<MessageSender>> messageSenderMap = new HashMap<>();
         messageSenderMap.put(RABBITMQ_MESSAGING_TECHNOLOGY, RabbitMQMessageSender::getInstance);
         messageSenderMap.put(IN_MEMORY_MESSAGING_TECHNOLOGY, null);
-        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("messaging.technology"));
+        Optional<String> optionalPersistenceTechnology = readOptionalFeaturesFromApplicationProperties("messaging.technology");
+        ;
         return optionalPersistenceTechnology
                 .map(messageSenderMap::get)
                 .map(Supplier::get)
@@ -60,7 +61,7 @@ public class BeanFactory {
         payloadRepositoryMap.put(HIBERNATE_PERSISTENCE_TECHNOLOGY, HibernateTradePayloadRepository::getInstance);
         payloadRepositoryMap.put(JDBC_PERSISTENCE_TECHNOLOGY, JDBCTradePayloadRepository::getInstance);
 
-        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        Optional<String> optionalPersistenceTechnology = readOptionalFeaturesFromApplicationProperties("persistence.technology");
         return optionalPersistenceTechnology
                 .map(payloadRepositoryMap::get)
                 .map(Supplier::get)
@@ -74,7 +75,7 @@ public class BeanFactory {
         transactionUtilMap.put(HIBERNATE_PERSISTENCE_TECHNOLOGY, HibernateUtil::getInstance);
         transactionUtilMap.put(JDBC_PERSISTENCE_TECHNOLOGY, DBUtils::getInstance);
 
-        Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("persistence.technology"));
+        Optional<String> optionalPersistenceTechnology = readOptionalFeaturesFromApplicationProperties("persistence.technology");
         return optionalPersistenceTechnology
                 .map(transactionUtilMap::get)
                 .map(Supplier::get)
