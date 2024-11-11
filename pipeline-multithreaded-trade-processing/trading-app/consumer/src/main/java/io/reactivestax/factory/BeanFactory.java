@@ -1,5 +1,6 @@
 package io.reactivestax.factory;
 
+import io.reactivestax.repository.hibernate.HibernateTradePayloadRepository;
 import io.reactivestax.types.contract.QueueLoader;
 import io.reactivestax.types.contract.repository.*;
 import io.reactivestax.types.exception.InvalidPersistenceTechnologyException;
@@ -10,14 +11,12 @@ import io.reactivestax.repository.hibernate.HibernateTradePositionRepository;
 import io.reactivestax.repository.jdbc.JDBCJournalEntryRepository;
 import io.reactivestax.repository.jdbc.JDBCSecuritiesReferenceRepository;
 import io.reactivestax.repository.jdbc.JDBCTradePayloadRepository;
-import io.reactivestax.repository.hibernate.HibernateTradePayloadRepository;
 import io.reactivestax.repository.jdbc.JDBCTradePositionRepository;
 import io.reactivestax.utility.DBUtils;
 import io.reactivestax.utility.HibernateUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -48,14 +47,17 @@ public class BeanFactory {
 
 
     public static QueueLoader getQueueSetUp() {
-        String messagingTechnology = readFromApplicationPropertiesStringFormat("messaging.technology");
-        if (RABBITMQ_MESSAGING_TECHNOLOGY.equals(messagingTechnology)) {
-            return RabbitMQLoader.getInstance();
-        } else if (IN_MEMORY_MESSAGING_TECHNOLOGY.equals(messagingTechnology)) {
-            return null;
-        } else {
-            throw new InvalidPersistenceTechnologyException(ERROR_MESSAGE);
-        }
+
+        Map<String, Supplier<QueueLoader>> queueLoaderMap = new HashMap<>();
+        queueLoaderMap.put(RABBITMQ_MESSAGING_TECHNOLOGY, RabbitMQLoader::getInstance);
+        queueLoaderMap.put(IN_MEMORY_MESSAGING_TECHNOLOGY, null);
+
+        Optional<String> optionalMessagingTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("messaging.technology"));
+        return optionalMessagingTechnology
+                .map(queueLoaderMap::get)
+                .map(Supplier::get)
+                .orElseThrow(() -> new InvalidPersistenceTechnologyException(ERROR_MESSAGE));
+
     }
 
 
