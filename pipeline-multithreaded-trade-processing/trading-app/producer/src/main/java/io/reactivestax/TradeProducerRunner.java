@@ -21,7 +21,6 @@ public class TradeProducerRunner {
     private static void startProducer() throws Exception {
         log.info("Starting in Producer Mode...");
 
-
         new ChunkGeneratorService().
                 generateAndSubmitChunks(readFromApplicationPropertiesStringFormat("trade.file.path"),
                         readFromApplicationPropertiesIntegerFormat("chunks.count"));
@@ -34,6 +33,4 @@ public class TradeProducerRunner {
     }
 
 }
-
-
 

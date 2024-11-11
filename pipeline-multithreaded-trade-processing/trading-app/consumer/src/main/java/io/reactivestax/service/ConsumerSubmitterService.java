@@ -8,7 +8,8 @@ import java.util.concurrent.Future;
 @Slf4j
 public class ConsumerSubmitterService {
 
-    private ConsumerSubmitterService() {}
+    private ConsumerSubmitterService() {
+    }
 
     public static void startConsumer(ExecutorService executorService, String queueName) {
 
@@ -35,7 +36,7 @@ public class ConsumerSubmitterService {
                 }
             } catch (InterruptedException e) {
                 log.error(e.getMessage());
-              log.info("Shutdown interrupted.");
+                log.info("Shutdown interrupted.");
             }
             log.info("Consumer stopped.");
         }));

@@ -32,8 +32,7 @@ public class HibernateJournalEntryRepository implements JournalEntryRepository {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            Optional<JournalEntries> journalEntries = getJournalEntries(trade);
-            session.persist(journalEntries);
+            getJournalEntries(trade).ifPresent(session::persist);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {

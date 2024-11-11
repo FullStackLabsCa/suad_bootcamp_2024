@@ -81,7 +81,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     public void updateJournalStatus(String tradeId) {
         Session session = HibernateUtil.getInstance().getConnection();
         session.beginTransaction();
-        Optional<TradePayload> optionalTradePayload= session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
+        Optional<TradePayload> optionalTradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
                 .setParameter("tradeId", tradeId)
                 .stream()
                 .findFirst();

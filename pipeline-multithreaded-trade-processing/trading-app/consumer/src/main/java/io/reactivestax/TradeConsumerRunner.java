@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
@@ -21,9 +22,10 @@ public class TradeConsumerRunner {
     private static void startConsumer() throws IOException {
         log.info("Starting in Consumer Mode...");
         ExecutorService executorService = Executors.newFixedThreadPool(Integer.parseInt(readFromApplicationPropertiesStringFormat("tradeProcessorThreadPoolSize")));
-        for (int i = 0; i < readFromApplicationPropertiesIntegerFormat("queue.count"); i++) {
-            ConsumerSubmitterService.startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i);
-        }
+
+        IntStream.range(0, readFromApplicationPropertiesIntegerFormat("queue.count")).forEach(i ->
+                ConsumerSubmitterService.startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i)
+        );
     }
 }
 

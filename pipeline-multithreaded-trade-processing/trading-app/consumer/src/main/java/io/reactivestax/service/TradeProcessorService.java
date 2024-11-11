@@ -7,31 +7,25 @@ import io.reactivestax.types.contract.repository.PayloadRepository;
 import io.reactivestax.types.contract.repository.PositionRepository;
 import io.reactivestax.types.contract.repository.SecuritiesReferenceRepository;
 import io.reactivestax.types.dto.Trade;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.reactivestax.factory.BeanFactory.*;
 import static io.reactivestax.utility.Utility.prepareTrade;
 
+
 @Slf4j
 public class TradeProcessorService implements Callable<Void>, TradeProcessor {
     private static final AtomicInteger countSec = new AtomicInteger(0);
-    @Setter
-    @Getter
     private final String queueName;
-    public static TradeProcessorService instance;
 
 
-    public TradeProcessorService(String queueName){
+    public TradeProcessorService(String queueName) {
         this.queueName = queueName;
     }
-
 
 
     @Override
@@ -55,19 +49,24 @@ public class TradeProcessorService implements Callable<Void>, TradeProcessor {
         PayloadRepository tradePayloadRepository = getTradePayloadRepository();
         SecuritiesReferenceRepository lookupSecuritiesRepository = getLookupSecuritiesRepository();
         JournalEntryRepository journalEntryRepository = getJournalEntryRepository();
-        String payload = tradePayloadRepository.readTradePayloadByTradeId(tradeId).get();
-        Trade trade = prepareTrade(payload);
-        log.info("result journal{}", payload);
-        if (!lookupSecuritiesRepository.lookupSecurities(trade.getCusip())) {
-            log.warn("No security found....");
-            log.debug("times {} {}", trade.getCusip(), countSec.incrementAndGet());
-            throw new SQLException(); // For checking the max retry mechanism throwing error and catching it in retry mechanism.....
-        } else {
-            journalEntryRepository.saveJournalEntry(trade);
-            tradePayloadRepository.updateLookUpStatus(tradeId);
-            tradePayloadRepository.updateJournalStatus(tradeId);
-            processPosition(trade);
-        }
+        tradePayloadRepository.readTradePayloadByTradeId(tradeId).ifPresent(payload -> {
+            Trade trade = prepareTrade(payload);
+            log.info("result journal{}", payload);
+            try {
+                if (!lookupSecuritiesRepository.lookupSecurities(trade.getCusip())) {
+                    log.warn("No security found....");
+                    log.debug("times {} {}", trade.getCusip(), countSec.incrementAndGet());
+                    throw new SQLException(); // For checking the max retry mechanism throwing error and catching it in retry mechanism.....
+                } else {
+                    journalEntryRepository.saveJournalEntry(trade);
+                    tradePayloadRepository.updateLookUpStatus(tradeId);
+                    tradePayloadRepository.updateJournalStatus(tradeId);
+                    processPosition(trade);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public static void processPosition(Trade trade) throws Exception {
