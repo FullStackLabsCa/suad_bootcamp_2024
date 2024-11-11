@@ -30,18 +30,18 @@ public class ChunkProcessorService implements ChunkProcessor {
     @Override
     public void processChunk() throws Exception {
         int chunkProcessorThreadPoolSize = readFromApplicationPropertiesIntegerFormat("chunk.processor.thread.count");
-        IntStream.range(0, chunkProcessorThreadPoolSize).forEach(this::submitChunks);
+        IntStream.range(0, chunkProcessorThreadPoolSize).forEach(i -> this.submitChunks());
     }
 
 
-    private void submitChunks(int i) {
-        //consulting to the queue for reading the chunksFile
+    private void submitChunks() {
         chunkProcessorThreadPool.submit(() -> {
             try {
                 String chunkFileName = BeanFactory.getChunksFileMappingQueue().take();
                 insertTradeIntoTradePayloadTable(chunkFileName);
             } catch (Exception e) {
                 log.info("error while insert into trade payloads {}", e.getMessage());
+                throw new RuntimeException(e);
             }
         });
     }
