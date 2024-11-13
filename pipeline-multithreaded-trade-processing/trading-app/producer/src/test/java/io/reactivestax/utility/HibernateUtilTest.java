@@ -75,7 +75,7 @@ public class HibernateUtilTest {
         session.getTransaction().begin();
         TradePayload tradePayload = new TradePayload();
         session.getTransaction().rollback();
-        TradePayload retrievedTrade = session.get(TradePayload.class, tradePayload.getId());
+        TradePayload retrievedTrade = session.get(TradePayload.class, 0L);
         assertNull("not saved trade should return null", retrievedTrade);
     }
 

@@ -2,6 +2,7 @@ package io.reactivestax.utility;
 
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
@@ -31,8 +32,8 @@ public class ApplicationPropertiesUtilsTest {
     public void shouldThrowIOException() {
         String mockFileName = "mockApplicationProperties";
         ApplicationPropertiesUtils.setApplicationResource(mockFileName);
-        IOException fileNotFoundException = assertThrows(IOException.class, () ->
-                readFromApplicationPropertiesStringFormat("messaging.technology"));
+        IOException fileNotFoundException = assertThrows(FileNotFoundException.class, () ->
+                readFromApplicationPropertiesIntegerFormat("chunks.count"));
         String message = fileNotFoundException.getMessage();
         assertEquals(message, "Property file " + mockFileName + "not found in the classpath");
     }

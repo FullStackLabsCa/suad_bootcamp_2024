@@ -18,6 +18,17 @@ import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplica
 @Slf4j
 public class ChunkGeneratorService implements ChunkGenerator {
 
+    private static ChunkGeneratorService instance;
+
+    private ChunkGeneratorService(){}
+
+    public static ChunkGeneratorService getInstance(){
+        if (instance == null) {
+            instance = new ChunkGeneratorService();
+        }
+        return instance;
+    }
+
     @Override
     public Integer generateAndSubmitChunks(String filePath, Integer numberOfChunks) throws IOException {
         List<String> lines = new ArrayList<>();
@@ -27,7 +38,8 @@ public class ChunkGeneratorService implements ChunkGenerator {
                 lines.add(line);
             }
         } catch (IOException e) {
-            log.info("**chunks** {}", e.getMessage());
+            log.info("File not found.. {}",e.getMessage());
+            throw new FileNotFoundException(e.getMessage());
         }
         int totalLines = lines.size();
         int linesPerChunk = (totalLines - 1) / numberOfChunks; //excluding the header here so doing -1

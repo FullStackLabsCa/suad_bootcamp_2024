@@ -18,11 +18,20 @@ import static io.reactivestax.utility.Utility.roundRobin;
 @Slf4j
 public class MessagePublisherService {
 
-    private MessagePublisherService() {
+    private static MessagePublisherService instance;
+
+    private MessagePublisherService() {}
+
+     public static MessagePublisherService getInstance() {
+        if(instance == null){
+            instance = new MessagePublisherService();
+        }
+        return instance;
     }
 
+
     // Get the queue number, or assign one in a round-robin or random manner based on application-properties
-    public static void figureTheNextQueue(Trade trade) throws IOException {
+    public void figureTheNextQueue(Trade trade) {
 
         ConcurrentHashMap<String, Integer> queueDistributorMap = new ConcurrentHashMap<>();
         String distributionCriteria = readFromApplicationPropertiesStringFormat("trade.distribution.criteria");

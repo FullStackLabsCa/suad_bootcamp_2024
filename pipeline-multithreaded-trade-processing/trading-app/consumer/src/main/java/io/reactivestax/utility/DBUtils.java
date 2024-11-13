@@ -27,7 +27,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
     private DBUtils() {
     }
 
-    private void createDataSource() throws FileNotFoundException {
+    private void createDataSource() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(readFromApplicationPropertiesStringFormat("db.url"));
         config.setUsername(readFromApplicationPropertiesStringFormat("db.username"));
@@ -67,7 +67,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
         return connection;
     }
 
-    private synchronized DataSource getHikkariDataSource() throws FileNotFoundException {
+    private synchronized DataSource getHikkariDataSource() {
         if (dataSource == null) {
             createDataSource();
         }

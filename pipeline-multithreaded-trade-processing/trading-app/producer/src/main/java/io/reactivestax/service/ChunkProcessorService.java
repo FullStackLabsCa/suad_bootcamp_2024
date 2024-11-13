@@ -14,16 +14,21 @@ import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 import static io.reactivestax.utility.Utility.prepareTrade;
 
 @Slf4j
 public class ChunkProcessorService implements ChunkProcessor {
 
-    ExecutorService chunkProcessorThreadPool;
-    List<LinkedBlockingDeque<String>> queueTracker;
 
-    public ChunkProcessorService(ExecutorService chunkProcessorThreadPool) {
-        this.chunkProcessorThreadPool = chunkProcessorThreadPool;
+    private static ChunkProcessorService instance;
+
+
+    public static ChunkProcessorService getInstance() {
+        if (instance == null) {
+            instance = new ChunkProcessorService();
+        }
+        return instance;
     }
 
 
@@ -34,8 +39,11 @@ public class ChunkProcessorService implements ChunkProcessor {
     }
 
 
-    private void submitChunks() {
-        chunkProcessorThreadPool.submit(() -> {
+    public void submitChunks() {
+        ExecutorService executorService = Executors.
+                newFixedThreadPool(Integer.parseInt(readFromApplicationPropertiesStringFormat("chunk.processor.thread.count")));
+
+        executorService.submit(() -> {
             try {
                 String chunkFileName = BeanFactory.getChunksFileMappingQueue().take();
                 insertTradeIntoTradePayloadTable(chunkFileName);
@@ -50,6 +58,7 @@ public class ChunkProcessorService implements ChunkProcessor {
     public void insertTradeIntoTradePayloadTable(String filePath) throws Exception {
         PayloadRepository tradePayloadRepository = BeanFactory.getTradePayloadRepository();
         TransactionUtil transactionUtil = BeanFactory.getTransactionUtil();
+        MessagePublisherService messagePublisherService = MessagePublisherService.getInstance();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             reader.
                     lines().
@@ -60,7 +69,7 @@ public class ChunkProcessorService implements ChunkProcessor {
                     transactionUtil.startTransaction();
                     tradePayloadRepository.insertTradeIntoTradePayloadTable(line);
                     transactionUtil.commitTransaction();
-                    MessagePublisherService.figureTheNextQueue(trade);
+                    messagePublisherService.figureTheNextQueue(trade);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
