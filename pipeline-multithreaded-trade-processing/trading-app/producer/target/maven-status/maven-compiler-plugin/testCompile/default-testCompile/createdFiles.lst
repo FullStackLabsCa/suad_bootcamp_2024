@@ -1,0 +1,10 @@
+io/reactivestax/utility/messaging/RabbitMQUtilsTest.class
+io/reactivestax/AppTest.class
+io/reactivestax/utility/UtilityTest.class
+io/reactivestax/factory/BeanFactoryTest.class
+io/reactivestax/utility/ApplicationPropertiesUtilsTest.class
+io/reactivestax/utility/messaging/RabbitMQMessageSenderTest.class
+io/reactivestax/service/ChunkSubmitterServiceTest.class
+io/reactivestax/utility/database/DBUtilsTest.class
+io/reactivestax/utility/HibernateUtilTest.class
+io/reactivestax/service/ChunkGeneratorServiceTest.class

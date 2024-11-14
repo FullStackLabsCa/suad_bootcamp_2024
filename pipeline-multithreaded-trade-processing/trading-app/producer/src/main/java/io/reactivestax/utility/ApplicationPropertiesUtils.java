@@ -19,23 +19,11 @@ public class ApplicationPropertiesUtils {
     private static String applicationResource = DEFAULT_APPLICATION_PROPERTIES;
 
 
-    public static Optional<String> readOptionalFeaturesFromApplicationProperties(String propertyName) throws IOException {
-        Properties properties = new Properties();
-
-        try (InputStream inputStream = BeanFactory.class.getClassLoader().getResourceAsStream(applicationResource)) {
-            if (inputStream == null) {
-                throw new FileNotFoundException("Property file " + applicationResource + "not found in the classpath");
-            }
-            properties.load(inputStream);
-            return Optional.ofNullable(properties.getProperty(propertyName));
-        }
-    }
-
 
     public static String readFromApplicationPropertiesStringFormat(String propertyName) {
         Properties properties = new Properties();
 
-        try (InputStream inputStream = BeanFactory.class.getClassLoader().getResourceAsStream(applicationResource)) {
+        try (InputStream inputStream = ApplicationPropertiesUtils.class.getClassLoader().getResourceAsStream(applicationResource)) {
             if (inputStream == null) {
                 throw new FileNotFoundException("Property file " + applicationResource + "not found in the classpath");
             }
@@ -51,7 +39,7 @@ public class ApplicationPropertiesUtils {
         Properties properties = new Properties();
 
         // Use class loader to load the file from the resources folder
-        try (InputStream inputStream = BeanFactory.class.getClassLoader().getResourceAsStream(applicationResource)) {
+        try (InputStream inputStream = ApplicationPropertiesUtils.class.getClassLoader().getResourceAsStream(applicationResource)) {
             if (inputStream == null) {
                 throw new FileNotFoundException("Property file " + applicationResource + "not found in the classpath");
             }

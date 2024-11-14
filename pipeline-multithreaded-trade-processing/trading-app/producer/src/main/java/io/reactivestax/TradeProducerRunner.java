@@ -2,7 +2,7 @@ package io.reactivestax;
 
 
 import io.reactivestax.service.ChunkGeneratorService;
-import io.reactivestax.service.ChunkProcessorService;
+import io.reactivestax.service.ChunkSubmitterService;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -24,7 +24,7 @@ public class TradeProducerRunner {
                         readFromApplicationPropertiesIntegerFormat("chunks.count"));
 
         //process chunks
-        ChunkProcessorService.getInstance().processChunk();
+        ChunkSubmitterService.getInstance().submitChunks();
     }
 
 }

@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class ApplicationPropertiesUtilsTest {
 
     @Test
-    public void shouldReturnApplicationPropertiesInStringFormat() throws IOException {
+    public void shouldReturnApplicationPropertiesInStringFormat() {
         String messagingTechnology = "rabbitmq";
         String propertyName = readFromApplicationPropertiesStringFormat("messaging.technology");
         assertNotNull(propertyName);
@@ -39,7 +39,7 @@ public class ApplicationPropertiesUtilsTest {
     }
 
     @Test
-    public void shouldReturnNullWithoutPropertiesInFile() throws IOException {
+    public void shouldReturnNullWithoutPropertiesInFile()  {
         ApplicationPropertiesUtils.setApplicationResource("application.properties");
         assertNull(readFromApplicationPropertiesStringFormat("check"));
     }
