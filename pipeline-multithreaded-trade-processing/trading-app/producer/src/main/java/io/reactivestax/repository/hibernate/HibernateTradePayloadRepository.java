@@ -11,6 +11,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 import java.util.Optional;
@@ -96,20 +97,20 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
 
 
     //using the criteria api for returning the payloadByTradeId
-    @Override
-    public Optional<String> readTradePayloadByTradeId(String tradeId) {
-        Session session = HibernateUtil.getInstance().getConnection();
-        final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<String> query = criteriaBuilder.createQuery(String.class);
-        Root<TradePayload> root = query.from(TradePayload.class);
-        query.select(root.get("payload"));
-        query.where(criteriaBuilder.equal(root.get("tradeId"), tradeId));
-
-        // Limit the result to only 1 record
-        return Optional.ofNullable(session.createQuery(query)
-                .setMaxResults(1)
-                .getSingleResult()
-        );
-    }
+//    @Override
+//    public Optional<TradePayload> readTradePayloadByTradeId(String tradeId) {
+//        Session session = HibernateUtil.getInstance().getConnection();
+//        final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+//        CriteriaQuery<TradePayload> query = criteriaBuilder.createQuery(TradePayload.class);
+//        Root<TradePayload> root = query.from(TradePayload.class);
+//        query.select(root.get("payload"));
+//        query.where(criteriaBuilder.equal(root.get("tradeId"), tradeId));
+//
+//        // Limit the result to only 1 record
+//        return Optional.ofNullable(session.createQuery(query)
+//                .setMaxResults(1)
+//                .getSingleResult()
+//        );
+//    }
 
 }

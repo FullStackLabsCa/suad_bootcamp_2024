@@ -1,5 +1,6 @@
 package io.reactivestax.repository.jdbc;
 
+import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.contract.repository.PayloadRepository;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
@@ -71,19 +72,19 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
         }
     }
 
-    @Override
-    public Optional<String> readTradePayloadByTradeId(String tradeId) throws IOException, SQLException {
-        String insertQuery = "SELECT payload FROM trade_payloads WHERE trade_id = ?";
-        Connection connection = DBUtils.getInstance().getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-            statement.setString(1, tradeId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.ofNullable(resultSet.getString(1));
-            }
-        }
-        return Optional.empty();
-    }
+//    @Override
+//    public Optional<TradePayload> readTradePayloadByTradeId(String tradeId) throws IOException, SQLException {
+//        String insertQuery = "SELECT payload FROM trade_payloads WHERE trade_id = ?";
+//        Connection connection = DBUtils.getInstance().getConnection();
+//        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+//            statement.setString(1, tradeId);
+//            ResultSet resultSet = statement.executeQuery();
+//            if (resultSet.next()) {
+//                return Optional.ofNullable(resultSet.);
+//            }
+//        }
+//        return Optional.empty();
+//    }
 
 
 //    public Long getIdFromTradeId(String tradeId) throws IOException, SQLException {

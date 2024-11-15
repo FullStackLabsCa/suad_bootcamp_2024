@@ -1,5 +1,7 @@
 package io.reactivestax.types.contract.repository;
 
+import io.reactivestax.repository.hibernate.entity.TradePayload;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,5 +14,5 @@ public interface PayloadRepository {
 
     void updateJournalStatus(String tradeId) throws SQLException, IOException;
 
-     Optional<String> readTradePayloadByTradeId(String tradeId) throws IOException, SQLException;
+//     Optional<TradePayload> readTradePayloadByTradeId(String tradeId) throws IOException, SQLException;
 }
