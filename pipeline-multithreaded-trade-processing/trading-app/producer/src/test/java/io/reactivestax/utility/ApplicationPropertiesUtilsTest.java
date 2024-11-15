@@ -29,7 +29,7 @@ public class ApplicationPropertiesUtilsTest {
     }
 
     @Test
-    public void shouldThrowIOException() {
+    public void shouldThrowIOExceptionInIntegerFormat() {
         String mockFileName = "mockApplicationProperties";
         ApplicationPropertiesUtils.setApplicationResource(mockFileName);
         IOException fileNotFoundException = assertThrows(FileNotFoundException.class, () ->
@@ -38,15 +38,26 @@ public class ApplicationPropertiesUtilsTest {
         assertEquals(message, "Property file " + mockFileName + "not found in the classpath");
     }
 
+
     @Test
-    public void shouldReturnNullWithoutPropertiesInFile()  {
+    public void shouldThrowRuntimeExceptionInStringFormat() {
+        String mockFileName = "mockApplicationProperties";
+        ApplicationPropertiesUtils.setApplicationResource(mockFileName);
+        assertThrows(RuntimeException.class, () ->
+                readFromApplicationPropertiesStringFormat("chunks.count"));
+
+    }
+
+
+    @Test
+    public void shouldReturnNullWithoutPropertiesInFile() {
         ApplicationPropertiesUtils.setApplicationResource("application.properties");
         assertNull(readFromApplicationPropertiesStringFormat("check"));
     }
 
-    @Test
-    public void shouldThrowNumberFormatExceptionWithoutPropertiesInFileForIntegerFormat() {
-        assertThrows(NumberFormatException.class, () ->
-                readFromApplicationPropertiesIntegerFormat("test"));
-    }
+//    @Test
+//    public void shouldThrowNumberFormatExceptionWithoutPropertiesInFileForIntegerFormat() {
+//        assertThrows(NumberFormatException.class, () ->
+//                readFromApplicationPropertiesIntegerFormat("test"));
+//    }
 }

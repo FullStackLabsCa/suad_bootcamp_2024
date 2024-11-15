@@ -34,7 +34,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     }
 
     @Override
-    public Optional<Long> insertTradeIntoTradePayloadTable(String payload) throws Exception {
+    public Optional<String> insertTradeIntoTradePayloadTable(String payload) throws Exception {
         Session session = HibernateUtil.getInstance().getConnection();
         Trade trade = prepareTrade(payload);
         TradePayload tradePayload = new TradePayload();
@@ -45,19 +45,19 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED));
         tradePayload.setPayload(payload);
         session.persist(tradePayload);
-        return Optional.ofNullable(tradePayload.getId());
+        return Optional.ofNullable(tradePayload.getTradeId());
     }
 
     //using the criteria api for returning the count
-    public int readTradePayloadCount() {
-        Session session = HibernateUtil.getInstance().getConnection();
-        final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
-        Root<TradePayload> root = query.from(TradePayload.class);
-        query.select(criteriaBuilder.count(root));
-        List<Long> resultList = session.createQuery(query).getResultList();
-        return resultList.size();
-    }
+//    public int readTradePayloadCount() {
+//        Session session = HibernateUtil.getInstance().getConnection();
+//        final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+//        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+//        Root<TradePayload> root = query.from(TradePayload.class);
+//        query.select(criteriaBuilder.count(root));
+//        List<Long> resultList = session.createQuery(query).getResultList();
+//        return resultList.size();
+//    }
 
     @Override
     public void updateLookUpStatus(String tradeId) {

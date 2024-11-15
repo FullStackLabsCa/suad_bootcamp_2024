@@ -31,8 +31,8 @@ public class ApplicationPropertiesUtils {
             return properties.getProperty(propertyName);
         } catch (IOException e) {
             log.error(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return "";
     }
 
     public static Integer readFromApplicationPropertiesIntegerFormat(String propertyName) throws IOException {

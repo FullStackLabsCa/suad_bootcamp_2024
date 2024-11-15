@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface PayloadRepository {
     void updateLookUpStatus(String tradeId) throws SQLException, IOException;
 
-    Optional<Long> insertTradeIntoTradePayloadTable(String payload) throws Exception;
+    Optional<String> insertTradeIntoTradePayloadTable(String payload) throws Exception;
 
     void updateJournalStatus(String tradeId) throws SQLException, IOException;
 

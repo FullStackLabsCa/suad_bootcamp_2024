@@ -4,8 +4,7 @@ import io.reactivestax.factory.BeanFactory;
 import io.reactivestax.types.contract.repository.PayloadRepository;
 import io.reactivestax.types.contract.repository.TransactionUtil;
 import io.reactivestax.types.dto.Trade;
-import io.reactivestax.types.exceptions.InvalidPersistenceTechnologyException;
-import io.reactivestax.utility.FileLoaderUtil;
+
 import lombok.val;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
@@ -92,55 +91,52 @@ class ChunkProcessorServiceTest {
         String line = "TDB_00000000,2024-09-19 22:16:18,TDB_CUST_5214938,V,SELL,683,638.02";
         Trade trade = prepareTrade(line);
         String testFilePath = "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/" + "test_trades_chunk.csv";
-
-        try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class)) {
+        try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class);
+             MockedStatic<MessagePublisherService> mockedPublisherService = Mockito.mockStatic(MessagePublisherService.class)) {
             mockedBeanFactory.when(BeanFactory::getTradePayloadRepository).thenReturn(payloadRepository);
             mockedBeanFactory.when(BeanFactory::getTransactionUtil).thenReturn(transactionUtil);
 
             //Since it is singleton and getInstance() is static method we have to access through the mockstatic
-            try (MockedStatic<MessagePublisherService> mockedPublisherService = Mockito.mockStatic(MessagePublisherService.class)) {
+            mockedPublisherService.when(MessagePublisherService::getInstance).thenReturn(messagePublisherService);
 
-                mockedPublisherService.when(MessagePublisherService::getInstance).thenReturn(messagePublisherService);
+            //ACT
+            chunkProcessorService.processChunks(testFilePath);
 
-                //ACT
-                chunkProcessorService.processChunks(testFilePath);
+            //Assert
+            verify(transactionUtil, atLeastOnce()).startTransaction();
+            verify(payloadRepository, atLeastOnce()).insertTradeIntoTradePayloadTable(anyString());
+            verify(transactionUtil, atLeastOnce()).commitTransaction();
+            verify(messagePublisherService, atLeastOnce()).figureTheNextQueue(trade);
 
-                //Assert
-                verify(transactionUtil, atLeastOnce()).startTransaction();
-                verify(payloadRepository, atLeastOnce()).insertTradeIntoTradePayloadTable(anyString());
-                verify(transactionUtil, atLeastOnce()).commitTransaction();
-                verify(messagePublisherService, atLeastOnce()).figureTheNextQueue(trade);
+            //verifying the order of the execution
+            InOrder inOrder = inOrder(transactionUtil, payloadRepository, transactionUtil, messagePublisherService);
+            inOrder.verify(transactionUtil).startTransaction();
+            inOrder.verify(payloadRepository).insertTradeIntoTradePayloadTable(anyString());
+            inOrder.verify(transactionUtil).commitTransaction();
+            inOrder.verify(messagePublisherService).figureTheNextQueue(any());
 
-                //verifying the order of the execution
-                InOrder inOrder = inOrder(transactionUtil, payloadRepository, transactionUtil, messagePublisherService);
-                inOrder.verify(transactionUtil).startTransaction();
-                inOrder.verify(payloadRepository).insertTradeIntoTradePayloadTable(anyString());
-                inOrder.verify(transactionUtil).commitTransaction();
-                inOrder.verify(messagePublisherService).figureTheNextQueue(any());
-
-            }
         }
-    }
+}
 
 
-        @Test
-        void testProcesschunks_Exception() throws Exception {
-            //setup
-            String testFilePath = "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/" + "test_trades_chunk.csv";
+@Test
+void testProcesschunks_Exception() throws Exception {
+    //setup
+    String testFilePath = "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/" + "test_trades_chunk.csv";
 
 //            String testFilePath = FileLoaderUtil.getInstance().loadFileFromResources("test_trades_chunk.csv");
-            try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class)) {
-                mockedBeanFactory.when(BeanFactory::getTradePayloadRepository).thenReturn(payloadRepository);
-                mockedBeanFactory.when(BeanFactory::getTransactionUtil).thenReturn(transactionUtil);
+    try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class)) {
+        mockedBeanFactory.when(BeanFactory::getTradePayloadRepository).thenReturn(payloadRepository);
+        mockedBeanFactory.when(BeanFactory::getTransactionUtil).thenReturn(transactionUtil);
 
-                //Since it is singleton and getInstance() is static method we have to access through the mockstatic
-                try (MockedStatic<MessagePublisherService> mockedPublisherService = Mockito.mockStatic(MessagePublisherService.class)) {
-                    mockedPublisherService.when(MessagePublisherService::getInstance).thenReturn(messagePublisherService);
+        //Since it is singleton and getInstance() is static method we have to access through the mockstatic
+        try (MockedStatic<MessagePublisherService> mockedPublisherService = Mockito.mockStatic(MessagePublisherService.class)) {
+            mockedPublisherService.when(MessagePublisherService::getInstance).thenReturn(messagePublisherService);
 
-                    doThrow(new RuntimeException("Simulated Exception")).when(payloadRepository).insertTradeIntoTradePayloadTable(Mockito.anyString());
+            doThrow(new RuntimeException("Simulated Exception")).when(payloadRepository).insertTradeIntoTradePayloadTable(Mockito.anyString());
 
-                    assertThrows(RuntimeException.class, ()->chunkProcessorService.processChunks(testFilePath));
-                }
-            }
+            assertThrows(RuntimeException.class, () -> chunkProcessorService.processChunks(testFilePath));
+        }
     }
+}
 }
