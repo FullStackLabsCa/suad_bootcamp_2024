@@ -71,7 +71,7 @@ public class HibernateUtil implements TransactionUtil, ConnectionUtil<Session> {
         return session;
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         Session session = threadLocalSession.get();
         if (session != null) {
             session.close();

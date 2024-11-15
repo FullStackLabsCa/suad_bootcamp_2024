@@ -116,21 +116,21 @@ class ChunkProcessorServiceTest {
             inOrder.verify(messagePublisherService).figureTheNextQueue(any());
 
         }
-}
+    }
 
 
-@Test
-void testProcesschunks_Exception() throws Exception {
-    //setup
-    String testFilePath = "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/" + "test_trades_chunk.csv";
+    @Test
+    void testProcessChunks_Exception() throws Exception {
+        //setup
+        String testFilePath = "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/" + "test_trades_chunk.csv";
 
 //            String testFilePath = FileLoaderUtil.getInstance().loadFileFromResources("test_trades_chunk.csv");
-    try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class)) {
-        mockedBeanFactory.when(BeanFactory::getTradePayloadRepository).thenReturn(payloadRepository);
-        mockedBeanFactory.when(BeanFactory::getTransactionUtil).thenReturn(transactionUtil);
+        try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class);
+             MockedStatic<MessagePublisherService> mockedPublisherService = Mockito.mockStatic(MessagePublisherService.class)
+        ) {
+            mockedBeanFactory.when(BeanFactory::getTradePayloadRepository).thenReturn(payloadRepository);
+            mockedBeanFactory.when(BeanFactory::getTransactionUtil).thenReturn(transactionUtil);
 
-        //Since it is singleton and getInstance() is static method we have to access through the mockstatic
-        try (MockedStatic<MessagePublisherService> mockedPublisherService = Mockito.mockStatic(MessagePublisherService.class)) {
             mockedPublisherService.when(MessagePublisherService::getInstance).thenReturn(messagePublisherService);
 
             doThrow(new RuntimeException("Simulated Exception")).when(payloadRepository).insertTradeIntoTradePayloadTable(Mockito.anyString());
@@ -138,5 +138,4 @@ void testProcesschunks_Exception() throws Exception {
             assertThrows(RuntimeException.class, () -> chunkProcessorService.processChunks(testFilePath));
         }
     }
-}
 }
