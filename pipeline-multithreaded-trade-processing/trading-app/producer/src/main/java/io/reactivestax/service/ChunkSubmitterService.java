@@ -2,6 +2,7 @@ package io.reactivestax.service;
 
 import io.reactivestax.factory.BeanFactory;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.*;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
@@ -25,7 +26,7 @@ public class ChunkSubmitterService {
         ChunkProcessorService chunkProcessorService = ChunkProcessorService.getInstance();
         ExecutorService executorService = Executors.newFixedThreadPool(chunkProcessorThreadPoolSize);
         for (int i = 0; i < chunkProcessorThreadPoolSize; i++) {
-            Future<?> future = executorService.submit(() -> {
+            executorService.submit(() -> {
                 try {
                     String chunkFileName = BeanFactory.getChunksFileMappingQueue().take();
                     chunkProcessorService.processChunks(chunkFileName);
@@ -34,7 +35,6 @@ public class ChunkSubmitterService {
                     throw new RuntimeException(e);
                 }
             });
-            future.get();
         }
     }
 
