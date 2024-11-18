@@ -35,7 +35,7 @@ public class ApplicationPropertiesUtilsTest {
         IOException fileNotFoundException = assertThrows(FileNotFoundException.class, () ->
                 readFromApplicationPropertiesIntegerFormat("chunks.count"));
         String message = fileNotFoundException.getMessage();
-        assertEquals("Property file " + mockFileName + "not found in the classpath", message);
+        assertEquals(message, "Property file " + mockFileName + "not found in the classpath");
     }
 
 
