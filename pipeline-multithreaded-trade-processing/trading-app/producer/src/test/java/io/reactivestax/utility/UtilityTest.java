@@ -32,9 +32,9 @@ class UtilityTest {
                 "TDB_CUST_5214938",
                 "V",
                 "SELL",
-                683,
-                638.02,
-                683
+                Integer.parseInt("683"),
+                Double.parseDouble("638.02"),
+                Integer.parseInt("683")
         );
 
         assertEquals(trade, trade1);
