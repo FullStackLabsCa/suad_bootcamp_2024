@@ -6,7 +6,7 @@ import io.reactivestax.types.enums.PostedStatusEnum;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.types.enums.StatusReasonEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
-import io.reactivestax.utility.DBUtils;
+import io.reactivestax.utility.database.DBUtils;
 
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -54,7 +54,7 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
 
 
     @Override
-    public void insertTradeIntoTradePayloadTable(String payload) throws Exception {
+    public Optional<String> insertTradeIntoTradePayloadTable(String payload) throws Exception {
         Connection connection = DBUtils.getInstance().getConnection();
         String insertQuery = "INSERT INTO trade_payloads (trade_id, validity_status, status_reason, lookup_status, je_status, payload) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
@@ -66,6 +66,7 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
             statement.setString(5, "not_posted");
             statement.setString(6, payload);
             statement.executeUpdate();
+            return Optional.ofNullable(trade.getTradeIdentifier());
         }
     }
 

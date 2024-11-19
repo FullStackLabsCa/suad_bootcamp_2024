@@ -6,12 +6,9 @@ import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
-import jakarta.persistence.criteria.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -21,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static io.reactivestax.utility.Utility.prepareTrade;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
@@ -35,28 +32,13 @@ class HibernateTradePayloadRepositoryTest {
     Session session;
 
     @Mock
-    TradePayload tradePayload;
-
-    @Mock
     Transaction transaction;
 
     @Captor
     ArgumentCaptor<TradePayload> tradePayloadCaptor;
 
-    @Captor
-    ArgumentCaptor<CriteriaQuery<TradePayload>> queryCaptor;
-
     @Mock
     Query<TradePayload> query;
-
-    @Mock
-    private Root<TradePayload> root;
-
-
-    @BeforeEach
-    public void setUp() {
-//        MockitoAnnotations.openMocks(this);
-    }
 
 
     @Test
@@ -68,7 +50,6 @@ class HibernateTradePayloadRepositoryTest {
 
     @Test
     void insertTradeIntoTradePayloadTable() throws Exception {
-//        Mockito.when(hibernateUtil.getInstance().getConnection()).thenReturn(session);
 
         try (MockedStatic<HibernateUtil> mockedHibernateUtil = Mockito.mockStatic(HibernateUtil.class)) {
             //Since it is singleton and getInstance() is static method we have to access through the mockstatic
@@ -96,7 +77,7 @@ class HibernateTradePayloadRepositoryTest {
             assertEquals(String.valueOf(LookUpStatusEnum.FAIL), capturedPayload.getLookupStatus());
             assertEquals(String.valueOf(PostedStatusEnum.NOT_POSTED), capturedPayload.getJeStatus());
             assertEquals(payload, capturedPayload.getPayload());
-            assertEquals(result.get(), capturedPayload.getTradeId());
+            result.ifPresent(tradeId-> assertEquals(tradeId, capturedPayload.getTradeId()));
 
         }
     }
@@ -128,7 +109,6 @@ class HibernateTradePayloadRepositoryTest {
             verify(query, times(1)).setParameter("tradeId", tradeId);
             verify(query, times(1)).stream();
             verify(session, times(1)).persist(tradePayloadCaptor.capture());
-//            verify(session, times(1)).getTransaction().commit();
             verify(transaction, times(1)).commit(); // Verify transaction commit
 
             TradePayload capturedPayload = tradePayloadCaptor.getValue();

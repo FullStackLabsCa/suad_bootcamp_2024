@@ -1,0 +1,15 @@
+<configuration>
+
+    <!-- Console appender with simple output for tests -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Test root logger -->
+    <root level="error">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

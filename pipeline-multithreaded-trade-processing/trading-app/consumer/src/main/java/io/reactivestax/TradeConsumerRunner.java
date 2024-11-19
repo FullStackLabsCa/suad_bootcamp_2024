@@ -21,7 +21,7 @@ public class TradeConsumerRunner {
 
     private static void startConsumer() throws IOException {
         log.info("Starting in Consumer Mode...");
-        ExecutorService executorService = Executors.newFixedThreadPool(Integer.parseInt(readFromApplicationPropertiesStringFormat("tradeProcessorThreadPoolSize")));
+        ExecutorService executorService = Executors.newFixedThreadPool(readFromApplicationPropertiesIntegerFormat("trade.processor.thread.poolSize"));
 
         IntStream.range(0, readFromApplicationPropertiesIntegerFormat("queue.count")).forEach(i ->
                 ConsumerSubmitterService.startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i)

@@ -6,7 +6,7 @@ import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
-import io.reactivestax.utility.HibernateUtil;
+import io.reactivestax.utility.database.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -33,7 +33,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     }
 
     @Override
-    public void insertTradeIntoTradePayloadTable(String payload) throws Exception {
+    public Optional<String> insertTradeIntoTradePayloadTable(String payload) throws Exception {
         Session session = HibernateUtil.getInstance().getConnection();
         Trade trade = prepareTrade(payload);
         TradePayload tradePayload = new TradePayload();
@@ -44,6 +44,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED));
         tradePayload.setPayload(payload);
         session.persist(tradePayload);
+        return Optional.ofNullable(tradePayload.getTradeId());
     }
 
     //using the criteria api for returning the count
@@ -73,7 +74,6 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         });
 
         session.getTransaction().commit();
-
     }
 
 
@@ -91,7 +91,6 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         });
         session.getTransaction().commit();
     }
-
 
     //using the criteria api for returning the payloadByTradeId
     @Override

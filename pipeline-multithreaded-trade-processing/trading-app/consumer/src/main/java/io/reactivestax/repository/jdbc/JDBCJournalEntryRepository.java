@@ -2,7 +2,7 @@ package io.reactivestax.repository.jdbc;
 
 import io.reactivestax.types.contract.repository.JournalEntryRepository;
 import io.reactivestax.types.dto.Trade;
-import io.reactivestax.utility.DBUtils;
+import io.reactivestax.utility.database.DBUtils;
 
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -39,8 +39,6 @@ public class JDBCJournalEntryRepository implements JournalEntryRepository {
             insertStatement.executeUpdate();
         }
     }
-
-
 
 
 

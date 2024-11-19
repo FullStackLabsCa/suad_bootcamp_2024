@@ -1,4 +1,4 @@
-package io.reactivestax.utility;
+package io.reactivestax.utility.database;
 
 import io.reactivestax.types.contract.repository.ConnectionUtil;
 import io.reactivestax.types.contract.repository.TransactionUtil;
@@ -7,6 +7,7 @@ import io.reactivestax.repository.hibernate.entity.Position;
 import io.reactivestax.repository.hibernate.entity.SecuritiesReference;
 import io.reactivestax.repository.hibernate.entity.TradePayload;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -19,20 +20,24 @@ import org.hibernate.cfg.Configuration;
 @Slf4j
 public class HibernateUtil implements TransactionUtil, ConnectionUtil<Session> {
     private static volatile HibernateUtil instance;
+    @Getter
     private static final ThreadLocal<Session> threadLocalSession = new ThreadLocal<>();
 
     private static SessionFactory sessionFactory;
+
     private static final String DEFAULT_RESOURCE = "hibernate.cfg.xml";
 
-    private HibernateUtil() {
-    }
+    @Setter
+    private static String configResource = DEFAULT_RESOURCE;
+
+    private HibernateUtil() {}
 
 
     private static synchronized SessionFactory buildSessionFactory() {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration()
-                        .configure(HibernateUtil.DEFAULT_RESOURCE)
+                        .configure(HibernateUtil.configResource)
                         .addAnnotatedClass(TradePayload.class)
                         .addAnnotatedClass(Position.class)
                         .addAnnotatedClass(JournalEntries.class)

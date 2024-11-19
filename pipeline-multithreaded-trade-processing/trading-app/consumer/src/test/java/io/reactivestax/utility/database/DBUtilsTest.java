@@ -1,6 +1,6 @@
 package io.reactivestax.utility.database;
 
-import io.reactivestax.types.exceptions.TransactionHandlingException;
+import io.reactivestax.types.exception.TransactionHandlingException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

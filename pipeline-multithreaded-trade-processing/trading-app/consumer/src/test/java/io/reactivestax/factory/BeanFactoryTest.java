@@ -1,29 +1,35 @@
 package io.reactivestax.factory;
 
+import io.reactivestax.repository.hibernate.HibernateJournalEntryRepository;
+import io.reactivestax.repository.hibernate.HibernateSecuritiesReferenceRepository;
 import io.reactivestax.repository.hibernate.HibernateTradePayloadRepository;
+import io.reactivestax.repository.hibernate.HibernateTradePositionRepository;
+import io.reactivestax.repository.jdbc.JDBCJournalEntryRepository;
+import io.reactivestax.repository.jdbc.JDBCSecuritiesReferenceRepository;
 import io.reactivestax.repository.jdbc.JDBCTradePayloadRepository;
-import io.reactivestax.types.contract.MessageSender;
-import io.reactivestax.types.contract.repository.PayloadRepository;
-import io.reactivestax.types.contract.repository.TransactionUtil;
-import io.reactivestax.types.exceptions.InvalidPersistenceTechnologyException;
+import io.reactivestax.repository.jdbc.JDBCTradePositionRepository;
+import io.reactivestax.types.contract.QueueLoader;
+import io.reactivestax.types.contract.repository.*;
+import io.reactivestax.types.exception.InvalidPersistenceTechnologyException;
 import io.reactivestax.utility.ApplicationPropertiesUtils;
 import io.reactivestax.utility.database.DBUtils;
 import io.reactivestax.utility.database.HibernateUtil;
-import io.reactivestax.utility.messaging.RabbitMQMessageSender;
-import org.junit.Test;
+import io.reactivestax.utility.messaging.RabbitMQLoader;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
-import static org.junit.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BeanFactoryTest {
 
     @Test
     public void shouldReturnMQInstance() {
-        RabbitMQMessageSender instance = RabbitMQMessageSender.getInstance();
-        MessageSender messageSenderInstance = BeanFactory.getQueueMessageSender();
+        QueueLoader instance = RabbitMQLoader.getInstance();
+        QueueLoader messageSenderInstance = BeanFactory.getQueueSetUp();
         assertEquals("shouldReturnMQInstance", instance, messageSenderInstance);
     }
 
@@ -40,7 +46,7 @@ public class BeanFactoryTest {
     public void whenTechnologyIsUnknownShouldThrowException() {
         try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
             mocked.when(() -> readFromApplicationPropertiesStringFormat("persistence.technology")).thenReturn("oracle");
-            assertThrows(InvalidPersistenceTechnologyException.class, BeanFactory::getQueueMessageSender);
+            assertThrows(InvalidPersistenceTechnologyException.class, BeanFactory::getQueueSetUp);
         }
     }
 
@@ -101,4 +107,85 @@ public class BeanFactoryTest {
         BeanFactory.setChunksFileMappingQueue("trade_chunks_1");
         assertFalse(BeanFactory.getChunksFileMappingQueue().isEmpty());
     }
+
+    @Test
+    public void shouldReturnHibernateSecuritiesLookUpRepositoryInstance()  {
+        HibernateSecuritiesReferenceRepository instance = HibernateSecuritiesReferenceRepository.getInstance();
+        SecuritiesReferenceRepository hibernateInstance = BeanFactory.getLookupSecuritiesRepository();
+        assertEquals("shouldReturnHibernateInstance", instance, hibernateInstance);
+    }
+
+    @Test
+    public void whenTechnologyIsJdbcShouldReturnJdbcSecuritiesReferenceInstance() {
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("persistence.technology")).thenReturn("jdbc");
+            JDBCSecuritiesReferenceRepository instance = JDBCSecuritiesReferenceRepository.getInstance();
+            SecuritiesReferenceRepository lookUpSecurityRepository = BeanFactory.getLookupSecuritiesRepository();
+            assertEquals("shouldReturnJDBCInstance", instance, lookUpSecurityRepository);
+        }
+    }
+
+
+    @Test
+    public void whenTechnologyIsUnknownInLookUSecuritiesShouldThrowInvalidPersistenceException() {
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("persistence.technology")).thenReturn("oracle");
+            assertThrows(InvalidPersistenceTechnologyException.class, BeanFactory::getLookupSecuritiesRepository);
+        }
+    }
+
+
+    @Test
+    public void shouldReturnHibernateJournalEntryRepositoryInstance()  {
+        HibernateJournalEntryRepository instance = HibernateJournalEntryRepository.getInstance();
+        JournalEntryRepository hibernateInstance = BeanFactory.getJournalEntryRepository();
+        assertEquals("shouldReturnHibernateInstance", instance, hibernateInstance);
+    }
+
+    @Test
+    public void whenTechnologyIsJdbcShouldReturnJournalEntryRepositoryInstance() {
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("persistence.technology")).thenReturn("jdbc");
+            JDBCJournalEntryRepository  instance = JDBCJournalEntryRepository.getInstance();
+            JournalEntryRepository lookUpSecurityRepository = BeanFactory.getJournalEntryRepository();
+            assertEquals("shouldReturnJDBCInstance", instance, lookUpSecurityRepository);
+        }
+    }
+
+
+    @Test
+    public void whenTechnologyIsUnknownInJournalEntryShouldThrowInvalidPersistenceException() {
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("persistence.technology")).thenReturn("oracle");
+            assertThrows(InvalidPersistenceTechnologyException.class, BeanFactory::getJournalEntryRepository);
+        }
+    }
+
+    @Test
+    public void shouldReturnHibernatePositionRepositoryInstance()  {
+        HibernateTradePositionRepository instance = HibernateTradePositionRepository.getInstance();
+        PositionRepository hibernateInstance = BeanFactory.getPositionsRepository();
+        assertEquals("shouldReturnHibernateInstance", instance, hibernateInstance);
+    }
+
+    @Test
+    public void whenTechnologyIsJdbcShouldReturnJdbcPositionInstance() {
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("persistence.technology")).thenReturn("jdbc");
+            JDBCTradePositionRepository  instance = JDBCTradePositionRepository.getInstance();
+            PositionRepository lookUpSecurityRepository = BeanFactory.getPositionsRepository();
+            assertEquals("shouldReturnJDBCInstance", instance, lookUpSecurityRepository);
+        }
+    }
+
+
+    @Test
+    public void whenTechnologyIsUnknownInTradePositionShouldThrowInvalidPersistenceException() {
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("persistence.technology")).thenReturn("oracle");
+            assertThrows(InvalidPersistenceTechnologyException.class, BeanFactory::getPositionsRepository);
+        }
+    }
+
+
 }

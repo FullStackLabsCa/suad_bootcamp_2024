@@ -12,8 +12,8 @@ import io.reactivestax.repository.jdbc.JDBCJournalEntryRepository;
 import io.reactivestax.repository.jdbc.JDBCSecuritiesReferenceRepository;
 import io.reactivestax.repository.jdbc.JDBCTradePayloadRepository;
 import io.reactivestax.repository.jdbc.JDBCTradePositionRepository;
-import io.reactivestax.utility.DBUtils;
-import io.reactivestax.utility.HibernateUtil;
+import io.reactivestax.utility.database.DBUtils;
+import io.reactivestax.utility.database.HibernateUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -129,12 +129,12 @@ public class BeanFactory {
 
     //current version is using queueList
     //Make sure to call this method to get the queues before launching the queues in chunkProcessor.
-    public static List<LinkedBlockingDeque<String>> addToQueueList() throws IOException {
-        for (int i = 0; i < readFromApplicationPropertiesIntegerFormat("queue.count"); i++) {
-            QUEUE_LIST.add(new LinkedBlockingDeque<>());
-        }
-        return QUEUE_LIST;
-    }
+//    public static List<LinkedBlockingDeque<String>> addToQueueList() throws IOException {
+//        for (int i = 0; i < readFromApplicationPropertiesIntegerFormat("queue.count"); i++) {
+//            QUEUE_LIST.add(new LinkedBlockingDeque<>());
+//        }
+//        return QUEUE_LIST;
+//    }
 
     public static void setChunksFileMappingQueue(String fileName) {
         chunksFileMappingQueue.add(fileName);

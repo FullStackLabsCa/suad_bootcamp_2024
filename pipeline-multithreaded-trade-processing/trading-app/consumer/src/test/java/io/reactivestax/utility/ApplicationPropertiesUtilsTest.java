@@ -1,18 +1,19 @@
 package io.reactivestax.utility;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class ApplicationPropertiesUtilsTest {
+class ApplicationPropertiesUtilsTest {
 
     @Test
-    public void shouldReturnApplicationPropertiesInStringFormat() {
+    void shouldReturnApplicationPropertiesInStringFormat() {
         String messagingTechnology = "rabbitmq";
         String propertyName = readFromApplicationPropertiesStringFormat("messaging.technology");
         assertNotNull(propertyName);
@@ -20,27 +21,27 @@ public class ApplicationPropertiesUtilsTest {
     }
 
     @Test
-    public void shouldReturnApplicationPropertiesInIntegerFormat() throws IOException {
-        Integer poolSize = 10;
+    void shouldReturnApplicationPropertiesInIntegerFormat() throws IOException {
+        Integer queueCount = 3;
         ApplicationPropertiesUtils.setApplicationResource("application.properties");
-        Integer propertyInIntegerFormat = readFromApplicationPropertiesIntegerFormat("chunk.processor.thread.count");
+        Integer propertyInIntegerFormat = readFromApplicationPropertiesIntegerFormat("queue.count");
         assertNotNull(propertyInIntegerFormat);
-        assertEquals(poolSize, propertyInIntegerFormat);
+        assertEquals(queueCount, propertyInIntegerFormat);
     }
 
     @Test
-    public void shouldThrowIOExceptionInIntegerFormat() {
+    void shouldThrowIOExceptionInIntegerFormat() {
         String mockFileName = "mockApplicationProperties";
         ApplicationPropertiesUtils.setApplicationResource(mockFileName);
         IOException fileNotFoundException = assertThrows(FileNotFoundException.class, () ->
                 readFromApplicationPropertiesIntegerFormat("chunks.count"));
         String message = fileNotFoundException.getMessage();
-        assertEquals(message, "Property file " + mockFileName + "not found in the classpath");
+        assertEquals("Property file " + mockFileName + "not found in the classpath", message);
     }
 
 
     @Test
-    public void shouldThrowRuntimeExceptionInStringFormat() {
+    void shouldThrowRuntimeExceptionInStringFormat() {
         String mockFileName = "mockApplicationProperties";
         ApplicationPropertiesUtils.setApplicationResource(mockFileName);
         assertThrows(RuntimeException.class, () ->
@@ -55,9 +56,5 @@ public class ApplicationPropertiesUtilsTest {
         assertNull(readFromApplicationPropertiesStringFormat("check"));
     }
 
-//    @Test
-//    public void shouldThrowNumberFormatExceptionWithoutPropertiesInFileForIntegerFormat() {
-//        assertThrows(NumberFormatException.class, () ->
-//                readFromApplicationPropertiesIntegerFormat("test"));
-//    }
+
 }

@@ -3,7 +3,7 @@ package io.reactivestax.repository.jdbc;
 import io.reactivestax.types.contract.repository.PositionRepository;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.types.exception.OptimisticLockingException;
-import io.reactivestax.utility.DBUtils;
+import io.reactivestax.utility.database.DBUtils;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;

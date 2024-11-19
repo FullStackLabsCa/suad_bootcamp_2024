@@ -1,4 +1,4 @@
-package io.reactivestax.utility;
+package io.reactivestax.utility.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -6,7 +6,7 @@ import io.reactivestax.types.contract.repository.ConnectionUtil;
 import io.reactivestax.types.contract.repository.TransactionUtil;
 import io.reactivestax.types.exception.HikariCPConnectionException;
 import io.reactivestax.types.exception.TransactionHandlingException;
-import io.reactivestax.factory.BeanFactory;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
@@ -22,6 +22,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
 
     private static DBUtils instance;
     private DataSource dataSource;
+    @Getter
     private final ThreadLocal<Connection> connectionHolder = new ThreadLocal<>();
 
     private DBUtils() {

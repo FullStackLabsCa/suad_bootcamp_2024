@@ -2,11 +2,12 @@ package io.reactivestax.repository.hibernate;
 
 import io.reactivestax.types.contract.repository.SecuritiesReferenceRepository;
 import io.reactivestax.repository.hibernate.entity.SecuritiesReference;
-import io.reactivestax.utility.HibernateUtil;
+import io.reactivestax.utility.database.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class HibernateSecuritiesReferenceRepository implements SecuritiesReferen
 
     @Override
     public boolean lookupSecurities(String cusip) {
-       Session session = HibernateUtil.getInstance().getConnection();
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+        Session session = HibernateUtil.getInstance().getConnection();
+        HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
 
         // Step 2: Create CriteriaQuery
         CriteriaQuery<SecuritiesReference> cq = cb.createQuery(SecuritiesReference.class);

@@ -1,4 +1,4 @@
-package io.reactivestax.utility;
+package io.reactivestax.utility.database;
 
 import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.enums.LookUpStatusEnum;
@@ -9,11 +9,12 @@ import org.hibernate.Transaction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import io.reactivestax.utility.database.HibernateUtil;
 
 import java.util.concurrent.*;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class HibernateUtilTest {
 
@@ -27,8 +28,8 @@ public class HibernateUtilTest {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         Session threadLocalSession = HibernateUtil.getThreadLocalSession().get();
-        Assertions.assertNotNull(threadLocalSession, "Thread local session should");
-        Assertions.assertNotNull(session, "Session should not be null");
+        assertNotNull(threadLocalSession, "Thread local session should");
+        assertNotNull(session, "Session should not be null");
     }
 
 
@@ -60,8 +61,8 @@ public class HibernateUtilTest {
             TradePayload retrievedTradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
                     .setParameter("tradeId", "1")
                     .uniqueResult();
-            Assertions.assertNotNull(retrievedTradePayload);
-            Assertions.assertEquals(tradePayload, retrievedTradePayload, "trade payload and retrieved value should be equal");
+            assertNotNull(retrievedTradePayload);
+            assertEquals(tradePayload, retrievedTradePayload, "trade payload and retrieved value should be equal");
         } catch (Exception e) {
             transaction.rollback();
         } finally {
@@ -84,7 +85,7 @@ public class HibernateUtilTest {
     @Test
     public void testCloseConnection() {
         Session session = HibernateUtil.getInstance().getConnection();
-        Assertions.assertNotNull(session);
+        assertNotNull(session);
         Assertions.assertTrue(session.isOpen(), "session should be open");
         session.close();
         Assertions.assertFalse(session.isOpen(), "Session should be closed");

@@ -3,11 +3,12 @@ package io.reactivestax.repository.hibernate;
 import io.reactivestax.types.contract.repository.PositionRepository;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.repository.hibernate.entity.Position;
-import io.reactivestax.utility.HibernateUtil;
+import io.reactivestax.utility.database.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
@@ -15,6 +16,7 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import java.math.BigInteger;
 import java.sql.SQLException;
 
+@Slf4j
 public class HibernateTradePositionRepository implements PositionRepository {
 
     private static HibernateTradePositionRepository instance;
@@ -35,28 +37,32 @@ public class HibernateTradePositionRepository implements PositionRepository {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            Position position = new Position();
-            position.setAccountNumber(trade.getAccountNumber());
-            position.setCusip(trade.getCusip());
-            position.setPosition(BigInteger.valueOf(trade.getQuantity()));
-            position.setDirection(trade.getDirection());
+            Position position = getPosition(trade);
             session.persist(position);
             transaction.commit();
-
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
+                log.error("Transaction Failed", e); // Ensure this line exists
                 return false;
             }
         }
         return true;
     }
 
+    private static Position getPosition(Trade trade) {
+        Position position = new Position();
+        position.setAccountNumber(trade.getAccountNumber());
+        position.setCusip(trade.getCusip());
+        position.setPosition(BigInteger.valueOf(trade.getQuantity()));
+        position.setDirection(trade.getDirection());
+        return position;
+    }
+
     public boolean updatePosition(Trade trade, int version) {
         Session session = HibernateUtil.getInstance().getConnection();
         Transaction transaction = null;
         try {
-
             HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Position> query = cb.createQuery(Position.class);
             Root<Position> root = query.from(Position.class);
@@ -89,7 +95,6 @@ public class HibernateTradePositionRepository implements PositionRepository {
                 System.out.println(e.getMessage());
                 return false;
             }
-
         }
         return true;
     }

@@ -3,7 +3,7 @@ package io.reactivestax.repository.hibernate;
 import io.reactivestax.types.contract.repository.JournalEntryRepository;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.repository.hibernate.entity.JournalEntries;
-import io.reactivestax.utility.HibernateUtil;
+import io.reactivestax.utility.database.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

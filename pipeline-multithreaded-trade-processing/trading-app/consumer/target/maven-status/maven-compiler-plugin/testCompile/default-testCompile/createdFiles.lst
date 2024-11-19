@@ -1,0 +1,13 @@
+io/reactivestax/repository/hibernate/HibernateTradePositionRepositoryTest.class
+io/reactivestax/repository/hibernate/HibernateTradePayloadRepositoryTest.class
+io/reactivestax/utility/FileLoaderUtilTest.class
+io/reactivestax/service/TradeProcessorServiceTest.class
+io/reactivestax/TradeConsumerRunnerTest.class
+io/reactivestax/utility/messaging/RabbitMQUtilsTest.class
+io/reactivestax/AppTest.class
+io/reactivestax/utility/UtilityTest.class
+io/reactivestax/factory/BeanFactoryTest.class
+io/reactivestax/utility/ApplicationPropertiesUtilsTest.class
+io/reactivestax/utility/database/DBUtilsTest.class
+io/reactivestax/repository/hibernate/HibernateJournalEntryRepositoryTest.class
+io/reactivestax/utility/database/HibernateUtilTest.class

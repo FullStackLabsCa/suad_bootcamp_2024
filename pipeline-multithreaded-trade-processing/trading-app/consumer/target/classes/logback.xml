@@ -1,11 +1,29 @@
 <configuration>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+    <!-- Console appender: outputs logs to the console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="debug">
-        <appender-ref ref="STDOUT" />
+    <!-- File appender: writes logs to a file -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/myapp.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger: logs to both console and file -->
+    <root level="error">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
     </root>
+
+    <!-- Specific logger for a class -->
+    <logger name="com.example" level="info">
+        <appender-ref ref="FILE" />
+    </logger>
+
 </configuration>
