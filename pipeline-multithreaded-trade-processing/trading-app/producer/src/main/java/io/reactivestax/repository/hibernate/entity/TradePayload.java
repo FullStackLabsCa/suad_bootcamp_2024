@@ -1,6 +1,7 @@
 package io.reactivestax.repository.hibernate.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "trade_payloads")
 @Data
+@Builder
 public class TradePayload {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

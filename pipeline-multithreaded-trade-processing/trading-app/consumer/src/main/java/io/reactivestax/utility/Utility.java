@@ -2,13 +2,12 @@ package io.reactivestax.utility;
 
 import io.reactivestax.types.dto.Trade;
 
-import static io.reactivestax.types.dto.Trade.*;
 
 
 public class Utility {
 
     public static boolean checkValidity(String[] split) {
-        return (split[0] != null && split[1] != null && split[2] != null && split[3] != null && split[4] != null && split[5] != null);
+        return (split[0] != null && split[1] != null && split[2] != null && split[3] != null && split[4] != null && split[5] != null && split[6] != null);
     }
 
     public static Trade prepareTrade(String payload) {
@@ -22,8 +21,10 @@ public class Utility {
                 .direction(payloads[4])
                 .quantity(Integer.parseInt(payloads[5]))
                 .price(Double.parseDouble(payloads[6]))
-                .position(Integer.parseInt(payloads[5]))
+                .position(Integer.parseInt(payloads[7]))
                 .build();
+
     }
+
 
 }

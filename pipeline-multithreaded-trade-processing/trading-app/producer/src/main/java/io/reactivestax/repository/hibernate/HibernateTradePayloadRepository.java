@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static io.reactivestax.utility.Utility.checkValidity;
 import static io.reactivestax.utility.Utility.prepareTrade;
 
 
@@ -38,13 +39,14 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     public Optional<String> insertTradeIntoTradePayloadTable(String payload) throws Exception {
         Session session = HibernateUtil.getInstance().getConnection();
         Trade trade = prepareTrade(payload);
-        TradePayload tradePayload = new TradePayload();
-        tradePayload.setTradeId(trade.getTradeIdentifier());
-        tradePayload.setValidityStatus(payload != null ? String.valueOf(ValidityStatusEnum.VALID) : String.valueOf(ValidityStatusEnum.INVALID));
-        tradePayload.setStatusReason(payload != null ? "All field present " : "Fields missing");
-        tradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
-        tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED));
-        tradePayload.setPayload(payload);
+        TradePayload tradePayload = TradePayload.builder()
+                .tradeId(trade.getTradeIdentifier())
+                .validityStatus(checkValidity(payload.split(",")) ? String.valueOf(ValidityStatusEnum.VALID) : String.valueOf(ValidityStatusEnum.INVALID))
+                .statusReason(checkValidity(payload.split(",")) ? "All field present " : "Fields missing")
+                .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL))
+                .jeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED))
+                .payload(payload)
+                .build();
         session.persist(tradePayload);
         return Optional.ofNullable(tradePayload.getTradeId());
     }
