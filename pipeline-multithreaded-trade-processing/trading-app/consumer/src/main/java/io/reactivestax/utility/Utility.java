@@ -2,6 +2,8 @@ package io.reactivestax.utility;
 
 import io.reactivestax.types.dto.Trade;
 
+import static io.reactivestax.types.dto.Trade.*;
+
 
 public class Utility {
 
@@ -11,15 +13,17 @@ public class Utility {
 
     public static Trade prepareTrade(String payload) {
         String[] payloads = payload.split(",");
-        return new Trade(payloads[0],
-                payloads[1],
-                payloads[2],
-                payloads[3],
-                payloads[4],
-                Integer.parseInt(payloads[5]),
-                Double.parseDouble(payloads[6]),
-                Integer.parseInt(payloads[5]));
-    }
 
+        return Trade.builder()
+                .tradeIdentifier(payloads[0])
+                .tradeDateTime(payloads[1])
+                .accountNumber(payloads[2])
+                .cusip(payloads[3])
+                .direction(payloads[4])
+                .quantity(Integer.parseInt(payloads[5]))
+                .price(Double.parseDouble(payloads[6]))
+                .position(Integer.parseInt(payloads[5]))
+                .build();
+    }
 
 }

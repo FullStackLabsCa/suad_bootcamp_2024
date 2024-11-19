@@ -1,10 +1,12 @@
 package io.reactivestax.types.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class Trade {
     private String tradeIdentifier;
     private String tradeDateTime;

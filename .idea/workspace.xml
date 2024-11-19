@@ -5,46 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2ab0675b-db66-4fcb-9f1c-9dea4eca9c64" name="Changes" comment="feat: code cleanup">
-      <change afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/service/TradeProcessorServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/test_trades_chunk.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/service/ChunkGeneratorServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/service/ChunkProcessorServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/resources/application-test.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/resources/test_trades_chunk.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/utility/DBUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/utility/DBUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/utility/DBUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/utility/DBUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/TradeProducerRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/TradeProducerRunner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/factory/BeanFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/factory/BeanFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkGeneratorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkGeneratorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkProcessorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkProcessorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/MessagePublisherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/MessagePublisherService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/utility/ApplicationPropertiesUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/utility/ApplicationPropertiesUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_4.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_4.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_5.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/trades_chunk_5.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/factory/BeanFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/factory/BeanFactoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/utility/ApplicationPropertiesUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/utility/ApplicationPropertiesUtilsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/utility/HibernateUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/utility/HibernateUtilTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_4.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_4.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_5.csv" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/files/trades_chunk_5.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/TradeProducerRunner.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/TradeProducerRunner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/factory/BeanFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/factory/BeanFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/ChunkGeneratorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/ChunkGeneratorService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/ChunkProcessorService.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/ChunkProcessorService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/MessagePublisherService.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/service/MessagePublisherService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/utility/ApplicationPropertiesUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/classes/io/reactivestax/utility/ApplicationPropertiesUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/factory/BeanFactoryTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/factory/BeanFactoryTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/ApplicationPropertiesUtilsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/ApplicationPropertiesUtilsTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/HibernateUtilTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/HibernateUtilTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/database/DBUtilsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/database/DBUtilsTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/utility/Utility.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/utility/Utility.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/jdbc/JDBCTradePayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/types/dto/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/types/dto/Trade.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,16 +24,16 @@
       <list>
         <option value="Interface" />
         <option value="Enum" />
+        <option value="JUnit3 Test Class" />
         <option value="Class" />
         <option value="JUnit5 Test Class" />
-        <option value="JUnit3 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="java-8" />
+        <entry key="$PROJECT_DIR$" value="version-4.8" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -86,6 +51,9 @@
     &quot;accountId&quot;: &quot;d425548c-c861-4b2b-8eea-4288a410d825&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/Library/Java/JavaVirtualMachines/corretto-17.0.12/Contents/Home/lib/src.zip!/java.base/java/nio/file/Files.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -102,17 +70,24 @@
     &quot;Application.TradeProducerRunner.executor&quot;: &quot;Run&quot;,
     &quot;Application.TradeRunner.executor&quot;: &quot;Run&quot;,
     &quot;Application.org.example.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in consumer.executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.All in producer (1).executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.All in producer.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.ApplicationPropertiesUtilsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ApplicationPropertiesUtilsTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldReturnApplicationPropertiesInIntegerFormat (1).executor&quot;: &quot;Debug&quot;,
     &quot;JUnit.ApplicationPropertiesUtilsTest.shouldReturnApplicationPropertiesInIntegerFormat.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ApplicationPropertiesUtilsTest.shouldReturnNullWithoutPropertiesInFile.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ApplicationPropertiesUtilsTest.shouldReturnNullWithoutPropertiesInFileForIntegerFormat.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ApplicationPropertiesUtilsTest.shouldThrowExceptionWithoutPropertiesFile.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ApplicationPropertiesUtilsTest.shouldThrowIOException.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BeanFactoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldThrowIOExceptionInIntegerFormat.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.ApplicationPropertiesUtilsTest.shouldThrowRuntimeExceptionInStringFormat.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest (1).executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.BeanFactoryTest.executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.BeanFactoryTest.shouldAddPassFileNameToQueue.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.BeanFactoryTest.shouldReturnApplicationPropertiesInStringFormat.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest.shouldReturnHibernateJournalEntryRepositoryInstance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest.shouldReturnHibernateSecuritiesLookUpRepositoryInstance.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.BeanFactoryTest.shouldReturnHibernateTradeRepository.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.BeanFactoryTest.shouldReturnHibernateTransactionUtilInstance.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.BeanFactoryTest.shouldReturnJdbcTransactionUtilInstance.executor&quot;: &quot;Run&quot;,
@@ -121,47 +96,85 @@
     &quot;JUnit.BeanFactoryTest.shouldThrowExceptionWithoutPropertiesFile.executor&quot;: &quot;Debug&quot;,
     &quot;JUnit.BeanFactoryTest.shouldThrowFileNotFoundException.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.BeanFactoryTest.whenTechnologyIsJdbcShouldReturnJdbcInstance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest.whenTechnologyIsJdbcShouldReturnJdbcSecuritiesReferenceInstance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest.whenTechnologyIsJdbcShouldReturnJournalEntryRepositoryInstance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest.whenTechnologyIsUnknownInJournalEntryShouldThrowInvalidPersistenceException.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest.whenTechnologyIsUnknownInLookUSecuritiesShouldThrowInvalidPersistenceException.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BeanFactoryTest.whenTechnologyIsUnknownInTradePositionShouldThrowInvalidPersistenceException.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.BeanFactoryTest.whenTechnologyIsUnknownShouldThrowException.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ChunkGeneratorServiceTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.ChunkGeneratorServiceTest.generateAndSubmitChunks.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.ChunkGeneratorServiceTest.generateAndSubmitChunks_IOException.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.ChunkProcessorServiceTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.ChunkGeneratorServiceTest.generateAndSubmitChunks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkGeneratorServiceTest.generateAndSubmitChunks_IOException.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkProcessorServiceTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ChunkProcessorServiceTest.testInsertTradeIntoTradePayloadTable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkProcessorServiceTest.testInsertTradeIntoTradePayloadTable_Exception.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ChunkProcessorServiceTest.testInstance.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChunkProcessorServiceTest.testProcessChunk_SubmitChunksIsCalled.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ChunkProcessorServiceTest.testSubmitChunk_Exception.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkProcessorServiceTest.testProcessChunk_SubmitChunksIsCalled.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.ChunkProcessorServiceTest.testProcessChunks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkProcessorServiceTest.testProcesschunks_Exception.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkProcessorServiceTest.testSubmitChunk_Exception.executor&quot;: &quot;Debug&quot;,
     &quot;JUnit.ChunkProcessorServiceTest.testSubmitChunks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkSubmitterServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChunkSubmitterServiceTest.testProcessChunk_SubmitChunksIsCalled.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.DBUtilsTest.commitTransaction.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.DBUtilsTest.commitTransactionCatchBlockTest.executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.DBUtilsTest.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.DBUtilsTest.getConnection.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.DBUtilsTest.getConnection.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.DBUtilsTest.getInstance.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.DBUtilsTest.startTransaction.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.DBUtilsTest.startTransaction.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.DBUtilsTest.testGetConnectionCatchBlock.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.DBUtilsTest.whenExceptionOccuredShouldThrowHikkariException.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateJournalEntryRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateJournalEntryRepositoryTest.getInstance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateJournalEntryRepositoryTest.saveJournalEntry.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateJournalEntryRepositoryTest.testJournalEntry_Exception.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateSecuritiesReferenceRepositoryTest.lookupSecurities.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePayloadRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePayloadRepositoryTest.insertTradeIntoTradePayloadTable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePayloadRepositoryTest.testUpdateJournalStatus.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePayloadRepositoryTest.testUpdateLookupStatus.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePositionRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePositionRepositoryTest.testInsertPosition.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePositionRepositoryTest.testInsertPosition_Exception.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HibernateTradePositionRepositoryTest.testUpdatePosition.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.HibernateUtilTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.HibernateUtilTest.testThreadLocalSessionIsolation.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.HibernateUtilTest.testTransactionRollback.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MessagePublisherServiceTest.testExceptionHandlingInMessageSending.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MessagePublisherServiceTest.testFigureTheNextQueueRoundRobin.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MessagePublisherServiceTest.testQueueMessageSenderNull.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.RabbitMQMessageSenderTest.executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.RabbitMQMessageSenderTest.returnFalseForMessageDeliveryFailure.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.RabbitMQMessageSenderTest.returnTrueForSuccessMessageDelivery.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.RabbitMQMessageSenderTest.testSingleton.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.RabbitMQUtilsTest.testRabbitMQChannelAndSettingChannelInThreadLocal.executor&quot;: &quot;Coverage&quot;,
-    &quot;JUnit.UtilityTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UtilityTest.prepareTrade.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TradeConsumerRunnerTest.testStartConsumer.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TradeProducerRunnerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TradeProducerRunnerTest.testMain.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UtilityTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.UtilityTest.prepareTrade.executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.UtilityTest.random.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UtilityTest.roundRobin.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UtilityTest.testCheckValidity.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.io.reactivestax.service in producer.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.java in consumer.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.java in producer.executor&quot;: &quot;Coverage&quot;,
     &quot;JUnit.reactivestax in producer.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.test in producer.executor&quot;: &quot;Coverage&quot;,
+    &quot;Maven.producer [clean].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit3&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3&quot;: &quot;junit.framework.TestCase&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;version-4.8&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files&quot;,
+    &quot;last_directory_selection&quot;: &quot;/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/service&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.3632184&quot;,
@@ -169,31 +182,42 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="io.reactivestax.repository.hibernate" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax" />
+      <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/resources" />
       <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files" />
       <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/resources" />
-      <recent name="C:\Users\suraj\source\full-stack-student-mode\suad-bootcamp-2024\pipeline-multithreaded-trade-processing\trading-app\src\main\java\io\reactivestax\dlq" />
-      <recent name="C:\Users\suraj\source\full-stack-student-mode\suad-bootcamp-2024\pipeline-multithreaded-trade-processing\trade-processor-app\src\main\java\io\reactivestax\rabbitmq" />
+      <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/service" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
-      <recent name="junit.framework.TestCase" />
       <recent name="" />
+      <recent name="junit.framework.TestCase" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="io.reactivestax.utility.database" />
+      <recent name="io.reactivestax.utility" />
       <recent name="io.reactivestax.utility.messaging" />
       <recent name="io.reactivestax.factory" />
-      <recent name="io.reactivestax.utility" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="io.reactivestax.repository.hibernate" />
+      <recent name="io.reactivestax" />
       <recent name="io.reactivestax.service" />
       <recent name="io.reactivestax.utility" />
       <recent name="io.reactivestax.utility.database" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="io.reactivestax.repository.hibernate" />
       <recent name="io.reactivestax.utility" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ChunkProcessorServiceTest">
+  <component name="RunManager" selected="JUnit.java in consumer">
     <configuration name="BeanFactoryTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
       <module name="producer" />
       <extension name="coverage">
@@ -210,92 +234,91 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChunkProcessorServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
+    <configuration name="HibernateJournalEntryRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consumer" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.reactivestax.service.*" />
+          <option name="PATTERN" value="io.reactivestax.repository.hibernate.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.service" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.service.ChunkProcessorServiceTest" />
+      <option name="PACKAGE_NAME" value="io.reactivestax.repository.hibernate" />
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.repository.hibernate.HibernateJournalEntryRepositoryTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChunkProcessorServiceTest.testInsertTradeIntoTradePayloadTable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
+    <configuration name="HibernateSecuritiesReferenceRepositoryTest.lookupSecurities" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consumer" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.reactivestax.service.*" />
+          <option name="PATTERN" value="io.reactivestax.repository.hibernate.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.service" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.service.ChunkProcessorServiceTest" />
-      <option name="METHOD_NAME" value="testInsertTradeIntoTradePayloadTable" />
+      <option name="PACKAGE_NAME" value="io.reactivestax.repository.hibernate" />
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.repository.hibernate.HibernateSecuritiesReferenceRepositoryTest" />
+      <option name="METHOD_NAME" value="lookupSecurities" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChunkProcessorServiceTest.testInstance" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
+    <configuration name="HibernateTradePositionRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consumer" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.reactivestax.service.*" />
+          <option name="PATTERN" value="io.reactivestax.repository.hibernate.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.service" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.service.ChunkProcessorServiceTest" />
-      <option name="METHOD_NAME" value="testInstance" />
+      <option name="PACKAGE_NAME" value="io.reactivestax.repository.hibernate" />
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.repository.hibernate.HibernateTradePositionRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HibernateTradePositionRepositoryTest.testUpdatePosition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consumer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.reactivestax.repository.hibernate.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.reactivestax.repository.hibernate" />
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.repository.hibernate.HibernateTradePositionRepositoryTest" />
+      <option name="METHOD_NAME" value="testUpdatePosition" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChunkProcessorServiceTest.testProcessChunk_SubmitChunksIsCalled" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.reactivestax.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.service" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.service.ChunkProcessorServiceTest" />
-      <option name="METHOD_NAME" value="testProcessChunk_SubmitChunksIsCalled" />
-      <option name="TEST_OBJECT" value="method" />
+    <configuration name="java in consumer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consumer" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChunkProcessorServiceTest.testSubmitChunk_Exception" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.reactivestax.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.service" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.service.ChunkProcessorServiceTest" />
-      <option name="METHOD_NAME" value="testSubmitChunk_Exception" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+    <list>
+      <item itemvalue="JUnit.BeanFactoryTest" />
+      <item itemvalue="JUnit.java in consumer" />
+      <item itemvalue="JUnit.HibernateJournalEntryRepositoryTest" />
+      <item itemvalue="JUnit.HibernateSecuritiesReferenceRepositoryTest.lookupSecurities" />
+      <item itemvalue="JUnit.HibernateTradePositionRepositoryTest" />
+      <item itemvalue="JUnit.HibernateTradePositionRepositoryTest.testUpdatePosition" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ChunkProcessorServiceTest" />
-        <item itemvalue="JUnit.ChunkProcessorServiceTest.testProcessChunk_SubmitChunksIsCalled" />
-        <item itemvalue="JUnit.ChunkProcessorServiceTest.testInsertTradeIntoTradePayloadTable" />
-        <item itemvalue="JUnit.ChunkProcessorServiceTest.testSubmitChunk_Exception" />
-        <item itemvalue="JUnit.ChunkProcessorServiceTest.testInstance" />
+        <item itemvalue="JUnit.java in consumer" />
+        <item itemvalue="JUnit.HibernateSecuritiesReferenceRepositoryTest.lookupSecurities" />
+        <item itemvalue="JUnit.HibernateTradePositionRepositoryTest.testUpdatePosition" />
+        <item itemvalue="JUnit.HibernateTradePositionRepositoryTest" />
+        <item itemvalue="JUnit.HibernateJournalEntryRepositoryTest" />
       </list>
     </recent_temporary>
   </component>
@@ -364,7 +387,7 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/component/CsvTradeProcessor.java</url>
           <line>113</line>
           <properties>
@@ -372,167 +395,207 @@
           </properties>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/service/CsvTradeProcessor.java</url>
           <line>89</line>
           <option name="timeStamp" value="43" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/service/CsvTradeProcessor.java</url>
           <line>90</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/message/sender/RabbitMQMessageSender.java</url>
           <line>29</line>
           <option name="timeStamp" value="54" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/dlq/CustomCancelCallback.java</url>
           <line>10</line>
           <option name="timeStamp" value="74" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/dlq/RabbitMQConsumerCallable.java</url>
           <line>139</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/dlq/RabbitMQConsumerCallable.java</url>
           <line>136</line>
           <option name="timeStamp" value="79" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/dlq/RabbitMQConsumerCallable.java</url>
           <line>119</line>
           <option name="timeStamp" value="85" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/dlq/RabbitMQConsumerCallable.java</url>
           <line>120</line>
           <option name="timeStamp" value="96" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/Main.java</url>
           <line>21</line>
           <option name="timeStamp" value="113" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/Main.java</url>
           <line>26</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/src/main/java/io/reactivestax/Main.java</url>
           <line>24</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkGeneratorService.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="131" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkGeneratorService.java</url>
-          <line>34</line>
-          <option name="timeStamp" value="132" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/factory/BeanFactory.java</url>
           <line>58</line>
           <option name="timeStamp" value="133" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/factory/BeanFactory.java</url>
           <line>47</line>
           <option name="timeStamp" value="135" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/factory/BeanFactory.java</url>
           <line>46</line>
           <option name="timeStamp" value="136" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/factory/BeanFactoryTest.java</url>
           <line>33</line>
           <option name="timeStamp" value="138" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/MessagePublisherService.java</url>
-          <line>35</line>
+          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java</url>
+          <line>48</line>
           <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java</url>
+          <line>99</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/utility/ApplicationPropertiesUtilsTest.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="150" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/TradeConsumerRunner.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/TradeConsumerRunner.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="153" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="JUnit">
-        <watch expression="ch(line -&gt; {" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ApplicationPropertiesUtilsTest.ic" NAME="ApplicationPropertiesUtilsTest Coverage Results" MODIFIED="1730838171059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testInstance.ic" NAME="ChunkProcessorServiceTest.testInstance Coverage Results" MODIFIED="1731510961939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$HibernateJournalEntryRepositoryTest_getInstance.ic" NAME="HibernateJournalEntryRepositoryTest.getInstance Coverage Results" MODIFIED="1731953674003" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.repository.hibernate.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$java_in_consumer.ic" NAME="java in consumer Coverage Results" MODIFIED="1732030508872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$UtilityTest_prepareTrade.ic" NAME="UtilityTest.prepareTrade Coverage Results" MODIFIED="1731945275633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$UtilityTest.ic" NAME="UtilityTest Coverage Results" MODIFIED="1730989329828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.utility.*</FILTER>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testProcessChunks.ic" NAME="ChunkProcessorServiceTest.testProcessChunks Coverage Results" MODIFIED="1731613029088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.service.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkGeneratorServiceTest.ic" NAME="ChunkGeneratorServiceTest Coverage Results" MODIFIED="1731359554448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest.ic" NAME="DBUtilsTest Coverage Results" MODIFIED="1731941744537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.utility.database.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_getInstance.ic" NAME="DBUtilsTest.getInstance Coverage Results" MODIFIED="1730991220474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.utility.database.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$All_in_consumer.ic" NAME="All in consumer Coverage Results" MODIFIED="1731964209992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$BeanFactoryTest.ic" NAME="BeanFactoryTest Coverage Results" MODIFIED="1731618011287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.factory.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$TradeProducerRunnerTest.ic" NAME="TradeProducerRunnerTest Coverage Results" MODIFIED="1731621016488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$reactivestax_in_producer.ic" NAME="reactivestax in producer Coverage Results" MODIFIED="1730918599320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$io_reactivestax_service_in_producer.ic" NAME="io.reactivestax.service in producer Coverage Results" MODIFIED="1731517542219" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.service.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkGeneratorServiceTest_generateAndSubmitChunks.ic" NAME="ChunkGeneratorServiceTest.generateAndSubmitChunks Coverage Results" MODIFIED="1731357205157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.service.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testSubmitChunk_Exception.ic" NAME="ChunkProcessorServiceTest.testSubmitChunk_Exception Coverage Results" MODIFIED="1731438336586" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ApplicationPropertiesUtilsTest.ic" NAME="ApplicationPropertiesUtilsTest Coverage Results" MODIFIED="1731889262115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.utility.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testSubmitChunk_Exception.ic" NAME="ChunkProcessorServiceTest.testSubmitChunk_Exception Coverage Results" MODIFIED="1731595943766" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.service.*</FILTER>
+      <FILTER>io.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$java_in_producer.ic" NAME="java in producer Coverage Results" MODIFIED="1731941076985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest.ic" NAME="ChunkProcessorServiceTest Coverage Results" MODIFIED="1731614325242" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.service.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$All_in_producer__1_.ic" NAME="All in producer (1) Coverage Results" MODIFIED="1730916429119" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testInstance.ic" NAME="ChunkProcessorServiceTest.testInstance Coverage Results" MODIFIED="1731510961939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.service.*</FILTER>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_commitTransaction.ic" NAME="DBUtilsTest.commitTransaction Coverage Results" MODIFIED="1730991670079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.utility.database.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testInsertTradeIntoTradePayloadTable.ic" NAME="ChunkProcessorServiceTest.testInsertTradeIntoTradePayloadTable Coverage Results" MODIFIED="1731512402483" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.service.*</FILTER>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$BeanFactoryTest__1_.ic" NAME="BeanFactoryTest (1) Coverage Results" MODIFIED="1731940911650" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.factory.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_getConnection.ic" NAME="DBUtilsTest.getConnection Coverage Results" MODIFIED="1730991228863" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.database.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$All_in_producer.ic" NAME="All in producer Coverage Results" MODIFIED="1730911196917" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$HibernateUtilTest.ic" NAME="HibernateUtilTest Coverage Results" MODIFIED="1730919561093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.utility.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_startTransaction.ic" NAME="DBUtilsTest.startTransaction Coverage Results" MODIFIED="1730991253822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.database.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest.ic" NAME="ChunkProcessorServiceTest Coverage Results" MODIFIED="1731512529042" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.service.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$RabbitMQUtilsTest_testRabbitMQChannelAndSettingChannelInThreadLocal.ic" NAME="RabbitMQUtilsTest.testRabbitMQChannelAndSettingChannelInThreadLocal Coverage Results" MODIFIED="1730906529274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_commitTransactionCatchBlockTest.ic" NAME="DBUtilsTest.commitTransactionCatchBlockTest Coverage Results" MODIFIED="1730994780882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.utility.database.*</FILTER>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$All_in_producer__1_.ic" NAME="All in producer (1) Coverage Results" MODIFIED="1730916429119" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testProcessChunk_SubmitChunksIsCalled.ic" NAME="ChunkProcessorServiceTest.testProcessChunk_SubmitChunksIsCalled Coverage Results" MODIFIED="1731512696536" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$HibernateTradePayloadRepositoryTest_testUpdateLookupStatus.ic" NAME="HibernateTradePayloadRepositoryTest.testUpdateLookupStatus Coverage Results" MODIFIED="1731684782385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.repository.hibernate.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkSubmitterServiceTest_testProcessChunk_SubmitChunksIsCalled.ic" NAME="ChunkSubmitterServiceTest.testProcessChunk_SubmitChunksIsCalled Coverage Results" MODIFIED="1731611184070" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$All_in_producer.ic" NAME="All in producer Coverage Results" MODIFIED="1731887192788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testInsertTradeIntoTradePayloadTable.ic" NAME="ChunkProcessorServiceTest.testInsertTradeIntoTradePayloadTable Coverage Results" MODIFIED="1731512402483" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.service.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$RabbitMQMessageSenderTest.ic" NAME="RabbitMQMessageSenderTest Coverage Results" MODIFIED="1730911157102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.messaging.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkGeneratorServiceTest.ic" NAME="ChunkGeneratorServiceTest Coverage Results" MODIFIED="1731680316873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$test_in_producer.ic" NAME="test in producer Coverage Results" MODIFIED="1731887123129" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$UtilityTest.ic" NAME="UtilityTest Coverage Results" MODIFIED="1731945585340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.utility.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$HibernateJournalEntryRepositoryTest.ic" NAME="HibernateJournalEntryRepositoryTest Coverage Results" MODIFIED="1731948317297" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.repository.hibernate.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkGeneratorServiceTest_generateAndSubmitChunks_IOException.ic" NAME="ChunkGeneratorServiceTest.generateAndSubmitChunks_IOException Coverage Results" MODIFIED="1731358212143" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.service.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$ChunkProcessorServiceTest_testProcessChunk_SubmitChunksIsCalled.ic" NAME="ChunkProcessorServiceTest.testProcessChunk_SubmitChunksIsCalled Coverage Results" MODIFIED="1731437521936" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.service.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_getInstance.ic" NAME="DBUtilsTest.getInstance Coverage Results" MODIFIED="1730991220474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_commitTransactionCatchBlockTest.ic" NAME="DBUtilsTest.commitTransactionCatchBlockTest Coverage Results" MODIFIED="1730994780882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.database.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$BeanFactoryTest.ic" NAME="BeanFactoryTest Coverage Results" MODIFIED="1731440255955" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.factory.*</FILTER>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$HibernateUtilTest.ic" NAME="HibernateUtilTest Coverage Results" MODIFIED="1730919561093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.utility.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$reactivestax_in_producer.ic" NAME="reactivestax in producer Coverage Results" MODIFIED="1730918599320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_commitTransaction.ic" NAME="DBUtilsTest.commitTransaction Coverage Results" MODIFIED="1730991670079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.utility.database.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest.ic" NAME="DBUtilsTest Coverage Results" MODIFIED="1730995070769" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>io.reactivestax.utility.database.*</FILTER>
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$HibernateTradePayloadRepositoryTest_insertTradeIntoTradePayloadTable.ic" NAME="HibernateTradePayloadRepositoryTest.insertTradeIntoTradePayloadTable Coverage Results" MODIFIED="1731682750014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>io.reactivestax.repository.hibernate.*</FILTER>
     </SUITE>
   </component>
 </project>
