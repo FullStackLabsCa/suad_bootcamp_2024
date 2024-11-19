@@ -111,9 +111,11 @@ class HibernateTradePayloadRepositoryTest {
 
 
             String tradeId = "TDB_00000000";
-            TradePayload mockTradePayload = new TradePayload();
-            mockTradePayload.setTradeId(tradeId);
-            mockTradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
+
+            TradePayload mockTradePayload = TradePayload.builder()
+                    .tradeId(tradeId)
+                    .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL)).build();
+
 
             when(session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)).thenReturn(query);
             when(session.getTransaction()).thenReturn(transaction);
@@ -148,9 +150,11 @@ class HibernateTradePayloadRepositoryTest {
 
 
             String tradeId = "TDB_00000001";
-            TradePayload mockTradePayload = new TradePayload();
-            mockTradePayload.setTradeId(tradeId);
-            mockTradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
+            TradePayload mockTradePayload = TradePayload.builder()
+                    .tradeId(tradeId)
+                    .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL))
+                    .build();
+
 
             when(session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)).thenReturn(query);
             when(session.getTransaction()).thenReturn(transaction);

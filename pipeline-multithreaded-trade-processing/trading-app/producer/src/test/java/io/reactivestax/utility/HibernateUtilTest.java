@@ -46,13 +46,16 @@ public class HibernateUtilTest {
 
         try {
             transaction = session.beginTransaction();
-            TradePayload tradePayload = new TradePayload();
-            tradePayload.setTradeId("1");
-            tradePayload.setValidityStatus(String.valueOf(ValidityStatusEnum.VALID));
-            tradePayload.setStatusReason("All field present ");
-            tradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
-            tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED));
-            tradePayload.setPayload("");
+
+            TradePayload tradePayload = TradePayload.builder()
+                    .tradeId("1")
+                    .validityStatus(String.valueOf(ValidityStatusEnum.VALID))
+                    .statusReason("All field present ")
+                    .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL))
+                    .jeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED))
+                    .payload("")
+                    .build();
+
             session.persist(tradePayload);
             transaction.commit();
             assertTrue(session.contains("Trade payload should be in session", tradePayload));
@@ -73,7 +76,6 @@ public class HibernateUtilTest {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         session.getTransaction().begin();
-        TradePayload tradePayload = new TradePayload();
         session.getTransaction().rollback();
         TradePayload retrievedTrade = session.get(TradePayload.class, 0L);
         assertNull("not saved trade should return null", retrievedTrade);
