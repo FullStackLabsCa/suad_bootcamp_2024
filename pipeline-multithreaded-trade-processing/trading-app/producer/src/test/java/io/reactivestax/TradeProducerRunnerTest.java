@@ -27,10 +27,8 @@ class TradeProducerRunnerTest {
     @Test
     void testMain() throws Exception {
 
-
         try (MockedStatic<ChunkGeneratorService> mockChunkGenerator = Mockito.mockStatic(ChunkGeneratorService.class);
              MockedStatic<ChunkSubmitterService> mockChunkSubmitter = Mockito.mockStatic(ChunkSubmitterService.class)) {
-
             mockChunkGenerator.when(ChunkGeneratorService::getInstance).thenReturn(mockChunkGeneratorService);
             mockChunkSubmitter.when(ChunkSubmitterService::getInstance).thenReturn(mockChunkSubmitterService);
 
