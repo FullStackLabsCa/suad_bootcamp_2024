@@ -2,17 +2,17 @@ package io.reactivestax;
 
 import io.reactivestax.service.ChunkGeneratorService;
 import io.reactivestax.service.ChunkSubmitterService;
-import junit.framework.TestCase;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
-//@ExtendWith(MockitoExtension.class)
-public class TradeProducerRunnerTest extends TestCase {
+@ExtendWith(MockitoExtension.class)
+class TradeProducerRunnerTest {
 
     @Mock
     ChunkGeneratorService mockChunkGeneratorService;
@@ -23,13 +23,9 @@ public class TradeProducerRunnerTest extends TestCase {
     @InjectMocks
     TradeProducerRunner tradeProducerRunner;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
-    public void testMain() throws Exception {
+    void testMain() throws Exception {
 
 
         try (MockedStatic<ChunkGeneratorService> mockChunkGenerator = Mockito.mockStatic(ChunkGeneratorService.class);
