@@ -7,39 +7,44 @@ import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 
 import java.util.concurrent.*;
 
 import static org.junit.Assert.*;
 
+@ExtendWith(MockitoExtension.class)
 public class HibernateUtilTest {
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    void setUp() {
         HibernateUtil.setConfigResource("hibernate-h2.cfg.xml");
     }
 
     @Test
-    public void testSessionFactoryAndConnection() {
+    void testSessionFactoryAndConnection() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         Session threadLocalSession = HibernateUtil.getThreadLocalSession().get();
-        assertNotNull("Thread local session should", threadLocalSession);
-        assertNotNull("Session should not be null", session);
+        Assertions.assertNotNull(threadLocalSession, "Thread local session should");
+        Assertions.assertNotNull(session, "Session should not be null");
     }
 
 
     @Test
-    public void testSingleInstanceCreation() {
+    void testSingleInstanceCreation() {
         HibernateUtil instance = HibernateUtil.getInstance();
         HibernateUtil instance1 = HibernateUtil.getInstance();
-        assertEquals(instance.hashCode(), instance1.hashCode());
+        Assertions.assertEquals(instance.hashCode(), instance1.hashCode());
     }
 
     @Test
-    public void testTransactionCommit() {
+    void testTransactionCommit() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         Transaction transaction = null;
@@ -58,13 +63,14 @@ public class HibernateUtilTest {
 
             session.persist(tradePayload);
             transaction.commit();
-            assertTrue(session.contains("Trade payload should be in session", tradePayload));
+            Assertions.assertTrue(session.contains("Trade payload should be in session", tradePayload));
             TradePayload retrievedTradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
                     .setParameter("tradeId", "1")
                     .uniqueResult();
-            assertNotNull(retrievedTradePayload);
-            assertEquals("trade payload and retrieved value should be equal", tradePayload, retrievedTradePayload);
+            Assertions.assertNotNull(retrievedTradePayload);
+            Assertions.assertEquals(tradePayload, retrievedTradePayload, "trade payload and retrieved value should be equal");
         } catch (Exception e) {
+            assert transaction != null;
             transaction.rollback();
         } finally {
             cleanUp();
@@ -72,30 +78,30 @@ public class HibernateUtilTest {
     }
 
     @Test
-    public void testTransactionRollback() {
+    void testTransactionRollback() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         session.getTransaction().begin();
         session.getTransaction().rollback();
         TradePayload retrievedTrade = session.get(TradePayload.class, 0L);
-        assertNull("not saved trade should return null", retrievedTrade);
+        Assertions.assertNull(retrievedTrade, "not saved trade should return null");
     }
 
 
     @Test
-    public void testCloseConnection() {
+    void testCloseConnection() {
         Session session = HibernateUtil.getInstance().getConnection();
-        assertNotNull(session);
-        assertTrue("session should be open", session.isOpen());
+        Assertions.assertNotNull(session);
+        Assertions.assertTrue(session.isOpen(), "session should be open");
         session.close();
-        assertFalse("Session should be closed", session.isOpen());
+        Assertions.assertFalse(session.isOpen(), "Session should be closed");
         HibernateUtil.getThreadLocalSession().remove();
         Session currentSession = HibernateUtil.getThreadLocalSession().get();
-        assertNull("Thread Local should no longer hold the session ", currentSession);
+        Assertions.assertNull(currentSession, "Thread Local should no longer hold the session ");
     }
 
     @Test
-    public void testThreadLocalSessionIsolation() throws InterruptedException {
+    void testThreadLocalSessionIsolation() throws InterruptedException {
 
         ConcurrentHashMap<String, Session> sessionsByThread = new ConcurrentHashMap<>();
         CountDownLatch latch = new CountDownLatch(1);
@@ -138,8 +144,7 @@ public class HibernateUtilTest {
 
     }
 
-
-    public void cleanUp() {
+    void cleanUp() {
         Session session = HibernateUtil.getInstance().getConnection();
         session.beginTransaction();
         session.createQuery("DELETE FROM TradePayload").executeUpdate();

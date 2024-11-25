@@ -12,6 +12,7 @@ import junit.runner.Version;
 
 import java.util.concurrent.*;
 
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat;
 import static org.mockito.Mockito.*;
 
 
@@ -29,14 +30,9 @@ class ChunkSubmitterServiceTest {
 
     private LinkedBlockingQueue<String> mockQueue;
 
-//    @Mock
-//    private BeanFactory beanFactory;
 
-    @InjectMocks
-    private ChunkSubmitterService chunkSubmitterService = ChunkSubmitterService.getInstance();
-
-    private MockedStatic<ApplicationPropertiesUtils> applicationPropertiesUtilsMock;
-    private MockedStatic<BeanFactory> beanFactoryMock;
+//    @InjectMocks
+//    private ChunkSubmitterService chunkSubmitterService = ChunkSubmitterService.getInstance();
 
 //
 //    @BeforeEach
@@ -69,37 +65,27 @@ class ChunkSubmitterServiceTest {
 
     @Test
     void testProcessChunk_SubmitChunksIsCalled() throws Exception {
-//        int threadCount = readFromApplicationPropertiesIntegerFormat("chunk.processor.thread.count");
-//
-//        try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class)) {
-//            try (MockedStatic<ChunkProcessorService> mockedChunkProcessorService = Mockito.mockStatic(ChunkProcessorService.class)) {
-//                mockedChunkProcessorService.when(ChunkProcessorService::getInstance).thenReturn(chunkProcessorService);
-//
-////                LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<>();
-////                linkedBlockingQueue.put(anyString());
-////                mockedBeanFactory.when(()-> BeanFactory.getChunksFileMappingQueue().take()).thenReturn(any());
-//
-//
-//                chunkSubmitterService.submitChunks();
-//
-//                verify(executorService, atLeastOnce()).submit(any(Runnable.class));
-////        mockedBeanFactory.verify(BeanFactory.getChunksFileMappingQueue(), atLeastOnce()).getChunksFileMappingQueue()
-//                verify(chunkProcessorService, times(threadCount))
-//                        .processChunks(anyString());
-//            }
-//        }
+        int threadCount = readFromApplicationPropertiesIntegerFormat("chunk.processor.thread.count");
+        String chunksPath = "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/" + "trades_chunk_1.csv";
 
-//
-//        when(mockQueue.take()).thenReturn("chunkFile1", "chunkFile2");
-//
-//        // Do nothing when processChunks is called
-//        doNothing().when(chunkProcessorService).processChunks(anyString());
-//
-//        // Call the method to test
-//        chunkSubmitterService.submitChunks();
-//
-//        // Verify processChunks was called twice (once for each chunk file)
-//        verify(chunkProcessorService, times(2)).processChunks(anyString());
+        try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class);
+             MockedStatic<ApplicationPropertiesUtils> mockedPropertiesUtils = Mockito.mockStatic(ApplicationPropertiesUtils.class);
+             MockedStatic<ChunkProcessorService> mockedChunkProcessorService = Mockito.mockStatic(ChunkProcessorService.class)) {
+            mockedChunkProcessorService.when(ChunkProcessorService::getInstance).thenReturn(chunkProcessorService);
 
+            when(mockExecutorService.submit(any(Runnable.class))).thenReturn(mock(Future.class));
+
+            LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<>();
+            linkedBlockingQueue.put(chunksPath);
+            mockedBeanFactory.when(BeanFactory::getChunksFileMappingQueue).thenReturn(linkedBlockingQueue);
+            when(linkedBlockingQueue.take()).thenReturn(chunksPath);
+            // Do nothing when processChunks is called
+            doNothing().when(chunkProcessorService).processChunks(chunksPath);
+            ChunkSubmitterService.getInstance().submitChunks();
+
+            verify(chunkProcessorService, times(threadCount))
+                    .processChunks(anyString());
+
+        }
     }
 }

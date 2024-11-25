@@ -1,9 +1,11 @@
 package io.reactivestax.utility.database;
 
 import io.reactivestax.types.exceptions.TransactionHandlingException;
+import io.reactivestax.utility.ApplicationPropertiesUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -26,6 +29,7 @@ class DBUtilsTest {
     private Connection mockConnection;
 
 
+
     @Test
     void getInstance() {
         DBUtils dbInstance = DBUtils.getInstance();
@@ -37,13 +41,18 @@ class DBUtilsTest {
 
     @Test
     void getConnection() throws IOException {
-        DBUtils dbInstance = DBUtils.getInstance();
-        Connection connection = dbInstance.getConnection();
-        assertNotNull(connection);
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.url")).thenReturn("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.username")).thenReturn("");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.password")).thenReturn("");
+            DBUtils dbInstance = DBUtils.getInstance();
+            Connection connection = dbInstance.getConnection();
+            assertNotNull(connection);
+        }
     }
 
-//    @Test
-        //TODO look into it not completed
+    //    @Test
+    //TODO look into it not completed
     void testGetConnectionCatchBlock() throws SQLException, IOException {
 //        DBUtils dbInstance = DBUtils.getInstance();
 //        when(dataSource.getConnection()).thenThrow(new RuntimeException("Mocked SQL Exception"));
@@ -66,6 +75,7 @@ class DBUtilsTest {
 
     @Test
     void startTransaction() throws SQLException, IOException {
+
         DBUtils instance = DBUtils.getInstance();
         instance.startTransaction();
         Connection connection = instance.getConnection();
@@ -74,28 +84,43 @@ class DBUtilsTest {
 
     @Test
     void commitTransaction() throws SQLException, IOException {
-        DBUtils instance = DBUtils.getInstance();
-        instance.startTransaction();
-        Connection connection = instance.getConnection();
-        assertFalse(connection.getAutoCommit());
-        instance.commitTransaction();
-        assertTrue(instance.getConnection().getAutoCommit());
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.url")).thenReturn("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.username")).thenReturn("");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.password")).thenReturn("");
+            DBUtils instance = DBUtils.getInstance();
+            instance.startTransaction();
+            Connection connection = instance.getConnection();
+            assertFalse(connection.getAutoCommit());
+            instance.commitTransaction();
+            assertTrue(instance.getConnection().getAutoCommit());
+        }
     }
 
     @Test
     void commitTransactionCatchBlockTest() throws SQLException, IOException {
-        DBUtils instance = DBUtils.getInstance();
-        instance.startTransaction();
-        Connection connection = instance.getConnection();
-        connection.close();
-        TransactionHandlingException thrownException = assertThrows(TransactionHandlingException.class, instance::commitTransaction);
-        assertEquals("error committing transaction", thrownException.getMessage());
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.url")).thenReturn("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.username")).thenReturn("");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.password")).thenReturn("");
+            DBUtils instance = DBUtils.getInstance();
+            instance.startTransaction();
+            Connection connection = instance.getConnection();
+            connection.close();
+            TransactionHandlingException thrownException = assertThrows(TransactionHandlingException.class, instance::commitTransaction);
+            assertEquals("error committing transaction", thrownException.getMessage());
+        }
     }
 
     @Test
     void rollbackTransaction() throws IOException, SQLException {
-        DBUtils instance = DBUtils.getInstance();
-        instance.rollbackTransaction();
-        assertTrue(instance.getConnection().getAutoCommit());
+        try (MockedStatic<ApplicationPropertiesUtils> mocked = Mockito.mockStatic(ApplicationPropertiesUtils.class)) {
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.url")).thenReturn("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.username")).thenReturn("");
+            mocked.when(() -> readFromApplicationPropertiesStringFormat("db.password")).thenReturn("");
+            DBUtils instance = DBUtils.getInstance();
+            instance.rollbackTransaction();
+            assertTrue(instance.getConnection().getAutoCommit());
+        }
     }
 }

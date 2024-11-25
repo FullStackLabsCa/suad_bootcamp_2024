@@ -1,6 +1,5 @@
 package io.reactivestax.repository.jdbc;
 
-import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.contract.repository.PayloadRepository;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Optional;
 
+import static io.reactivestax.utility.Utility.checkValidity;
 import static io.reactivestax.utility.Utility.prepareTrade;
 
 
@@ -61,8 +61,8 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
         try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
             Trade trade = prepareTrade(payload);
             statement.setString(1, trade.getTradeIdentifier());
-            statement.setString(2, String.valueOf(payload != null ? ValidityStatusEnum.VALID : ValidityStatusEnum.INVALID));
-            statement.setString(3, payload != null ? String.valueOf(StatusReasonEnum.ALL_FIELDS_PRESENT) : String.valueOf(StatusReasonEnum.FIELDS_MISSING));
+            statement.setString(2, String.valueOf(checkValidity(payload.split(",")) ? ValidityStatusEnum.VALID : ValidityStatusEnum.INVALID));
+            statement.setString(3, checkValidity(payload.split(",")) ? String.valueOf(StatusReasonEnum.ALL_FIELDS_PRESENT) : String.valueOf(StatusReasonEnum.FIELDS_MISSING));
             statement.setString(4, "fail");
             statement.setString(5, "not_posted");
             statement.setString(6, payload);
@@ -71,19 +71,6 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
         }
     }
 
-//    @Override
-//    public Optional<TradePayload> readTradePayloadByTradeId(String tradeId) throws IOException, SQLException {
-//        String insertQuery = "SELECT payload FROM trade_payloads WHERE trade_id = ?";
-//        Connection connection = DBUtils.getInstance().getConnection();
-//        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-//            statement.setString(1, tradeId);
-//            ResultSet resultSet = statement.executeQuery();
-//            if (resultSet.next()) {
-//                return Optional.ofNullable(resultSet.);
-//            }
-//        }
-//        return Optional.empty();
-//    }
 
 
 //    public Long getIdFromTradeId(String tradeId) throws IOException, SQLException {
@@ -97,16 +84,16 @@ public class JDBCTradePayloadRepository implements PayloadRepository {
 //        return 0L;
 //    }
 
-    public Integer selectTradePayload() throws Exception {
-        Connection connection = DBUtils.getInstance().getConnection();
-        String insertQuery = "SELECT count(*) FROM trade_payloads";
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-            return 0;
-        }
-    }
+//    public Integer selectTradePayload() throws Exception {
+//        Connection connection = DBUtils.getInstance().getConnection();
+//        String insertQuery = "SELECT count(*) FROM trade_payloads";
+//        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+//            ResultSet resultSet = statement.executeQuery();
+//            if (resultSet.next()) {
+//                return resultSet.getInt(1);
+//            }
+//            return 0;
+//        }
+//    }
 
 }
