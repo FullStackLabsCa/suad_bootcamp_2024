@@ -50,16 +50,16 @@ public class HibernateTradePositionRepository implements PositionRepository {
         return true;
     }
 
-    private static Position getPosition(Trade trade) {
-        Position position = new Position();
-        position.setAccountNumber(trade.getAccountNumber());
-        position.setCusip(trade.getCusip());
-        position.setPosition(BigInteger.valueOf(trade.getQuantity()));
-        position.setDirection(trade.getDirection());
-        return position;
+    private Position getPosition(Trade trade) {
+        return Position.builder().
+                accountNumber(trade.getAccountNumber())
+                .cusip(trade.getCusip())
+                .position(BigInteger.valueOf(trade.getQuantity()))
+                .direction(trade.getDirection())
+                .build();
     }
 
-    public boolean updatePosition(Trade trade, int version) {
+    public boolean upsertPosition(Trade trade, int version) {
         Session session = HibernateUtil.getInstance().getConnection();
         Transaction transaction = null;
         try {
@@ -70,12 +70,8 @@ public class HibernateTradePositionRepository implements PositionRepository {
             Predicate accountNumberClause = cb.equal(root.get("accountNumber"), trade.getAccountNumber());
             Predicate cusipClause = cb.equal(root.get("cusip"), trade.getCusip());
             Predicate versionClause = cb.equal(root.get("version"), version);
-
             query.select(root).where(cb.and(accountNumberClause, cusipClause, versionClause)); //for OR we can use cb.or clause
-
             Position position = session.createQuery(query).uniqueResult();
-
-
             transaction = session.beginTransaction();
             if (position.getDirection().equalsIgnoreCase("BUY")) {
                 position.getPosition().add(BigInteger.valueOf(trade.getPosition()));
@@ -92,7 +88,7 @@ public class HibernateTradePositionRepository implements PositionRepository {
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 return false;
             }
         }
@@ -108,15 +104,19 @@ public class HibernateTradePositionRepository implements PositionRepository {
         Root<Position> root = query.from(Position.class);
         query.select(root.get("version"));
 
-
         // Add multiple where conditions using criteriaBuilder.and()
         Predicate accountNumberPredicate = criteriaBuilder.equal(root.get("accountNumber"), trade.getAccountNumber());
         Predicate cusipPredicate = criteriaBuilder.equal(root.get("cusip"), trade.getCusip());
 
         // Combine predicates with AND
         query.where(criteriaBuilder.and(accountNumberPredicate, cusipPredicate));
-
         return session.createQuery(query).uniqueResult();
+
+//        return session.createQuery(
+//                        "SELECT version FROM Position WHERE accountNumber = :accountNumber and cusip = :cusip", Integer.class)
+//                .setParameter("accountNumber", accountNumber)
+//                .setParameter("cusip", cusip)
+//                .uniqueResult();
     }
 }
 

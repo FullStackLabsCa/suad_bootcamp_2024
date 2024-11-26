@@ -16,7 +16,6 @@ import java.sql.SQLException;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 
-
 @Slf4j
 public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
 
@@ -35,7 +34,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
         config.setPassword(readFromApplicationPropertiesStringFormat("db.password"));
 
         // Optional HikariCP settings
-        config.setMaximumPoolSize(50); // Max 50 connections in the pool
+        config.setMaximumPoolSize(10); // Max 50 connections in the pool
         config.setMinimumIdle(5); // Minimum idle connections
         config.setConnectionTimeout(30000); // 30 seconds timeout for obtaining a connection
         config.setIdleTimeout(600000); // 10 minutes idle timeout
@@ -52,7 +51,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
         return instance;
     }
 
-    public Connection getConnection() throws FileNotFoundException {
+    public Connection getConnection() {
         Connection connection = connectionHolder.get();
         if (connection == null) {
             dataSource = getHikkariDataSource();
@@ -92,7 +91,7 @@ public class DBUtils implements TransactionUtil, ConnectionUtil<Connection> {
     public void startTransaction() {
         try {
             getConnection().setAutoCommit(false);
-        } catch (SQLException | FileNotFoundException e) {
+        } catch (SQLException e) {
             log.error(e.getMessage());
         }
     }

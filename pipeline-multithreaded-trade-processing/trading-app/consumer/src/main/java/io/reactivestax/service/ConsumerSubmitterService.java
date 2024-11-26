@@ -1,7 +1,9 @@
 package io.reactivestax.service;
 
+import io.reactivestax.task.FileTradeProcessor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -11,33 +13,26 @@ public class ConsumerSubmitterService {
     private ConsumerSubmitterService() {
     }
 
-    public static void startConsumer(ExecutorService executorService, String queueName) {
+    private static ConsumerSubmitterService instance;
 
-        TradeProcessorService consumerTask = new TradeProcessorService(queueName);
-        Future<Void> consumerFuture = executorService.submit(consumerTask);
-
-        registerShutdownHooks(executorService);
-
-        try {
-            consumerFuture.get(); // Block until the consumer thread completes or is interrupted
-        } catch (Exception e) {
-            log.error(e.getMessage());
+    public static synchronized ConsumerSubmitterService getInstance() {
+        if (instance == null) {
+            instance = new ConsumerSubmitterService();
         }
+        return instance;
     }
 
-    private static void registerShutdownHooks(ExecutorService executorService) {
-        // Register a shutdown hook to catch Ctrl-C (SIGINT) and shutdown the executor
+    public void startConsumer(ExecutorService executorService, String queueName) {
+        FileTradeProcessor consumerTask = new FileTradeProcessor(queueName);
+        executorService.submit(consumerTask);
+        addShutdownHook(executorService);
+    }
+
+
+    private void addShutdownHook(ExecutorService executorService) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             log.info("Shutdown signal received. Stopping consumer...");
-            executorService.shutdownNow(); // Issue shutdown to stop the thread
-            try {
-                if (!executorService.isTerminated()) {
-                    executorService.awaitTermination(5, java.util.concurrent.TimeUnit.SECONDS);
-                }
-            } catch (InterruptedException e) {
-                log.error(e.getMessage());
-                log.info("Shutdown interrupted.");
-            }
+            executorService.shutdownNow();
             log.info("Consumer stopped.");
         }));
     }

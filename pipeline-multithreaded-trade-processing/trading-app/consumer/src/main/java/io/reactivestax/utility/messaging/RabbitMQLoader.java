@@ -42,12 +42,10 @@ public class RabbitMQLoader implements QueueLoader {
         channel.basicConsume(queueName, false, deliverCallback, cancelCallback);
     }
 
-    private static Channel setUpQueueWithRetry(String queueName) throws IOException, TimeoutException {
+    private Channel setUpQueueWithRetry(String queueName) throws IOException, TimeoutException {
         String dlxExchange = readFromApplicationPropertiesStringFormat("queue.dlx.exchange");
         Channel channel = RabbitMQUtils.getRabbitMQChannel();
-
         channel.exchangeDeclare(dlxExchange, "direct");
-
         // DLQ should have a TTL and dead-lettering back to the main queue
         Map<String, Object> dlqArguments = new HashMap<>();
         dlqArguments.put(RabbitMQHeaders.X_TTL.getHeaderKey(), 5000);

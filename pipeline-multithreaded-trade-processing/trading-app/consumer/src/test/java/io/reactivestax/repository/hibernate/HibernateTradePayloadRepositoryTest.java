@@ -4,6 +4,7 @@ import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
+import io.reactivestax.types.enums.StatusReasonEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
 import org.hibernate.Session;
@@ -73,11 +74,11 @@ class HibernateTradePayloadRepositoryTest {
             // Verify TradePayload fields
             assertEquals(trade.getTradeIdentifier(), capturedPayload.getTradeId());
             assertEquals(String.valueOf(ValidityStatusEnum.VALID), capturedPayload.getValidityStatus());
-            assertEquals("All field present ", capturedPayload.getStatusReason());
+            assertEquals(StatusReasonEnum.ALL_FIELDS_PRESENT.toString(), capturedPayload.getStatusReason());
             assertEquals(String.valueOf(LookUpStatusEnum.FAIL), capturedPayload.getLookupStatus());
             assertEquals(String.valueOf(PostedStatusEnum.NOT_POSTED), capturedPayload.getJeStatus());
             assertEquals(payload, capturedPayload.getPayload());
-            result.ifPresent(tradeId-> assertEquals(tradeId, capturedPayload.getTradeId()));
+            result.ifPresent(tradeId -> assertEquals(tradeId, capturedPayload.getTradeId()));
 
         }
     }
@@ -92,7 +93,10 @@ class HibernateTradePayloadRepositoryTest {
 
 
             String tradeId = "TDB_00000000";
-            TradePayload mockTradePayload = new TradePayload();
+            TradePayload mockTradePayload = TradePayload.builder()
+                    .tradeId(tradeId)
+                    .build();
+
             mockTradePayload.setTradeId(tradeId);
             mockTradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
 
@@ -128,7 +132,10 @@ class HibernateTradePayloadRepositoryTest {
 
 
             String tradeId = "TDB_00000001";
-            TradePayload mockTradePayload = new TradePayload();
+
+            TradePayload mockTradePayload = TradePayload.builder()
+                    .tradeId(tradeId)
+                    .build();
             mockTradePayload.setTradeId(tradeId);
             mockTradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
 

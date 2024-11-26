@@ -31,9 +31,6 @@ class HibernateJournalEntryRepositoryTest {
     @Captor
     ArgumentCaptor<JournalEntries> journalEntriesArgumentCaptor;
 
-    @InjectMocks
-    @Spy
-    HibernateJournalEntryRepository hibernateJournalEntryRepository;
 
 
     @Test

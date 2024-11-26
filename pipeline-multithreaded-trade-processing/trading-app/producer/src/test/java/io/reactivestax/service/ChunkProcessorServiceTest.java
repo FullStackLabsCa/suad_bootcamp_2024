@@ -59,32 +59,7 @@ class ChunkProcessorServiceTest {
         Assertions.assertEquals(instance, instance1);
     }
 
-//    @Test
-//    void testSubmitChunk_Exception() throws Exception {
-//        // Mock ExecutorService and simulate the exception
-//        String testFilePath = "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources/files/" + "test_trades_chunk.csv";
-//        LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<>();
-//        linkedBlockingQueue.put(testFilePath);
-//
-//        try (MockedStatic<BeanFactory> mockedBeanFactory = Mockito.mockStatic(BeanFactory.class)) {
-//            mockedBeanFactory.when(BeanFactory::getChunksFileMappingQueue).thenReturn(linkedBlockingQueue);
-//            ExecutorService executorService = Executors.
-//                    newSingleThreadExecutor();
-//
 
-    /// /            doThrow(Exception.class).when(chunkProcessorService).insertTradeIntoTradePayloadTable(anyString());
-//
-//            CountDownLatch latch = new CountDownLatch(1);
-//
-//            doAnswer(invocation ->{
-//                throw new Exception("Simulated Exception");
-//            }).when(ChunkSubmitterService.getInstance()).insertTradeIntoTradePayloadTable(anyString());
-//
-//            assertThrows(RuntimeException.class, () -> ChunkSubmitterService.getInstance().submitChunks());
-//
-//            latch.await();
-//        }
-//    }
     @Test
     void testProcessChunks() throws Exception {
         //setup

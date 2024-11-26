@@ -6,9 +6,9 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 public interface PositionRepository {
-    Integer getCusipVersion(Trade trade) throws SQLException, FileNotFoundException;
+    Integer getCusipVersion(Trade trade) throws SQLException;
 
-    boolean insertPosition(Trade trade) throws SQLException, FileNotFoundException;
+    boolean insertPosition(Trade trade) throws SQLException;
 
-    boolean updatePosition(Trade trade, int version) throws Exception;
+    boolean upsertPosition(Trade trade, int version) throws SQLException;
 }

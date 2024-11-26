@@ -29,7 +29,6 @@ class DBUtilsTest {
     private Connection mockConnection;
 
 
-
     @Test
     void getInstance() {
         DBUtils dbInstance = DBUtils.getInstance();

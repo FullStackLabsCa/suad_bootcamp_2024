@@ -21,6 +21,11 @@ class TradeConsumerRunnerTest {
     void testStartConsumer() throws Exception {
         try (MockedStatic<ApplicationPropertiesUtils> applicationPropertiesUtilsMockedStatic = mockStatic(ApplicationPropertiesUtils.class);
              MockedStatic<ConsumerSubmitterService> consumerSubmitterMock = mockStatic(ConsumerSubmitterService.class)) {
+            ConsumerSubmitterService mockInstance = mock(ConsumerSubmitterService.class);
+
+            // Mock `getInstance` to return the mockInstance
+            consumerSubmitterMock.when(ConsumerSubmitterService::getInstance).thenReturn(mockInstance);
+
 
             applicationPropertiesUtilsMockedStatic.when(() -> readFromApplicationPropertiesStringFormat("queue.name"))
                     .thenReturn("testQueue");
@@ -31,15 +36,12 @@ class TradeConsumerRunnerTest {
             applicationPropertiesUtilsMockedStatic.when(() -> readFromApplicationPropertiesIntegerFormat("trade.processor.thread.poolSize"))
                     .thenReturn(2);
 
-            consumerSubmitterMock.when(() -> ConsumerSubmitterService.startConsumer(any(ExecutorService.class), anyString()))
-                    .thenAnswer(invocation -> null);
+            doNothing().when(mockInstance).startConsumer(any(ExecutorService.class), anyString());
 
             TradeConsumerRunner.main(new String[]{});
 
             // Verify interactions
-            consumerSubmitterMock.verify(() -> ConsumerSubmitterService.startConsumer(Mockito.any(), anyString()), times(3));
-            consumerSubmitterMock.verifyNoMoreInteractions();
+            verify(mockInstance, times(3)).startConsumer(Mockito.any(), anyString());
         }
-
     }
 }

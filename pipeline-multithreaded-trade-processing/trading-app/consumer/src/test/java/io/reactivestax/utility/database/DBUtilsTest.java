@@ -1,18 +1,16 @@
 package io.reactivestax.utility.database;
 
 import io.reactivestax.types.exception.TransactionHandlingException;
+import io.reactivestax.utility.ApplicationPropertiesUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class DBUtilsTest {
 
@@ -26,6 +24,12 @@ class DBUtilsTest {
     private Connection mockConnection;
 
 
+    @BeforeEach
+    void setUp() {
+        ApplicationPropertiesUtils.setApplicationResource("application-test.properties");
+    }
+
+
     @Test
     void getInstance() {
         DBUtils dbInstance = DBUtils.getInstance();
@@ -36,36 +40,15 @@ class DBUtilsTest {
     }
 
     @Test
-    void getConnection() throws IOException {
+    void getConnection() {
         DBUtils dbInstance = DBUtils.getInstance();
         Connection connection = dbInstance.getConnection();
         assertNotNull(connection);
     }
 
-//    @Test
-        //TODO look into it not completed
-    void testGetConnectionCatchBlock() throws SQLException, IOException {
-//        DBUtils dbInstance = DBUtils.getInstance();
-//        when(dataSource.getConnection()).thenThrow(new RuntimeException("Mocked SQL Exception"));
-//        HikariCPConnectionException hikariCPConnectionException = assertThrows(HikariCPConnectionException.class, dbInstance::getConnection);
-//        // Verify the exception message
-//        assertEquals("Error getting connection from HikkariCp", hikariCPConnectionException.getMessage());
-        // Spy on your class to mock the getConnection method
-        DBUtils spyClass = Mockito.spy(dbUtils);
-
-        // Mock getConnection to return a connection that throws SQLException when setAutoCommit is called
-        doReturn(mockConnection).when(spyClass).getConnection();
-        doThrow(new SQLException("Test SQLException")).when(mockConnection).setAutoCommit(false);
-
-        // Call startTransaction
-        spyClass.startTransaction();
-
-        // Verify that log.error was called with the exception message
-        verify(log).info("Test SQLException");
-    }
 
     @Test
-    void startTransaction() throws SQLException, IOException {
+    void startTransaction() throws SQLException {
         DBUtils instance = DBUtils.getInstance();
         instance.startTransaction();
         Connection connection = instance.getConnection();
@@ -73,7 +56,7 @@ class DBUtilsTest {
     }
 
     @Test
-    void commitTransaction() throws SQLException, IOException {
+    void commitTransaction() throws SQLException {
         DBUtils instance = DBUtils.getInstance();
         instance.startTransaction();
         Connection connection = instance.getConnection();
@@ -83,7 +66,7 @@ class DBUtilsTest {
     }
 
     @Test
-    void commitTransactionCatchBlockTest() throws SQLException, IOException {
+    void commitTransactionCatchBlockTest() throws SQLException {
         DBUtils instance = DBUtils.getInstance();
         instance.startTransaction();
         Connection connection = instance.getConnection();
@@ -93,7 +76,7 @@ class DBUtilsTest {
     }
 
     @Test
-    void rollbackTransaction() throws IOException, SQLException {
+    void rollbackTransaction() throws SQLException {
         DBUtils instance = DBUtils.getInstance();
         instance.rollbackTransaction();
         assertTrue(instance.getConnection().getAutoCommit());

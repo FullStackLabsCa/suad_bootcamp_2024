@@ -24,7 +24,7 @@ public class JDBCJournalEntryRepository implements JournalEntryRepository {
 
 
     @Override
-    public void saveJournalEntry(Trade trade) throws SQLException, FileNotFoundException {
+    public void saveJournalEntry(Trade trade) throws SQLException {
         Connection connection = DBUtils.getInstance().getConnection();
         String insertQuery = "INSERT INTO journal_entries (trade_id, trade_date, account_number,cusip,direction, quantity, price) VALUES (?, ?, ?, ?, ?, ?, ?)";
         assert connection != null;

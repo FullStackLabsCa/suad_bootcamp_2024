@@ -3,9 +3,9 @@ package io.reactivestax.repository.jdbc;
 import io.reactivestax.types.contract.repository.SecuritiesReferenceRepository;
 import io.reactivestax.utility.database.DBUtils;
 
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JDBCSecuritiesReferenceRepository implements SecuritiesReferenceRepository {
@@ -20,12 +20,13 @@ public class JDBCSecuritiesReferenceRepository implements SecuritiesReferenceRep
 
 
     @Override
-    public boolean lookupSecurities(String cusip) throws FileNotFoundException, SQLException {
+    public boolean lookUpSecurities(String cusip) throws SQLException {
         Connection connection = DBUtils.getInstance().getConnection();
         String lookupQueryForSecurity = "SELECT 1 FROM securities_reference WHERE cusip = ?";
         try (PreparedStatement lookUpStatement = connection.prepareStatement(lookupQueryForSecurity)) {
             lookUpStatement.setString(1, cusip);
-            return lookUpStatement.executeQuery().next();
+            ResultSet resultSet = lookUpStatement.executeQuery();
+            return resultSet.next();
         }
     }
 }

@@ -1,6 +1,7 @@
 package io.reactivestax.repository.hibernate.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,12 +12,13 @@ import java.util.Date;
 @Entity
 @Table(name = "positions",uniqueConstraints = @UniqueConstraint(columnNames = {"account_number", "cusip"}))
 @Data
+@Builder
 public class Position {
 
     @Id
     @Column(name = "position_id")
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private int positionId;
+    private Long positionId;
 
     @Column(name = "account_number")
     private String accountNumber;

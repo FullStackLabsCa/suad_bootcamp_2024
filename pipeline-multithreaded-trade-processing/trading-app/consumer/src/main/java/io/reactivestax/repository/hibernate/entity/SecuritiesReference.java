@@ -1,7 +1,10 @@
 package io.reactivestax.repository.hibernate.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -9,7 +12,7 @@ import lombok.Data;
 public class SecuritiesReference {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "cusip", nullable = false, unique = true)
     private String cusip;

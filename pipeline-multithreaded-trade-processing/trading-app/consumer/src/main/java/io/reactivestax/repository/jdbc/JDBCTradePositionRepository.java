@@ -4,6 +4,7 @@ import io.reactivestax.types.contract.repository.PositionRepository;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.types.exception.OptimisticLockingException;
 import io.reactivestax.utility.database.DBUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Slf4j
 public class JDBCTradePositionRepository implements PositionRepository {
 
 
@@ -27,7 +29,7 @@ public class JDBCTradePositionRepository implements PositionRepository {
 
 
     @Override
-    public Integer getCusipVersion(Trade trade) throws SQLException, FileNotFoundException {
+    public Integer getCusipVersion(Trade trade) throws SQLException {
         Connection connection = DBUtils.getInstance().getConnection();
         String query = "SELECT version FROM positions WHERE account_number = ? AND cusip = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -43,7 +45,7 @@ public class JDBCTradePositionRepository implements PositionRepository {
     }
 
     @Override
-    public boolean insertPosition(Trade trade) throws SQLException, FileNotFoundException {
+    public boolean insertPosition(Trade trade) throws SQLException {
         Connection connection = DBUtils.getInstance().getConnection();
         String insertQuery = "INSERT INTO positions (account_number, cusip, position, version) VALUES (?,?, ?, 0)";
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
@@ -52,7 +54,7 @@ public class JDBCTradePositionRepository implements PositionRepository {
             stmt.setString(2, trade.getCusip());
             stmt.setDouble(3, trade.getQuantity());
             int i = stmt.executeUpdate();
-            System.out.println("New position for " + trade.getAccountNumber() + "is: " + trade.getPosition());
+            log.info("New position for {}is: {}", trade.getAccountNumber(), trade.getPosition());
             connection.commit();
             connection.setAutoCommit(true);
             return i > 0;
@@ -61,7 +63,7 @@ public class JDBCTradePositionRepository implements PositionRepository {
 
     // Update the position using optimistic locking
     @Override
-    public boolean updatePosition(Trade trade, int version) throws SQLException, FileNotFoundException {
+    public boolean upsertPosition(Trade trade, int version) throws SQLException {
         int rowsUpdated = 0;
         Connection connection = DBUtils.getInstance().getConnection();
         String positionQuery = "SELECT position FROM positions where account_number = ? AND cusip = ?";
@@ -95,15 +97,4 @@ public class JDBCTradePositionRepository implements PositionRepository {
         return rowsUpdated > 0;
     }
 
-    public Integer getPositionCount() throws Exception {
-        Connection connection = DBUtils.getInstance().getConnection();
-        String insertQuery = "SELECT count(*) FROM positions";
-        try (PreparedStatement statement = connection.prepareStatement(insertQuery)) {
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-            return 0;
-        }
-    }
 }

@@ -24,7 +24,7 @@ public class TradeConsumerRunner {
         ExecutorService executorService = Executors.newFixedThreadPool(readFromApplicationPropertiesIntegerFormat("trade.processor.thread.poolSize"));
 
         IntStream.range(0, readFromApplicationPropertiesIntegerFormat("queue.count")).forEach(i ->
-                ConsumerSubmitterService.startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i)
+                ConsumerSubmitterService.getInstance().startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i)
         );
     }
 }

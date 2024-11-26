@@ -2,7 +2,6 @@ package io.reactivestax.repository.hibernate;
 
 import io.reactivestax.repository.hibernate.entity.SecuritiesReference;
 import io.reactivestax.utility.database.HibernateUtil;
-import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -47,7 +46,7 @@ class HibernateSecuritiesReferenceRepositoryTest {
     }
 
     @Test
-    void lookupSecurities() {
+    void lookUpSecurities() {
         try (MockedStatic<HibernateUtil> hibernateUtilMockedStatic = Mockito.mockStatic(HibernateUtil.class)) {
             hibernateUtilMockedStatic.when(HibernateUtil::getInstance).thenReturn(mockHibernateUtil);
             when(mockHibernateUtil.getConnection()).thenReturn(mockSession);
@@ -66,10 +65,9 @@ class HibernateSecuritiesReferenceRepositoryTest {
             when(mockQuery.getResultList()).thenReturn(Collections.singletonList(new SecuritiesReference()));
 
             // Test method
-            boolean result = HibernateSecuritiesReferenceRepository.getInstance().lookupSecurities("TSLA");
+            boolean result = HibernateSecuritiesReferenceRepository.getInstance().lookUpSecurities("TSLA");
             assertTrue(result);
 
-            // Verify interactions
             verify(mockSession).getCriteriaBuilder();
             verify(mockCriteriaBuilder).createQuery(SecuritiesReference.class);
             verify(mockCriteriaQuery).from(SecuritiesReference.class);

@@ -71,7 +71,7 @@ public class HibernateUtilTest {
     }
 
     @Test
-    public void testTransactionRollback() {
+     void testTransactionRollback() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         session.getTransaction().begin();
@@ -83,7 +83,7 @@ public class HibernateUtilTest {
 
 
     @Test
-    public void testCloseConnection() {
+     void testCloseConnection() {
         Session session = HibernateUtil.getInstance().getConnection();
         assertNotNull(session);
         Assertions.assertTrue(session.isOpen(), "session should be open");
@@ -95,7 +95,7 @@ public class HibernateUtilTest {
     }
 
     @Test
-    public void testThreadLocalSessionIsolation() throws InterruptedException {
+     void testThreadLocalSessionIsolation() throws InterruptedException {
 
         ConcurrentHashMap<String, Session> sessionsByThread = new ConcurrentHashMap<>();
         CountDownLatch latch = new CountDownLatch(1);

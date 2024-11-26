@@ -43,14 +43,17 @@ public class HibernateJournalEntryRepository implements JournalEntryRepository {
     }
 
     private static Optional<JournalEntries> getJournalEntries(Trade trade) {
-        JournalEntries journalEntries = new JournalEntries();
-        journalEntries.setTradeId(trade.getTradeIdentifier());
-        journalEntries.setTradeDate(trade.getTradeDateTime());
-        journalEntries.setAccountNumber(trade.getAccountNumber());
-        journalEntries.setCusip(trade.getCusip());
-        journalEntries.setDirection(trade.getDirection());
-        journalEntries.setQuantity(trade.getQuantity());
-        journalEntries.setPrice(trade.getPrice());
+
+        JournalEntries journalEntries = JournalEntries.builder().
+                tradeId(trade.getTradeIdentifier())
+                .tradeDate(trade.getTradeDateTime()).
+                accountNumber(trade.getAccountNumber()).
+                cusip(trade.getCusip()).
+                direction(trade.getDirection())
+                .quantity(trade.getQuantity())
+                .price(trade.getPrice())
+                .build();
+
         return Optional.of(journalEntries);
     }
 

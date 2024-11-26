@@ -21,7 +21,7 @@ public class Utility {
                 .direction(payloads[4])
                 .quantity(Integer.parseInt(payloads[5]))
                 .price(Double.parseDouble(payloads[6]))
-                .position(Integer.parseInt(payloads[7]))
+                .position(Integer.parseInt(payloads[5]))
                 .build();
 
     }

@@ -10,42 +10,35 @@ import io.reactivestax.types.dto.Trade;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.reactivestax.factory.BeanFactory.*;
 import static io.reactivestax.utility.Utility.prepareTrade;
 
-
 @Slf4j
-public class TradeProcessorService implements Callable<Void>, TradeProcessor {
+public class TradeProcessorService implements TradeProcessor {
     private static final AtomicInteger countSec = new AtomicInteger(0);
-    private final String queueName;
+    private static TradeProcessorService instance;
 
-
-    public TradeProcessorService(String queueName) {
-        this.queueName = queueName;
+    private TradeProcessorService() {
     }
 
-
-    @Override
-    public Void call() {
-        try {
-            processTrade();
-        } catch (Exception e) {
-            TradeProcessorService.log.info("trade processor:  {}", e.getMessage());
+    public static synchronized TradeProcessorService getInstance() {
+        if (instance == null) {
+            instance = new TradeProcessorService();
         }
-        return null;
+        return instance;
     }
 
+
     @Override
-    public void processTrade() throws Exception {
+    public void processTrade(String queueName) throws Exception {
         QueueLoader queueLoader = getQueueSetUp();
         assert queueLoader != null;
         queueLoader.consumeMessage(queueName);
     }
 
-    public static void processJournalWithPosition(String tradeId) throws Exception {
+    public void processJournalWithPosition(String tradeId) throws SQLException {
         PayloadRepository tradePayloadRepository = getTradePayloadRepository();
         SecuritiesReferenceRepository lookupSecuritiesRepository = getLookupSecuritiesRepository();
         JournalEntryRepository journalEntryRepository = getJournalEntryRepository();
@@ -53,27 +46,28 @@ public class TradeProcessorService implements Callable<Void>, TradeProcessor {
             Trade trade = prepareTrade(payload);
             log.info("result journal{}", payload);
             try {
-                if (!lookupSecuritiesRepository.lookupSecurities(trade.getCusip())) {
-                    log.warn("No security found....");
-                    log.debug("times {} {}", trade.getCusip(), countSec.incrementAndGet());
-                    throw new SQLException(); // For checking the max retry mechanism throwing error and catching it in retry mechanism.....
-                } else {
+                boolean validSecurity = lookupSecuritiesRepository.lookUpSecurities(trade.getCusip());
+                if (validSecurity) {
                     journalEntryRepository.saveJournalEntry(trade);
                     tradePayloadRepository.updateLookUpStatus(tradeId);
                     tradePayloadRepository.updateJournalStatus(tradeId);
-                    processPosition(trade);
+                    executePositionTransaction(trade);
+                } else {
+                    log.debug("times {} {}", trade.getCusip(), countSec.incrementAndGet());
+                    throw new RuntimeException(); // For checking the max retry mechanism throwing error and catching it in retry mechanism.....
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
+                log.info("Exception while processing journal entries");
                 throw new RuntimeException(e);
             }
         });
     }
 
-    public static void processPosition(Trade trade) throws Exception {
+    public void executePositionTransaction(Trade trade) throws SQLException {
         PositionRepository positionsRepository = getPositionsRepository();
         Integer version = positionsRepository.getCusipVersion(trade);
         if (version != null) {
-            positionsRepository.updatePosition(trade, version);
+            positionsRepository.upsertPosition(trade, version);
         } else {
             positionsRepository.insertPosition(trade);
         }
