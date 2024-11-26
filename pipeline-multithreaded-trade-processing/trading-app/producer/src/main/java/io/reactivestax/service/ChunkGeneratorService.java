@@ -29,10 +29,14 @@ public class ChunkGeneratorService implements ChunkGenerator {
         return instance;
     }
 
+    protected BufferedReader createBufferReader(String filePath) throws IOException{
+        return new BufferedReader(new FileReader(filePath));
+    }
+
     @Override
     public Integer generateAndSubmitChunks(String filePath, Integer numberOfChunks) throws IOException {
         List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = createBufferReader(filePath)) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);

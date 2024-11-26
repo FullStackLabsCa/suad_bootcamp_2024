@@ -30,7 +30,6 @@ public class TradeProcessorService implements TradeProcessor {
         return instance;
     }
 
-
     @Override
     public void processTrade(String queueName) throws Exception {
         QueueLoader queueLoader = getQueueSetUp();

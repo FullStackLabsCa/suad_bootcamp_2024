@@ -2,7 +2,6 @@ package io.reactivestax.service;
 
 
 import io.reactivestax.factory.BeanFactory;
-import io.reactivestax.types.contract.MessageSender;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.utility.ApplicationPropertiesUtils;
 import io.reactivestax.utility.Utility;
@@ -12,9 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,10 +69,8 @@ class MessagePublisherServiceTest {
             when(trade.getTradeIdentifier()).thenReturn("trade123");
             when(messageSender.sendMessageToQueue(any(), any())).thenReturn(true);
 
-            // Act
             messagePublisherService.figureTheNextQueue(trade);
 
-            // Assert
             mockedUtility.verify(Utility::roundRobin, times(1));
             verify(messageSender, times(1)).sendMessageToQueue("testQueue0", "trade123");
         }
@@ -100,10 +94,8 @@ class MessagePublisherServiceTest {
             when(trade.getTradeIdentifier()).thenReturn("trade123");
             when(messageSender.sendMessageToQueue(any(), any())).thenReturn(true);
 
-            // Act
             messagePublisherService.figureTheNextQueue(trade);
 
-            // Assert
             mockedUtility.verify(Utility::random, times(1));
             verify(messageSender, times(1)).sendMessageToQueue("testQueue0", "trade123");
         }
@@ -122,7 +114,6 @@ class MessagePublisherServiceTest {
             // Act
             messagePublisherService.figureTheNextQueue(trade);
 
-            // Assert
             // Verify no interaction with messageSender as it's null
             verify(messageSender, never()).sendMessageToQueue(anyString(), anyString());
         }

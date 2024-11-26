@@ -129,7 +129,6 @@ class JDBCTradePositionRepositoryTest {
 
     }
 
-
     private static Stream<Arguments> upsertSupplier() {
         return Stream.of(
                 Arguments.of(1, 0),
