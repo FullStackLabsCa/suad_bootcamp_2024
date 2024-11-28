@@ -5,17 +5,12 @@ import io.reactivestax.types.dto.Trade;
 import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
+import io.reactivestax.types.enums.StatusReasonEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static io.reactivestax.utility.Utility.checkValidity;
 import static io.reactivestax.utility.Utility.prepareTrade;
@@ -41,10 +36,10 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         Trade trade = prepareTrade(payload);
         TradePayload tradePayload = TradePayload.builder()
                 .tradeId(trade.getTradeIdentifier())
-                .validityStatus(checkValidity(payload.split(",")) ? String.valueOf(ValidityStatusEnum.VALID) : String.valueOf(ValidityStatusEnum.INVALID))
-                .statusReason(checkValidity(payload.split(",")) ? "All field present " : "Fields missing")
-                .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL))
-                .jeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED))
+                .validityStatus(checkValidity(payload.split(",")) ? ValidityStatusEnum.VALID : ValidityStatusEnum.INVALID)
+                .statusReason(checkValidity(payload.split(",")) ? StatusReasonEnum.ALL_FIELDS_PRESENT : StatusReasonEnum.FIELDS_MISSING)
+                .lookupStatus(LookUpStatusEnum.FAIL)
+                .jeStatus(PostedStatusEnum.NOT_POSTED)
                 .payload(payload)
                 .build();
         session.persist(tradePayload);
@@ -72,7 +67,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
                 .findFirst();
 
         optionalTradePayload.ifPresent(tradePayload -> {
-                    tradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.PASS));
+                    tradePayload.setLookupStatus(LookUpStatusEnum.PASS);
                     session.persist(tradePayload);
                 }
         );
@@ -90,7 +85,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
                 .findFirst();
 
         optionalTradePayload.ifPresent(tradePayload -> {
-            tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.POSTED));
+            tradePayload.setJeStatus(PostedStatusEnum.POSTED);
             session.persist(tradePayload);
         });
 

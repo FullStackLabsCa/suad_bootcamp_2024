@@ -1,5 +1,9 @@
 package io.reactivestax.repository.hibernate.entity;
 
+import io.reactivestax.types.enums.LookUpStatusEnum;
+import io.reactivestax.types.enums.PostedStatusEnum;
+import io.reactivestax.types.enums.StatusReasonEnum;
+import io.reactivestax.types.enums.ValidityStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,17 +27,21 @@ public class TradePayload {
     @Column(name = "trade_id")
     private String tradeId;
 
-    @Column(name = "validity_status")
-    private String validityStatus;
+    @Column(name = "validity_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ValidityStatusEnum validityStatus;
 
-    @Column(name = "status_reason")
-    private String statusReason;
+    @Column(name = "status_reason", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusReasonEnum statusReason;
 
-    @Column(name = "lookup_status")
-    private String lookupStatus;
+    @Column(name = "lookup_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LookUpStatusEnum lookupStatus = LookUpStatusEnum.FAIL;
 
-    @Column(name = "je_status")
-    private String jeStatus;
+    @Column(name = "je_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PostedStatusEnum jeStatus = PostedStatusEnum.NOT_POSTED;
 
     @Column(name = "payload")
     private String payload;

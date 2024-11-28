@@ -75,7 +75,7 @@ public class JDBCTradePositionRepository implements PositionRepository {
             positionStatement.setString(2, trade.getCusip());
             ResultSet resultSet = positionStatement.executeQuery();
             if (resultSet.next()) {
-                if (trade.getDirection().equalsIgnoreCase("BUY")) {
+                if (trade.getDirection().toString().equalsIgnoreCase("BUY")) {
                     stmt.setDouble(1, resultSet.getInt(1) + trade.getPosition());
                 } else {
                     stmt.setDouble(1, resultSet.getInt(1) - trade.getPosition());

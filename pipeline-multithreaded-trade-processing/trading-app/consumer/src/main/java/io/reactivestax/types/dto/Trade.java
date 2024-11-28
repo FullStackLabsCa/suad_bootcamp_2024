@@ -1,5 +1,6 @@
 package io.reactivestax.types.dto;
 
+import io.reactivestax.types.enums.Direction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ public class Trade {
     private String tradeDateTime;
     private String accountNumber;
     private String cusip;
-    private String direction;
+    private Direction direction;
     private Integer quantity;
     private Double price;
     private Integer position;

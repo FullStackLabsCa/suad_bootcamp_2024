@@ -41,8 +41,8 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
                 .tradeId(trade.getTradeIdentifier())
                 .validityStatus(checkValidity(payload.split(",")) ? String.valueOf(ValidityStatusEnum.VALID) : String.valueOf(ValidityStatusEnum.INVALID))
                 .statusReason(checkValidity(payload.split(",")) ? String.valueOf(StatusReasonEnum.ALL_FIELDS_PRESENT) : String.valueOf(StatusReasonEnum.FIELDS_MISSING))
-                .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL))
-                .jeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED))
+                .lookupStatus(LookUpStatusEnum.FAIL)
+                .jeStatus(PostedStatusEnum.NOT_POSTED)
                 .payload(payload)
                 .build();
 
@@ -73,7 +73,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
                 .findFirst();
 
         optionalTradePayload.ifPresent(tradePayload -> {
-            tradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.PASS));
+            tradePayload.setLookupStatus(LookUpStatusEnum.PASS);
             session.persist(tradePayload);
         });
 
@@ -90,7 +90,7 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
                 .stream()
                 .findFirst();
         optionalTradePayload.ifPresent(tradePayload -> {
-            tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.POSTED));
+            tradePayload.setJeStatus(PostedStatusEnum.POSTED);
             session.persist(tradePayload);
         });
         session.getTransaction().commit();

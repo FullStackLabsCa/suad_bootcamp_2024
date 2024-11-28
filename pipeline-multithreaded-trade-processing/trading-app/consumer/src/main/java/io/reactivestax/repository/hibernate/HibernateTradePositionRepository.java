@@ -73,7 +73,7 @@ public class HibernateTradePositionRepository implements PositionRepository {
             query.select(root).where(cb.and(accountNumberClause, cusipClause, versionClause)); //for OR we can use cb.or clause
             Position position = session.createQuery(query).uniqueResult();
             transaction = session.beginTransaction();
-            if (position.getDirection().equalsIgnoreCase("BUY")) {
+            if (position.getDirection().toString().equalsIgnoreCase("BUY")) {
                 position.getPosition().add(BigInteger.valueOf(trade.getPosition()));
             } else {
                 position.getPosition().subtract(BigInteger.valueOf(trade.getPosition()));

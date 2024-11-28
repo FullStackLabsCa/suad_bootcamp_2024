@@ -1,5 +1,6 @@
 package io.reactivestax.repository.hibernate.entity;
 
+import io.reactivestax.types.enums.Direction;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -26,8 +27,9 @@ public class Position {
     @Column(name = "cusip")
     private String cusip;
 
-    @Column(name = "direction")
-    private String direction;
+    @Column(name = "direction", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Direction direction;
 
     @Column(name = "position")
     private BigInteger position;

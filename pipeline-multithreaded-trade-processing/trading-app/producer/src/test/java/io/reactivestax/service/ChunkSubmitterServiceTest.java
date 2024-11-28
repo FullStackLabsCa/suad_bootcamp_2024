@@ -30,7 +30,7 @@ class ChunkSubmitterServiceTest {
 
     @Test
     void testProcessChunk_SubmitChunks() throws Exception {
-        String chunksPath = "trades_chunk_1.csv";
+        String chunksPath = "test_trades_chunk.csv";
         try (MockedStatic<ApplicationPropertiesUtils> mockedPropertiesUtils = Mockito.mockStatic(ApplicationPropertiesUtils.class);
              MockedStatic<ChunkProcessorService> chunkProcessorServiceMockedStatic = Mockito.mockStatic(ChunkProcessorService.class)) {
             mockedPropertiesUtils.when(() -> ApplicationPropertiesUtils.readFromApplicationPropertiesIntegerFormat("chunk.processor.thread.count"))

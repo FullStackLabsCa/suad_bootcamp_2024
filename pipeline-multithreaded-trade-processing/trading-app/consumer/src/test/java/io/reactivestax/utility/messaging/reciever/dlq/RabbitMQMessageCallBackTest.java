@@ -26,7 +26,6 @@ class RabbitMQMessageCallBackTest {
     @Mock
     Channel mockChannel;
 
-
     @Mock
     Delivery mockDelivery;
 

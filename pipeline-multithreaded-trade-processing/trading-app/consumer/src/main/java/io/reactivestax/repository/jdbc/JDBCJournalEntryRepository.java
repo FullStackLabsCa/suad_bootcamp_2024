@@ -33,7 +33,7 @@ public class JDBCJournalEntryRepository implements JournalEntryRepository {
             insertStatement.setString(2, trade.getTradeDateTime());
             insertStatement.setString(3, trade.getAccountNumber());
             insertStatement.setString(4, trade.getCusip());
-            insertStatement.setString(5, trade.getDirection());
+            insertStatement.setString(5, trade.getDirection().toString());
             insertStatement.setInt(6, trade.getQuantity());
             insertStatement.setDouble(7, trade.getPrice());
             insertStatement.executeUpdate();
@@ -51,7 +51,7 @@ public class JDBCJournalEntryRepository implements JournalEntryRepository {
             stmt.setString(2, trade.getTradeDateTime());
             stmt.setString(3, trade.getAccountNumber());
             stmt.setString(4, trade.getCusip());
-            stmt.setString(5, trade.getDirection());
+            stmt.setString(5, trade.getDirection().toString());
             stmt.setInt(6, trade.getQuantity());
             stmt.setDouble(7, trade.getPrice());
             stmt.setTimestamp(8, Timestamp.valueOf(trade.getTradeDateTime()));

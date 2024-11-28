@@ -1,7 +1,8 @@
 package io.reactivestax.utility;
 
 import io.reactivestax.types.dto.Trade;
-
+import io.reactivestax.types.enums.Direction;
+import jakarta.persistence.Enumerated;
 
 
 public class Utility {
@@ -18,7 +19,7 @@ public class Utility {
                 .tradeDateTime(payloads[1])
                 .accountNumber(payloads[2])
                 .cusip(payloads[3])
-                .direction(payloads[4])
+                .direction(Direction.valueOf(payloads[4]))
                 .quantity(Integer.parseInt(payloads[5]))
                 .price(Double.parseDouble(payloads[6]))
                 .position(Integer.parseInt(payloads[5]))
