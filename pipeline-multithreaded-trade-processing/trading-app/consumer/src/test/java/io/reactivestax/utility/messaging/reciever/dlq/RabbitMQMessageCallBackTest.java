@@ -53,7 +53,7 @@ class RabbitMQMessageCallBackTest {
             // Call the handle method with proper arguments
             mqMessageCallBackInstance.handle("consumerTag1", mockDelivery);
 
-            verify(tradeProcessorService, times(1)).processJournalWithPosition("TBD000003");
+            verify(tradeProcessorService, times(1)).processTrade("TBD000003");
             verify(mockChannel, times(1)).basicAck(1L, false);
         }
     }
@@ -68,7 +68,7 @@ class RabbitMQMessageCallBackTest {
             Mockito.when(mockDelivery.getEnvelope()).thenReturn(mockEnvelope);
             Mockito.when(mockEnvelope.getDeliveryTag()).thenReturn(1L);
             Mockito.when(mockDelivery.getProperties()).thenReturn(mockBasicProperties);
-            doThrow(new RuntimeException("Testing Retry Mechanism")).when(tradeProcessorService).processJournalWithPosition(anyString());
+            doThrow(new RuntimeException("Testing Retry Mechanism")).when(tradeProcessorService).processTrade(anyString());
 
             RabbitMQMessageCallBack mqMessageCallBackInstance = new RabbitMQMessageCallBack(mockChannel, "queue1");
             mqMessageCallBackInstance.handle("consumerTag1", mockDelivery);

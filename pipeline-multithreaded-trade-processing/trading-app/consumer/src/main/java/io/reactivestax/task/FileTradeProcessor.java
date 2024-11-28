@@ -1,9 +1,11 @@
 package io.reactivestax.task;
 
-import io.reactivestax.service.TradeProcessorService;
+import io.reactivestax.types.contract.QueueLoader;
 import lombok.Getter;
 
 import java.util.concurrent.Callable;
+
+import static io.reactivestax.factory.BeanFactory.getQueueSetUp;
 
 
 public class FileTradeProcessor implements Callable<Void> {
@@ -17,7 +19,9 @@ public class FileTradeProcessor implements Callable<Void> {
 
     @Override
     public Void call() throws Exception {
-        TradeProcessorService.getInstance().processTrade(queueName);
+        QueueLoader queueLoader = getQueueSetUp();
+        assert queueLoader != null;
+        queueLoader.consumeMessage(queueName);
         return null;
     }
 }

@@ -35,7 +35,7 @@ public class RabbitMQMessageCallBack implements DeliverCallback {
         try {
             message = new String(delivery.getBody(), StandardCharsets.UTF_8);
             log.info(" [x] Received: '{} ", message);
-            TradeProcessorService.getInstance().processJournalWithPosition(message);
+            TradeProcessorService.getInstance().processTrade(message);
 
             // Acknowledge successful processing
             int currentCount = messageCounter.incrementAndGet();

@@ -1,6 +1,9 @@
 package io.reactivestax.types.enums;
 
 
+import lombok.Getter;
+
+@Getter
 public enum RabbitMQHeaders {
     X_QT("x-queue-type"),
     X_RETRIES("x-retries"),
@@ -15,7 +18,4 @@ public enum RabbitMQHeaders {
         this.headerKey = headerKey;
     }
 
-    public String getHeaderKey() {
-        return headerKey;
-    }
 }

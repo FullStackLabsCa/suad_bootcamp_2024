@@ -31,13 +31,7 @@ public class TradeProcessorService implements TradeProcessor {
     }
 
     @Override
-    public void processTrade(String queueName) throws Exception {
-        QueueLoader queueLoader = getQueueSetUp();
-        assert queueLoader != null;
-        queueLoader.consumeMessage(queueName);
-    }
-
-    public void processJournalWithPosition(String tradeId) throws SQLException {
+    public void processTrade(String tradeId) throws SQLException {
         PayloadRepository tradePayloadRepository = getTradePayloadRepository();
         SecuritiesReferenceRepository lookupSecuritiesRepository = getLookupSecuritiesRepository();
         JournalEntryRepository journalEntryRepository = getJournalEntryRepository();
