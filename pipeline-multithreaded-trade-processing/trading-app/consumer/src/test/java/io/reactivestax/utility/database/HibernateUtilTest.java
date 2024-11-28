@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.*;
 
-import static junit.framework.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -24,7 +23,7 @@ public class HibernateUtilTest {
     }
 
     @Test
-    public void testSessionFactoryAndConnection() {
+    void testSessionFactoryAndConnection() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         Session threadLocalSession = HibernateUtil.getThreadLocalSession().get();
@@ -34,14 +33,14 @@ public class HibernateUtilTest {
 
 
     @Test
-    public void testSingleInstanceCreation() {
+    void testSingleInstanceCreation() {
         HibernateUtil instance = HibernateUtil.getInstance();
         HibernateUtil instance1 = HibernateUtil.getInstance();
         assertEquals(instance.hashCode(), instance1.hashCode());
     }
 
     @Test
-    public void testTransactionCommit() {
+    void testTransactionCommit() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         Transaction transaction = null;
@@ -52,8 +51,8 @@ public class HibernateUtilTest {
             tradePayload.setTradeId("1");
             tradePayload.setValidityStatus(String.valueOf(ValidityStatusEnum.VALID));
             tradePayload.setStatusReason("All field present ");
-            tradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
-            tradePayload.setJeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED));
+            tradePayload.setLookupStatus(LookUpStatusEnum.FAIL);
+            tradePayload.setJeStatus(PostedStatusEnum.NOT_POSTED);
             tradePayload.setPayload("");
             session.persist(tradePayload);
             transaction.commit();
@@ -64,6 +63,7 @@ public class HibernateUtilTest {
             assertNotNull(retrievedTradePayload);
             assertEquals(tradePayload, retrievedTradePayload, "trade payload and retrieved value should be equal");
         } catch (Exception e) {
+            assert transaction != null;
             transaction.rollback();
         } finally {
             cleanUp();
@@ -71,19 +71,18 @@ public class HibernateUtilTest {
     }
 
     @Test
-     void testTransactionRollback() {
+    void testTransactionRollback() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         session.getTransaction().begin();
-        TradePayload tradePayload = new TradePayload();
         session.getTransaction().rollback();
         TradePayload retrievedTrade = session.get(TradePayload.class, 0L);
-        assertNull("not saved trade should return null", retrievedTrade);
+        Assertions.assertNull(retrievedTrade, "not saved trade should return null");
     }
 
 
     @Test
-     void testCloseConnection() {
+    void testCloseConnection() {
         Session session = HibernateUtil.getInstance().getConnection();
         assertNotNull(session);
         Assertions.assertTrue(session.isOpen(), "session should be open");
@@ -91,11 +90,11 @@ public class HibernateUtilTest {
         Assertions.assertFalse(session.isOpen(), "Session should be closed");
         HibernateUtil.getThreadLocalSession().remove();
         Session currentSession = HibernateUtil.getThreadLocalSession().get();
-        assertNull("Thread Local should no longer hold the session ", currentSession);
+        Assertions.assertNull(currentSession, "Thread Local should no longer hold the session ");
     }
 
     @Test
-     void testThreadLocalSessionIsolation() throws InterruptedException {
+    void testThreadLocalSessionIsolation() throws InterruptedException {
 
         ConcurrentHashMap<String, Session> sessionsByThread = new ConcurrentHashMap<>();
         CountDownLatch latch = new CountDownLatch(1);
@@ -121,7 +120,6 @@ public class HibernateUtilTest {
             executorService.submit(task);
         }
 
-
         //Release the latch to start all threads
         latch.countDown();
 
@@ -135,9 +133,7 @@ public class HibernateUtilTest {
                 }
             }
         }
-
     }
-
 
     public void cleanUp() {
         Session session = HibernateUtil.getInstance().getConnection();

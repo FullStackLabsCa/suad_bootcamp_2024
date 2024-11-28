@@ -2,9 +2,12 @@ package io.reactivestax.service;
 
 import io.reactivestax.types.contract.ChunkGenerator;
 import io.reactivestax.factory.BeanFactory;
+import io.reactivestax.utility.ApplicationPropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,29 +23,32 @@ public class ChunkGeneratorService implements ChunkGenerator {
 
     private static ChunkGeneratorService instance;
 
-    private ChunkGeneratorService(){}
+    private ChunkGeneratorService() {
+    }
 
-    public static ChunkGeneratorService getInstance(){
+    public static ChunkGeneratorService getInstance() {
         if (instance == null) {
             instance = new ChunkGeneratorService();
         }
         return instance;
     }
 
-    protected BufferedReader createBufferReader(String filePath) throws IOException{
-        return new BufferedReader(new FileReader(filePath));
+    protected BufferedReader createBufferReader(InputStream inputStream) throws IOException {
+        return new BufferedReader(new InputStreamReader(inputStream));
     }
 
     @Override
     public Integer generateAndSubmitChunks(String filePath, Integer numberOfChunks) throws IOException {
         List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = createBufferReader(filePath)) {
+        try (InputStream inputStream = ApplicationPropertiesUtils.class.getClassLoader().getResourceAsStream(filePath);
+             BufferedReader reader = createBufferReader(inputStream)) {
+
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
         } catch (IOException e) {
-            log.info("File not found.. {}",e.getMessage());
+            log.info("File not found.. {}", e.getMessage());
             throw new FileNotFoundException(e.getMessage());
         }
         int totalLines = lines.size();
@@ -60,8 +66,18 @@ public class ChunkGeneratorService implements ChunkGenerator {
         //creating the chunks and submitting to the executorService
         AtomicInteger startLine = new AtomicInteger(1);
 
+        String resourceDirectory;
+        try {
+            resourceDirectory = Paths.get(ClassLoader.getSystemResource("").toURI()).toString();
+        } catch (URISyntaxException e) {
+            log.error("Failed to locate resource directory", e);
+            throw new RuntimeException(e);
+        }
+
         IntStream.range(0, numberOfChunks).forEach(i -> {
-            String outputFile = readFromApplicationPropertiesStringFormat("chunks.file.path") + "trades_chunk_" + (i + 1) + ".csv";
+            String relativePath = readFromApplicationPropertiesStringFormat("chunks.file.path") + "trades_chunk_" + (i + 1) + ".csv";
+            String outputFile = Paths.get(resourceDirectory, relativePath).toString(); //Paths.get(resource) retrieves the baseFilePath tills the resources and concatenate with the chunks file path
+
             executorService.submit(() -> {
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
