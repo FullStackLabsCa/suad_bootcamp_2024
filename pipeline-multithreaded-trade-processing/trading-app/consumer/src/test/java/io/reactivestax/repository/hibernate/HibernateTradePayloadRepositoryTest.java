@@ -57,7 +57,6 @@ class HibernateTradePayloadRepositoryTest {
             mockedHibernateUtil.when(HibernateUtil::getInstance).thenReturn(hibernateUtil);
             Mockito.when(hibernateUtil.getConnection()).thenReturn(session);
 
-
             String payload = "TDB_00000000,2024-09-19 22:16:18,TDB_CUST_5214938,V,SELL,683,638.02";
             Trade trade = prepareTrade(payload);
 
@@ -75,8 +74,8 @@ class HibernateTradePayloadRepositoryTest {
             assertEquals(trade.getTradeIdentifier(), capturedPayload.getTradeId());
             assertEquals(String.valueOf(ValidityStatusEnum.VALID), capturedPayload.getValidityStatus());
             assertEquals(StatusReasonEnum.ALL_FIELDS_PRESENT.toString(), capturedPayload.getStatusReason());
-            assertEquals(String.valueOf(LookUpStatusEnum.FAIL), capturedPayload.getLookupStatus());
-            assertEquals(String.valueOf(PostedStatusEnum.NOT_POSTED), capturedPayload.getJeStatus());
+            assertEquals(LookUpStatusEnum.FAIL, capturedPayload.getLookupStatus());
+            assertEquals(PostedStatusEnum.NOT_POSTED, capturedPayload.getJeStatus());
             assertEquals(payload, capturedPayload.getPayload());
             result.ifPresent(tradeId -> assertEquals(tradeId, capturedPayload.getTradeId()));
 
@@ -98,7 +97,7 @@ class HibernateTradePayloadRepositoryTest {
                     .build();
 
             mockTradePayload.setTradeId(tradeId);
-            mockTradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
+            mockTradePayload.setLookupStatus(LookUpStatusEnum.FAIL);
 
             when(session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)).thenReturn(query);
             when(session.getTransaction()).thenReturn(transaction);
@@ -116,7 +115,7 @@ class HibernateTradePayloadRepositoryTest {
             verify(transaction, times(1)).commit(); // Verify transaction commit
 
             TradePayload capturedPayload = tradePayloadCaptor.getValue();
-            assertEquals(String.valueOf(LookUpStatusEnum.PASS), capturedPayload.getLookupStatus());
+            assertEquals(LookUpStatusEnum.PASS, capturedPayload.getLookupStatus());
 
         }
     }
@@ -137,7 +136,7 @@ class HibernateTradePayloadRepositoryTest {
                     .tradeId(tradeId)
                     .build();
             mockTradePayload.setTradeId(tradeId);
-            mockTradePayload.setLookupStatus(String.valueOf(LookUpStatusEnum.FAIL));
+            mockTradePayload.setLookupStatus(LookUpStatusEnum.FAIL);
 
             when(session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)).thenReturn(query);
             when(session.getTransaction()).thenReturn(transaction);
@@ -155,46 +154,7 @@ class HibernateTradePayloadRepositoryTest {
             verify(transaction, times(1)).commit(); // Verify transaction commit
 
             TradePayload capturedPayload = tradePayloadCaptor.getValue();
-            assertEquals(String.valueOf(PostedStatusEnum.POSTED), capturedPayload.getJeStatus());
+            assertEquals(PostedStatusEnum.POSTED, capturedPayload.getJeStatus());
         }
     }
-
-//    @Test
-//    void testReadTradePayloadByTradeId() {
-//
-//        try (MockedStatic<HibernateUtil> mockedHibernateUtil = Mockito.mockStatic(HibernateUtil.class)) {
-//            //Since it is singleton and getInstance() is static method we have to access through the mockstatic
-//            mockedHibernateUtil.when(HibernateUtil::getInstance).thenReturn(hibernateUtil);
-//            Mockito.when(hibernateUtil.getConnection()).thenReturn(session);
-//
-//            // Arrange
-//            String tradeId = "TDB_00000000";
-//            TradePayload expectedTradePayload = new TradePayload();
-//            expectedTradePayload.setTradeId(tradeId);
-//            expectedTradePayload.setPayload("Mocked payload");
-//
-//            // Mock Hibernate components
-//            when(session.getCriteriaBuilder()).thenReturn(criteriaBuilder);
-//            when(criteriaBuilder.createQuery(TradePayload.class)).thenReturn(criteriaQuery);
-//            when(criteriaQuery.from(TradePayload.class)).thenReturn(root);
-//            when(criteriaQuery.select(root.get("payload"))).thenReturn(criteriaQuery);
-//            when(criteriaBuilder.equal(root.get("tradeId"), tradeId)).thenReturn(mock(Predicate.class));
-//            when(session.createQuery(criteriaQuery)).thenReturn(query);
-//            when(query.setMaxResults(1)).thenReturn(query);
-//            when(query.getSingleResult()).thenReturn(expectedTradePayload);
-//
-//            // Act
-//            Optional<TradePayload> result = HibernateTradePayloadRepository.getInstance().readTradePayloadByTradeId(tradeId);
-//
-//            // Assert
-//            assertTrue(result.isPresent());
-//            assertEquals(expectedTradePayload, result.get());
-//            assertEquals(tradeId, result.get().getTradeId());
-//
-//            // Verify interactions
-//            verify(session).createQuery(criteriaQuery);
-//            verify(query).setMaxResults(1);
-//            verify(query).getSingleResult();
-//        }
-//        }
 }

@@ -1,6 +1,7 @@
 package io.reactivestax.utility;
 
 import io.reactivestax.types.dto.Trade;
+import io.reactivestax.types.enums.Direction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,7 @@ class UtilityTest {
                 "2024-09-19 22:16:18",
                 "TDB_CUST_5214938",
                 "V",
-                "SELL",
+                Direction.SELL,
                 Integer.parseInt("683"),
                 Double.parseDouble("638.02"),
                 Integer.parseInt("683")
