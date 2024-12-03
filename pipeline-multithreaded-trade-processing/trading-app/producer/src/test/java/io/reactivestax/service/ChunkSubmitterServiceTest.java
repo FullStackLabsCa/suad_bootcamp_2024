@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.mockito.Mockito.*;
 
 
@@ -29,7 +30,7 @@ class ChunkSubmitterServiceTest {
     }
 
     @Test
-    void testProcessChunk_SubmitChunks() throws Exception {
+    void testSubmitChunks() throws Exception {
         String chunksPath = "test_trades_chunk.csv";
         try (MockedStatic<ApplicationPropertiesUtils> mockedPropertiesUtils = Mockito.mockStatic(ApplicationPropertiesUtils.class);
              MockedStatic<ChunkProcessorService> chunkProcessorServiceMockedStatic = Mockito.mockStatic(ChunkProcessorService.class)) {

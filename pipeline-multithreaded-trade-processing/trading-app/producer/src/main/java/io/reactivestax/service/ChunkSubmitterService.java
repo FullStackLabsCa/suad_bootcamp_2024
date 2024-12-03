@@ -10,7 +10,6 @@ import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplica
 @Slf4j
 public class ChunkSubmitterService {
 
-
     private static ChunkSubmitterService instance;
 
 
