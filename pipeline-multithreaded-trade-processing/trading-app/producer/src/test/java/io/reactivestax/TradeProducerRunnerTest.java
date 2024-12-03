@@ -23,12 +23,6 @@ class TradeProducerRunnerTest {
     @Mock
     ChunkSubmitterService mockChunkSubmitterService;
 
-    @Mock
-    ApplicationPropertiesUtils mockApplicationPropertiesUtils;
-    //
-    @InjectMocks
-    TradeProducerRunner tradeProducerRunner;
-
 
     @Test
     void testMain() throws Exception {

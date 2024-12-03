@@ -4,13 +4,13 @@ import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
+import io.reactivestax.types.enums.StatusReasonEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
 import jakarta.persistence.criteria.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,11 +53,6 @@ class HibernateTradePayloadRepositoryTest {
     private Root<TradePayload> root;
 
 
-    @BeforeEach
-    public void setUp() {
-//        MockitoAnnotations.openMocks(this);
-    }
-
 
     @Test
     void getInstance() {
@@ -91,10 +86,10 @@ class HibernateTradePayloadRepositoryTest {
 
             // Verify TradePayload fields
             assertEquals(trade.getTradeIdentifier(), capturedPayload.getTradeId());
-            assertEquals(String.valueOf(ValidityStatusEnum.VALID), capturedPayload.getValidityStatus());
-            assertEquals("All field present ", capturedPayload.getStatusReason());
-            assertEquals(String.valueOf(LookUpStatusEnum.FAIL), capturedPayload.getLookupStatus());
-            assertEquals(String.valueOf(PostedStatusEnum.NOT_POSTED), capturedPayload.getJeStatus());
+            assertEquals(ValidityStatusEnum.VALID, capturedPayload.getValidityStatus());
+            assertEquals(StatusReasonEnum.ALL_FIELDS_PRESENT, capturedPayload.getStatusReason());
+            assertEquals(LookUpStatusEnum.FAIL, capturedPayload.getLookupStatus());
+            assertEquals(PostedStatusEnum.NOT_POSTED, capturedPayload.getJeStatus());
             assertEquals(payload, capturedPayload.getPayload());
             assertEquals(result.get(), capturedPayload.getTradeId());
 
@@ -114,7 +109,7 @@ class HibernateTradePayloadRepositoryTest {
 
             TradePayload mockTradePayload = TradePayload.builder()
                     .tradeId(tradeId)
-                    .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL)).build();
+                    .lookupStatus(LookUpStatusEnum.FAIL).build();
 
 
             when(session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)).thenReturn(query);
@@ -134,7 +129,7 @@ class HibernateTradePayloadRepositoryTest {
             verify(transaction, times(1)).commit(); // Verify transaction commit
 
             TradePayload capturedPayload = tradePayloadCaptor.getValue();
-            assertEquals(String.valueOf(LookUpStatusEnum.PASS), capturedPayload.getLookupStatus());
+            assertEquals(LookUpStatusEnum.PASS, capturedPayload.getLookupStatus());
 
         }
     }
@@ -152,7 +147,7 @@ class HibernateTradePayloadRepositoryTest {
             String tradeId = "TDB_00000001";
             TradePayload mockTradePayload = TradePayload.builder()
                     .tradeId(tradeId)
-                    .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL))
+                    .lookupStatus(LookUpStatusEnum.FAIL)
                     .build();
 
 
@@ -172,7 +167,7 @@ class HibernateTradePayloadRepositoryTest {
             verify(transaction, times(1)).commit(); // Verify transaction commit
 
             TradePayload capturedPayload = tradePayloadCaptor.getValue();
-            assertEquals(String.valueOf(PostedStatusEnum.POSTED), capturedPayload.getJeStatus());
+            assertEquals(PostedStatusEnum.POSTED, capturedPayload.getJeStatus());
         }
     }
 

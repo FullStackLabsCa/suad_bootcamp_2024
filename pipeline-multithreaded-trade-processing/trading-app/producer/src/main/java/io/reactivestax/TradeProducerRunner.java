@@ -26,7 +26,6 @@ public class TradeProducerRunner {
         //process chunks
         ChunkSubmitterService.getInstance().submitChunks();
     }
-
 }
 
 

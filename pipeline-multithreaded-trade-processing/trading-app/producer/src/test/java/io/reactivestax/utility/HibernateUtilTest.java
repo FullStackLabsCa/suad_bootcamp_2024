@@ -3,6 +3,7 @@ package io.reactivestax.utility;
 import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
+import io.reactivestax.types.enums.StatusReasonEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
 import org.hibernate.Session;
@@ -19,7 +20,7 @@ import java.util.concurrent.*;
 import static org.junit.Assert.*;
 
 @ExtendWith(MockitoExtension.class)
-public class HibernateUtilTest {
+class HibernateUtilTest {
 
     @BeforeEach
     void setUp() {
@@ -54,10 +55,10 @@ public class HibernateUtilTest {
 
             TradePayload tradePayload = TradePayload.builder()
                     .tradeId("1")
-                    .validityStatus(String.valueOf(ValidityStatusEnum.VALID))
-                    .statusReason("All field present ")
-                    .lookupStatus(String.valueOf(LookUpStatusEnum.FAIL))
-                    .jeStatus(String.valueOf(PostedStatusEnum.NOT_POSTED))
+                    .validityStatus(ValidityStatusEnum.VALID)
+                    .statusReason(StatusReasonEnum.ALL_FIELDS_PRESENT)
+                    .lookupStatus(LookUpStatusEnum.FAIL)
+                    .jeStatus(PostedStatusEnum.NOT_POSTED)
                     .payload("")
                     .build();
 
@@ -114,7 +115,7 @@ public class HibernateUtilTest {
                 latch.await();
                 HibernateUtil instance = HibernateUtil.getInstance();
                 Session session = instance.getConnection();
-                assertNotNull(session);
+                Assertions.assertNotNull(session);
                 sessionsByThread.put(Thread.currentThread().getName(), session);
 
             } catch (InterruptedException e) {

@@ -3,6 +3,7 @@ package io.reactivestax.service;
 import io.reactivestax.types.contract.ChunkGenerator;
 import io.reactivestax.factory.BeanFactory;
 import io.reactivestax.utility.ApplicationPropertiesUtils;
+import io.reactivestax.utility.Utility;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -40,7 +41,7 @@ public class ChunkGeneratorService implements ChunkGenerator {
     @Override
     public Integer generateAndSubmitChunks(String filePath, Integer numberOfChunks) throws IOException {
         List<String> lines = new ArrayList<>();
-        try (InputStream inputStream = ApplicationPropertiesUtils.class.getClassLoader().getResourceAsStream(filePath);
+        try (InputStream inputStream = Utility.getResourceAsStream(ApplicationPropertiesUtils.class, filePath);
              BufferedReader reader = createBufferReader(inputStream)) {
 
             String line;

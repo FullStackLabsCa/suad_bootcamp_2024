@@ -3,6 +3,7 @@ package io.reactivestax.utility;
 import io.reactivestax.types.dto.Trade;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -45,6 +46,10 @@ public class Utility {
                 .price(Double.parseDouble(payloads[6]))
                 .position(Integer.parseInt(payloads[5]))
                 .build();
+    }
+
+    public static InputStream getResourceAsStream(Class<?> className, String filePath) {
+        return className.getClassLoader().getResourceAsStream(filePath);
     }
 
 }
