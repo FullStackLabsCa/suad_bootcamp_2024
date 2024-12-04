@@ -5,9 +5,8 @@ import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.*;
@@ -15,10 +14,10 @@ import java.util.concurrent.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class HibernateUtilTest {
+ class HibernateUtilTest {
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+     void setUp() {
         HibernateUtil.setConfigResource("hibernate-h2.cfg.xml");
     }
 
@@ -43,10 +42,8 @@ public class HibernateUtilTest {
     void testTransactionCommit() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
-        Transaction transaction = null;
 
         try {
-            transaction = session.beginTransaction();
             TradePayload tradePayload = new TradePayload();
             tradePayload.setTradeId("1");
             tradePayload.setValidityStatus(String.valueOf(ValidityStatusEnum.VALID));
@@ -55,7 +52,7 @@ public class HibernateUtilTest {
             tradePayload.setJeStatus(PostedStatusEnum.NOT_POSTED);
             tradePayload.setPayload("");
             session.persist(tradePayload);
-            transaction.commit();
+            instance.commitTransaction();
             Assertions.assertTrue(session.contains("Trade payload should be in session", tradePayload));
             TradePayload retrievedTradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
                     .setParameter("tradeId", "1")
@@ -63,8 +60,7 @@ public class HibernateUtilTest {
             assertNotNull(retrievedTradePayload);
             assertEquals(tradePayload, retrievedTradePayload, "trade payload and retrieved value should be equal");
         } catch (Exception e) {
-            assert transaction != null;
-            transaction.rollback();
+            instance.rollbackTransaction();
         } finally {
             cleanUp();
         }
@@ -73,10 +69,9 @@ public class HibernateUtilTest {
     @Test
     void testTransactionRollback() {
         HibernateUtil instance = HibernateUtil.getInstance();
-        Session session = instance.getConnection();
-        session.getTransaction().begin();
-        session.getTransaction().rollback();
-        TradePayload retrievedTrade = session.get(TradePayload.class, 0L);
+        instance.startTransaction();
+        instance.rollbackTransaction();
+        TradePayload retrievedTrade = instance.getConnection().get(TradePayload.class, 0L);
         Assertions.assertNull(retrievedTrade, "not saved trade should return null");
     }
 

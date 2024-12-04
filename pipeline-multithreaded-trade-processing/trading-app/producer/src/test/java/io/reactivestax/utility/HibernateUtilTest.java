@@ -7,13 +7,11 @@ import io.reactivestax.types.enums.StatusReasonEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import io.reactivestax.utility.database.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 
 import java.util.concurrent.*;
 
@@ -48,10 +46,9 @@ class HibernateUtilTest {
     void testTransactionCommit() {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
-        Transaction transaction = null;
 
         try {
-            transaction = session.beginTransaction();
+            instance.startTransaction();
 
             TradePayload tradePayload = TradePayload.builder()
                     .tradeId("1")
@@ -63,16 +60,16 @@ class HibernateUtilTest {
                     .build();
 
             session.persist(tradePayload);
-            transaction.commit();
+            instance.commitTransaction();
+
             Assertions.assertTrue(session.contains("Trade payload should be in session", tradePayload));
-            TradePayload retrievedTradePayload = session.createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
+            TradePayload retrievedTradePayload = instance.getConnection().createQuery("FROM TradePayload WHERE tradeId = :tradeId", TradePayload.class)
                     .setParameter("tradeId", "1")
                     .uniqueResult();
             Assertions.assertNotNull(retrievedTradePayload);
             Assertions.assertEquals(tradePayload, retrievedTradePayload, "trade payload and retrieved value should be equal");
         } catch (Exception e) {
-            assert transaction != null;
-            transaction.rollback();
+            instance.rollbackTransaction();
         } finally {
             cleanUp();
         }
@@ -83,8 +80,8 @@ class HibernateUtilTest {
         HibernateUtil instance = HibernateUtil.getInstance();
         Session session = instance.getConnection();
         session.getTransaction().begin();
-        session.getTransaction().rollback();
-        TradePayload retrievedTrade = session.get(TradePayload.class, 0L);
+        instance.rollbackTransaction();
+        TradePayload retrievedTrade = instance.getConnection().get(TradePayload.class, 0L);
         Assertions.assertNull(retrievedTrade, "not saved trade should return null");
     }
 
@@ -106,7 +103,6 @@ class HibernateUtilTest {
 
         ConcurrentHashMap<String, Session> sessionsByThread = new ConcurrentHashMap<>();
         CountDownLatch latch = new CountDownLatch(1);
-
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         //Runnable that each threads will execute
@@ -138,11 +134,10 @@ class HibernateUtilTest {
         for (Session session1 : sessionsByThread.values()) {
             for (Session session2 : sessionsByThread.values()) {
                 if (session1 != session2) {
-                    assertNotSame(session1, session2);
+                    Assertions.assertNotSame(session1, session2);
                 }
             }
         }
-
     }
 
     void cleanUp() {
@@ -151,4 +146,6 @@ class HibernateUtilTest {
         session.createQuery("DELETE FROM TradePayload").executeUpdate();
         session.getTransaction().commit();
     }
+
+
 }
