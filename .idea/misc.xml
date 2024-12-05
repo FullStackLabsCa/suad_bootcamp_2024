@@ -11,7 +11,14 @@
         <option value="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/java-8/pom.xml" />
         <option value="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/pom.xml" />
         <option value="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/cache-lib/pom.xml" />
+        <option value="$PROJECT_DIR$/../cache-library/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/cache-lib/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">

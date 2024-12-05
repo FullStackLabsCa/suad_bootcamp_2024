@@ -9,9 +9,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="producer" />
         <module name="consumer" />
+        <module name="cache-library" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="cache-lib" target="17" />
       <module name="java-8" target="17" />
       <module name="trade-analytics-app" target="1.8" />
       <module name="trading-app" target="9" />
