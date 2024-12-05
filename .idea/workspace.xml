@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2ab0675b-db66-4fcb-9f1c-9dea4eca9c64" name="Changes" comment="feat: code cleanup">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,10 +18,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="JUnit3 Test Class" />
         <option value="JUnit5 Test Class" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -64,6 +60,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.CachePerfomrance.executor": "Debug",
     "Application.Main (1).executor": "Run",
     "Application.Main.executor": "Run",
     "Application.TradeConsumerRunner.executor": "Run",
@@ -218,7 +215,7 @@
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax",
-    "last_opened_file_path": "/Users/Suraj.Adhikari/sources/student-mode-programs/suad-bootcamp-2024/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources",
+    "last_opened_file_path": "/Users/Suraj.Adhikari/sources/student-mode-programs/cache-library/src/main/resources",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.3632184",
@@ -230,11 +227,11 @@
       <recent name="io.reactivestax.repository.hibernate" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../cache-library/src/main/resources" />
       <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/resources" />
       <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/resources" />
       <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/resources" />
       <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax" />
-      <recent name="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/resources" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -261,7 +258,20 @@
       <recent name="io.reactivestax.utility" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.java in consumer">
+  <component name="RunManager" selected="Application.CachePerfomrance">
+    <configuration name="CachePerfomrance" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.CachePerfomrance" />
+      <module name="cache-library" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.reactivestax.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="All in consumer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="consumer" />
       <option name="PACKAGE_NAME" value="" />
@@ -317,22 +327,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HibernateUtilTest.testTransactionCommit (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="consumer" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.reactivestax.utility.database.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.utility.database" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.utility.database.HibernateUtilTest" />
-      <option name="METHOD_NAME" value="testTransactionCommit" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="java in consumer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="consumer" />
       <option name="TEST_OBJECT" value="directory" />
@@ -342,20 +336,20 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.CachePerfomrance" />
       <item itemvalue="JUnit.BeanFactoryTest" />
       <item itemvalue="JUnit.All in consumer" />
       <item itemvalue="JUnit.HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId" />
       <item itemvalue="JUnit.java in consumer" />
       <item itemvalue="JUnit.HibernateUtilTest (1)" />
-      <item itemvalue="JUnit.HibernateUtilTest.testTransactionCommit (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.CachePerfomrance" />
         <item itemvalue="JUnit.java in consumer" />
         <item itemvalue="JUnit.HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId" />
         <item itemvalue="JUnit.HibernateUtilTest (1)" />
         <item itemvalue="JUnit.All in consumer" />
-        <item itemvalue="JUnit.HibernateUtilTest.testTransactionCommit (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -438,6 +432,16 @@
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkSubmitterService.java</url>
           <line>29</line>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../cache-library/src/main/java/io/reactivestax/CacheEntry.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../cache-library/src/main/java/io/reactivestax/CachePerfomrance.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
