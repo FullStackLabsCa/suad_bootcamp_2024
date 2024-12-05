@@ -60,7 +60,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.CachePerfomrance.executor": "Debug",
+    "Application.CachePerfomrance.executor": "Run",
     "Application.Main (1).executor": "Run",
     "Application.Main.executor": "Run",
     "Application.TradeConsumerRunner.executor": "Run",
@@ -432,16 +432,6 @@
           <url>file://$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/service/ChunkSubmitterService.java</url>
           <line>29</line>
           <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/../cache-library/src/main/java/io/reactivestax/CacheEntry.java</url>
-          <line>24</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/../cache-library/src/main/java/io/reactivestax/CachePerfomrance.java</url>
-          <line>16</line>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
