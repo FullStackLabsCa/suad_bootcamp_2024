@@ -57,6 +57,5 @@ public class HibernateJournalEntryRepository implements JournalEntryRepository {
         return Optional.of(journalEntries);
     }
 
-
 }
 
