@@ -6,11 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="2ab0675b-db66-4fcb-9f1c-9dea4eca9c64" name="Changes" comment="feat: code cleanup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePositionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/entity/TradePayload.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/main/java/io/reactivestax/repository/hibernate/entity/TradePayload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/repository/hibernate/HibernateTradePositionRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/repository/hibernate/HibernateTradePositionRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/service/TradeProcessorServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/service/TradeProcessorServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/utility/database/DBUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/utility/database/DBUtilsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/utility/database/HibernateUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/src/test/java/io/reactivestax/utility/database/HibernateUtilTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/utility/database/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/utility/database/HibernateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/utility/HibernateUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/test/java/io/reactivestax/utility/HibernateUtilTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/service/ChunkSubmitterServiceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/service/ChunkSubmitterServiceTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/HibernateUtilTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/target/test-classes/io/reactivestax/utility/HibernateUtilTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/HibernateTradePositionRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/HibernateTradePositionRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/entity/TradePayload$TradePayloadBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/entity/TradePayload$TradePayloadBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/entity/TradePayload.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/classes/io/reactivestax/repository/hibernate/entity/TradePayload.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/repository/hibernate/HibernateTradePayloadRepositoryTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/repository/hibernate/HibernateTradePayloadRepositoryTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/repository/hibernate/HibernateTradePositionRepositoryTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/repository/hibernate/HibernateTradePositionRepositoryTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/utility/database/DBUtilsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/utility/database/DBUtilsTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/utility/database/HibernateUtilTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/consumer/target/test-classes/io/reactivestax/utility/database/HibernateUtilTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/pipeline-multithreaded-trade-processing/trading-app/producer/src/main/java/io/reactivestax/repository/hibernate/HibernateTradePayloadRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,8 +275,8 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.java in consumer">
-    <configuration name="All in producer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="producer" />
+    <configuration name="All in consumer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consumer" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
       <method v="2">
@@ -283,6 +295,22 @@
       <option name="MAIN_CLASS_NAME" value="io.reactivestax.factory.BeanFactoryTest" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="consumer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.reactivestax.repository.hibernate.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.reactivestax.repository.hibernate" />
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.repository.hibernate.HibernateTradePayloadRepositoryTest" />
+      <option name="METHOD_NAME" value="testReadTradePayloadByTradeId" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -318,22 +346,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HibernateUtilTest.testTransactionRollback (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="consumer" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.reactivestax.utility.database.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.reactivestax.utility.database" />
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.utility.database.HibernateUtilTest" />
-      <option name="METHOD_NAME" value="testTransactionRollback" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="java in consumer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="consumer" />
       <option name="TEST_OBJECT" value="directory" />
@@ -344,19 +356,19 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.BeanFactoryTest" />
+      <item itemvalue="JUnit.All in consumer" />
+      <item itemvalue="JUnit.HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId" />
       <item itemvalue="JUnit.java in consumer" />
       <item itemvalue="JUnit.HibernateUtilTest (1)" />
       <item itemvalue="JUnit.HibernateUtilTest.testTransactionCommit (1)" />
-      <item itemvalue="JUnit.HibernateUtilTest.testTransactionRollback (1)" />
-      <item itemvalue="JUnit.All in producer" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.java in consumer" />
+        <item itemvalue="JUnit.HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId" />
         <item itemvalue="JUnit.HibernateUtilTest (1)" />
+        <item itemvalue="JUnit.All in consumer" />
         <item itemvalue="JUnit.HibernateUtilTest.testTransactionCommit (1)" />
-        <item itemvalue="JUnit.HibernateUtilTest.testTransactionRollback (1)" />
-        <item itemvalue="JUnit.All in producer" />
       </list>
     </recent_temporary>
   </component>
@@ -457,7 +469,7 @@
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$HibernateJournalEntryRepositoryTest_getInstance.ic" NAME="HibernateJournalEntryRepositoryTest.getInstance Coverage Results" MODIFIED="1731953674003" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.repository.hibernate.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$java_in_consumer.ic" NAME="java in consumer Coverage Results" MODIFIED="1733258555359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$java_in_consumer.ic" NAME="java in consumer Coverage Results" MODIFIED="1733412824277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$UtilityTest_prepareTrade.ic" NAME="UtilityTest.prepareTrade Coverage Results" MODIFIED="1731945275633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.*</FILTER>
     </SUITE>
@@ -470,7 +482,7 @@
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$DBUtilsTest_getInstance.ic" NAME="DBUtilsTest.getInstance Coverage Results" MODIFIED="1730991220474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.utility.database.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$All_in_consumer.ic" NAME="All in consumer Coverage Results" MODIFIED="1733258664820" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+    <SUITE FILE_PATH="coverage/suad_bootcamp_2024$All_in_consumer.ic" NAME="All in consumer Coverage Results" MODIFIED="1733349517653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
     <SUITE FILE_PATH="coverage/suad_bootcamp_2024$BeanFactoryTest.ic" NAME="BeanFactoryTest Coverage Results" MODIFIED="1731618011287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>io.reactivestax.factory.*</FILTER>
     </SUITE>

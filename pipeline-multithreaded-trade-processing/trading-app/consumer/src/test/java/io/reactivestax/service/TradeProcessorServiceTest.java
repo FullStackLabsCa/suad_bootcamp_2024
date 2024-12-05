@@ -57,16 +57,6 @@ class TradeProcessorServiceTest {
     }
 
 
-//    @Test
-    void testProcessTrade() throws Exception {
-        final String queueName = "queue0";
-        try (MockedStatic<BeanFactory> beanFactoryMockedStatic = Mockito.mockStatic(BeanFactory.class)) {
-            beanFactoryMockedStatic.when(BeanFactory::getQueueSetUp).thenReturn(queueLoader);
-            tradeProcessorService.processTrade(queueName);
-            verify(queueLoader, atLeastOnce()).consumeMessage(queueName);
-        }
-    }
-
 
     @Test
     void testProcessJournalWithPosition() throws Exception {

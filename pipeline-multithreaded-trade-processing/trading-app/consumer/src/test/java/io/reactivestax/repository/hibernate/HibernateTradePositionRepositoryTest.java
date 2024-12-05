@@ -1,25 +1,16 @@
 package io.reactivestax.repository.hibernate;
 
 import io.reactivestax.repository.hibernate.entity.Position;
-import io.reactivestax.repository.hibernate.entity.SecuritiesReference;
-import io.reactivestax.repository.hibernate.entity.TradePayload;
-import io.reactivestax.types.contract.repository.PositionRepository;
 import io.reactivestax.types.dto.Trade;
 import io.reactivestax.utility.database.HibernateUtil;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import nl.altindag.log.LogCaptor;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigInteger;
 import java.sql.SQLException;
 
@@ -39,29 +30,10 @@ class HibernateTradePositionRepositoryTest {
     @Mock
     Transaction mockTransaction;
 
-    @InjectMocks
-    HibernateTradePositionRepository hibernateTradePositionRepository;
 
     @Captor
     ArgumentCaptor<Position> argumentCaptor;
 
-    @Mock
-    private CriteriaBuilder mockCriteriaBuilder;
-
-    @Mock
-    private CriteriaQuery<Position> mockCriteriaQuery;
-
-    @Mock
-    private Root<Position> mockRoot;
-
-    @Mock
-    private Predicate mockPredicate;
-
-    private Trade mockTrade;
-    private Position mockPosition;
-
-//    @Mock
-//    private Query<Position> mockQuery;
 
 
     @Test
@@ -83,7 +55,6 @@ class HibernateTradePositionRepositoryTest {
             // Mocking the behavior of session
 
             boolean isPositionInserted = HibernateTradePositionRepository.getInstance().insertPosition(trade);
-
 
             verify(mockSession, atLeastOnce()).persist(argumentCaptor.capture());
             Position capturedPosition = argumentCaptor.getValue();
@@ -156,7 +127,7 @@ class HibernateTradePositionRepositoryTest {
         transaction.commit();
     }
 
-    public void cleanUp() {
+     void cleanUp() {
         Session session = HibernateUtil.getInstance().getConnection();
         session.beginTransaction();
         session.createQuery("DELETE FROM Position").executeUpdate();

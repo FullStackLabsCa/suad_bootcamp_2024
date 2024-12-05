@@ -34,34 +34,22 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
     }
 
     @Override
-    public Optional<String> insertTradeIntoTradePayloadTable(String payload) throws Exception {
+    public Optional<String> insertTradeIntoTradePayloadTable(String payload) {
         Session session = HibernateUtil.getInstance().getConnection();
         Trade trade = prepareTrade(payload);
         TradePayload tradePayload = TradePayload.builder()
                 .tradeId(trade.getTradeIdentifier())
-                .validityStatus(checkValidity(payload.split(",")) ? String.valueOf(ValidityStatusEnum.VALID) : String.valueOf(ValidityStatusEnum.INVALID))
-                .statusReason(checkValidity(payload.split(",")) ? String.valueOf(StatusReasonEnum.ALL_FIELDS_PRESENT) : String.valueOf(StatusReasonEnum.FIELDS_MISSING))
+                .validityStatus(checkValidity(payload.split(",")) ? ValidityStatusEnum.VALID : ValidityStatusEnum.INVALID)
+                .statusReason(checkValidity(payload.split(",")) ?StatusReasonEnum.ALL_FIELDS_PRESENT : StatusReasonEnum.FIELDS_MISSING)
                 .lookupStatus(LookUpStatusEnum.FAIL)
                 .jeStatus(PostedStatusEnum.NOT_POSTED)
                 .payload(payload)
                 .build();
 
-
         session.persist(tradePayload);
         return Optional.ofNullable(tradePayload.getTradeId());
     }
 
-    //using the criteria api for returning the count
-//    public int readTradePayloadCount() {
-//        Session session = HibernateUtil.getInstance().getConnection();
-//        final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-//        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
-//        Root<TradePayload> root = query.from(TradePayload.class);
-//        query.select(criteriaBuilder.count(root));
-//        List<Long> resultList = session.createQuery(query).getResultList();
-//        return resultList.size();
-//
-//    }
 
     @Override
     public void updateLookUpStatus(String tradeNumber) {
@@ -112,6 +100,5 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
                 .getSingleResult()
         );
     }
-
 
 }

@@ -14,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DBUtilsTest {
 
-    @InjectMocks
-    private DBUtils dbUtils;  // Class containing the startTransaction method
 
     @Mock
     private Logger log;

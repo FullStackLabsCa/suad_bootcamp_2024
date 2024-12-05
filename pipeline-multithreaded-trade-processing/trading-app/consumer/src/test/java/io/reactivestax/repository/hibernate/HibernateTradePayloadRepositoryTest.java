@@ -72,8 +72,8 @@ class HibernateTradePayloadRepositoryTest {
 
             // Verify TradePayload fields
             assertEquals(trade.getTradeIdentifier(), capturedPayload.getTradeId());
-            assertEquals(String.valueOf(ValidityStatusEnum.VALID), capturedPayload.getValidityStatus());
-            assertEquals(StatusReasonEnum.ALL_FIELDS_PRESENT.toString(), capturedPayload.getStatusReason());
+            assertEquals(ValidityStatusEnum.VALID, capturedPayload.getValidityStatus());
+            assertEquals(StatusReasonEnum.ALL_FIELDS_PRESENT, capturedPayload.getStatusReason());
             assertEquals(LookUpStatusEnum.FAIL, capturedPayload.getLookupStatus());
             assertEquals(PostedStatusEnum.NOT_POSTED, capturedPayload.getJeStatus());
             assertEquals(payload, capturedPayload.getPayload());
@@ -116,7 +116,6 @@ class HibernateTradePayloadRepositoryTest {
 
             TradePayload capturedPayload = tradePayloadCaptor.getValue();
             assertEquals(LookUpStatusEnum.PASS, capturedPayload.getLookupStatus());
-
         }
     }
 
@@ -129,9 +128,7 @@ class HibernateTradePayloadRepositoryTest {
             mockedHibernateUtil.when(HibernateUtil::getInstance).thenReturn(hibernateUtil);
             Mockito.when(hibernateUtil.getConnection()).thenReturn(session);
 
-
             String tradeId = "TDB_00000001";
-
             TradePayload mockTradePayload = TradePayload.builder()
                     .tradeId(tradeId)
                     .build();
@@ -156,5 +153,26 @@ class HibernateTradePayloadRepositoryTest {
             TradePayload capturedPayload = tradePayloadCaptor.getValue();
             assertEquals(PostedStatusEnum.POSTED, capturedPayload.getJeStatus());
         }
+    }
+
+    @Test
+    void testReadTradePayloadByTradeId() {
+        HibernateUtil.setConfigResource("hibernate-h2.cfg.xml");
+        HibernateUtil hibernateInstance = HibernateUtil.getInstance();
+        String payload = "TDB_00000003,2024-09-19 22:16:18,TDB_CUST_5214938,GOOGL,SELL,683,638.02";
+        HibernateTradePayloadRepository instance = HibernateTradePayloadRepository.getInstance();
+        hibernateInstance.startTransaction();
+        instance.insertTradeIntoTradePayloadTable(payload);
+        hibernateInstance.commitTransaction();
+        Optional<String> retrievedPayload = instance.readTradePayloadByTradeId("TDB_00000003");
+        assertEquals(payload, retrievedPayload.get());
+        cleanUp();
+    }
+
+    void cleanUp() {
+        Session session = HibernateUtil.getInstance().getConnection();
+        session.beginTransaction();
+        session.createQuery("DELETE FROM TradePayload").executeUpdate();
+        session.getTransaction().commit();
     }
 }

@@ -3,6 +3,7 @@ package io.reactivestax.utility.database;
 import io.reactivestax.repository.hibernate.entity.TradePayload;
 import io.reactivestax.types.enums.LookUpStatusEnum;
 import io.reactivestax.types.enums.PostedStatusEnum;
+import io.reactivestax.types.enums.StatusReasonEnum;
 import io.reactivestax.types.enums.ValidityStatusEnum;
 import org.hibernate.Session;
 import org.junit.jupiter.api.Assertions;
@@ -46,8 +47,8 @@ import static org.junit.jupiter.api.Assertions.*;
         try {
             TradePayload tradePayload = new TradePayload();
             tradePayload.setTradeId("1");
-            tradePayload.setValidityStatus(String.valueOf(ValidityStatusEnum.VALID));
-            tradePayload.setStatusReason("All field present ");
+            tradePayload.setValidityStatus(ValidityStatusEnum.VALID);
+            tradePayload.setStatusReason(StatusReasonEnum.ALL_FIELDS_PRESENT);
             tradePayload.setLookupStatus(LookUpStatusEnum.FAIL);
             tradePayload.setJeStatus(PostedStatusEnum.NOT_POSTED);
             tradePayload.setPayload("");
@@ -93,8 +94,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
         ConcurrentHashMap<String, Session> sessionsByThread = new ConcurrentHashMap<>();
         CountDownLatch latch = new CountDownLatch(1);
+        int threadsNumber = 10;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(threadsNumber);
 
         //Runnable that each threads will execute
         Runnable task = () -> {
@@ -104,14 +106,13 @@ import static org.junit.jupiter.api.Assertions.*;
                 Session session = instance.getConnection();
                 assertNotNull(session);
                 sessionsByThread.put(Thread.currentThread().getName(), session);
-
             } catch (InterruptedException e) {
                 Thread.currentThread().isInterrupted();
             }
         };
 
         //Start multiple threads
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < threadsNumber; i++) {
             executorService.submit(task);
         }
 

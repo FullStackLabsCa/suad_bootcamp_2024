@@ -80,11 +80,8 @@ public class HibernateTradePositionRepository implements PositionRepository {
             }
 
             position.setVersion(version + 1);
-
             session.persist(position);
-
             transaction.commit();
-
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -111,12 +108,6 @@ public class HibernateTradePositionRepository implements PositionRepository {
         // Combine predicates with AND
         query.where(criteriaBuilder.and(accountNumberPredicate, cusipPredicate));
         return session.createQuery(query).uniqueResult();
-
-//        return session.createQuery(
-//                        "SELECT version FROM Position WHERE accountNumber = :accountNumber and cusip = :cusip", Integer.class)
-//                .setParameter("accountNumber", accountNumber)
-//                .setParameter("cusip", cusip)
-//                .uniqueResult();
     }
 }
 

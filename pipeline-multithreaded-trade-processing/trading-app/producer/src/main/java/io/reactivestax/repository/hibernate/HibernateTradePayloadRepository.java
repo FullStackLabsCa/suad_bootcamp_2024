@@ -46,17 +46,6 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         return Optional.ofNullable(tradePayload.getTradeId());
     }
 
-    //using the criteria api for returning the count
-//    public int readTradePayloadCount() {
-//        Session session = HibernateUtil.getInstance().getConnection();
-//        final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-//        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
-//        Root<TradePayload> root = query.from(TradePayload.class);
-//        query.select(criteriaBuilder.count(root));
-//        List<Long> resultList = session.createQuery(query).getResultList();
-//        return resultList.size();
-//    }
-
     @Override
     public void updateLookUpStatus(String tradeId) {
         Session session = HibernateUtil.getInstance().getConnection();
@@ -92,22 +81,5 @@ public class HibernateTradePayloadRepository implements PayloadRepository {
         session.getTransaction().commit();
     }
 
-
-    //using the criteria api for returning the payloadByTradeId
-//    @Override
-//    public Optional<TradePayload> readTradePayloadByTradeId(String tradeId) {
-//        Session session = HibernateUtil.getInstance().getConnection();
-//        final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-//        CriteriaQuery<TradePayload> query = criteriaBuilder.createQuery(TradePayload.class);
-//        Root<TradePayload> root = query.from(TradePayload.class);
-//        query.select(root.get("payload"));
-//        query.where(criteriaBuilder.equal(root.get("tradeId"), tradeId));
-//
-//        // Limit the result to only 1 record
-//        return Optional.ofNullable(session.createQuery(query)
-//                .setMaxResults(1)
-//                .getSingleResult()
-//        );
-//    }
 
 }
