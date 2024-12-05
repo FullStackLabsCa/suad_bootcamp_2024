@@ -258,9 +258,9 @@
       <recent name="io.reactivestax.utility" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CachePerfomrance">
-    <configuration name="CachePerfomrance" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.reactivestax.CachePerfomrance" />
+  <component name="RunManager" selected="Application.CachePerformance">
+    <configuration name="CachePerformance" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.reactivestax.CachePerformance" />
       <module name="cache-library" />
       <extension name="coverage">
         <pattern>
@@ -336,7 +336,7 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.CachePerfomrance" />
+      <item itemvalue="Application.CachePerformance" />
       <item itemvalue="JUnit.BeanFactoryTest" />
       <item itemvalue="JUnit.All in consumer" />
       <item itemvalue="JUnit.HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId" />
@@ -345,7 +345,7 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CachePerfomrance" />
+        <item itemvalue="Application.CachePerformance" />
         <item itemvalue="JUnit.java in consumer" />
         <item itemvalue="JUnit.HibernateTradePayloadRepositoryTest.testReadTradePayloadByTradeId" />
         <item itemvalue="JUnit.HibernateUtilTest (1)" />
