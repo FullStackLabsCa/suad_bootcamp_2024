@@ -61,6 +61,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.CachePerfomrance.executor": "Run",
+    "Application.CachePerformance.executor": "Run",
     "Application.Main (1).executor": "Run",
     "Application.Main.executor": "Run",
     "Application.TradeConsumerRunner.executor": "Run",
