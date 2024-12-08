@@ -5,11 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CachePerformance {
 
-    public Cache<Integer, String> cache = new Cache<>("LRU");
+    private volatile boolean isRunning = true;
+
+    public Cache<Integer, String> cache = new Cache<>();
 
 
     public void addData() {
-
         //TTL based implementation
         CacheEntry<String> physics = new CacheEntry<>("physics", 2000L);
         CacheEntry<String> chemistry = new CacheEntry<>("chemistry", 4000L);
@@ -30,16 +31,57 @@ public class CachePerformance {
     public void runFlow() {
         addData();
         log.info("Size is : {}", cache.size());
+        spawnDemonThread();
 
     }
 
     public static void main(String[] args) {
-        new CachePerformance().runFlow();
-        // Keep the main thread alive
+        CachePerformance cachePerformance = new CachePerformance();
+        cachePerformance.startApplication(65000); // Run for 65 secon
+    }
+
+    public void startApplication(long runtimeMillis) {
+        spawnDemonThread();
         try {
-            Thread.sleep(700000); // Keep the application running for 30 seconds
+            Thread.sleep(runtimeMillis);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+        stopDaemonThread();
     }
+
+    public void stopDaemonThread() {
+        isRunning = false;
+    }
+
+    public void spawnDemonThread(){
+        Thread cleanupThread = new Thread(() -> {
+            while (true) {
+                try {
+                    cleanupExpiredEntries();
+                    sleep(2000); // Check every 2 seconds
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+        cleanupThread.setDaemon(true);
+        cleanupThread.start();
+    }
+
+    protected void sleep(long millis) throws InterruptedException {
+        Thread.sleep(millis);
+    }
+
+    public void cleanupExpiredEntries() {
+        cache.cacheData.entrySet().removeIf(entry -> {
+            boolean expired = entry.getValue().isExpired();
+            if (expired) {
+                log.info("Removed after expiring the TTL: {}", entry.getValue().getValue());
+            }
+            return expired;
+        });
+    }
+
 }
