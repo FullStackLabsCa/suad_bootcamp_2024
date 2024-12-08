@@ -26,7 +26,7 @@ public class CacheEntry<V> {
     }
 
     public boolean isExpired() {
-        log.info("value and ttl : {} : {} ", value, ttl);
+//        log.info("value and ttl : {} : {} ", value, ttl);
         return ttl > 0 && (System.currentTimeMillis() > lastAccessTime + ttl);
     }
 }

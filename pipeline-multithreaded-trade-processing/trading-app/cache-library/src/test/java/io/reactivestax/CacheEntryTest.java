@@ -3,7 +3,9 @@ package io.reactivestax;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 class CacheEntryTest {
+
     @Test
     void testCacheEntryWithTtl() {
         CacheEntry<String> entry = new CacheEntry<>("TestValue", 1000L);

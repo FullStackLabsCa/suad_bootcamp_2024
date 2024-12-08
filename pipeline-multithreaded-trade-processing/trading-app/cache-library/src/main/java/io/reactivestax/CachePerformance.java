@@ -1,87 +1,36 @@
 package io.reactivestax;
 
+import io.reactivestax.eviction.FIFOEvicitionPolicy;
+import io.reactivestax.eviction.LRUEvicitionPolicy;
+import io.reactivestax.eviction.TTLEvictionPolicy;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CachePerformance {
 
-    private volatile boolean isRunning = true;
-
-    public Cache<Integer, String> cache = new Cache<>();
-
-
-    public void addData() {
-        //TTL based implementation
-        CacheEntry<String> physics = new CacheEntry<>("physics", 2000L);
-        CacheEntry<String> chemistry = new CacheEntry<>("chemistry", 4000L);
-        CacheEntry<String> math = new CacheEntry<>("math", 6000L);
-        CacheEntry<String> biology = new CacheEntry<>("biology");
-        cache.put(1, physics);
-        log.info("is expired 1: {}", cache.getCacheData().get(1).isExpired());
-        cache.put(2, chemistry);
-        log.info("is expired 2: {}", cache.getCacheData().get(2).isExpired());
-        cache.put(3, math);
-        log.info("is expired 3: {}", cache.getCacheData().get(3).isExpired());
-        cache.put(4, biology);
-        log.info("is expired 4: {}", cache.getCacheData().get(3).isExpired());
-    }
-
-
 
     public void runFlow() {
-        addData();
-        log.info("Size is : {}", cache.size());
-        spawnDemonThread();
+        CacheFactory<Integer, String> factory = new CacheFactory<>();
+        Cache<Integer, String> ttlCache = factory.createCacheWithEviction(new TTLEvictionPolicy<>(), 2000);
+        ttlCache.put(1, new CacheEntry<>("physics", 2000));
+        ttlCache.put(2, new CacheEntry<>("chemistry", 4000));
+        ttlCache.put(3, new CacheEntry<>("english", -1));
+
+
+        Cache<Integer, String> lruCache = factory.createCacheWithEviction(new LRUEvicitionPolicy<>(), 2000);
+        lruCache.put(1, new CacheEntry<>("math", 3000));
+        ttlCache.put(2, new CacheEntry<>("biology", 5000));
+        ttlCache.put(3, new CacheEntry<>("tech-stream", -1));
+
+
+        Cache<Integer, String> fifoCache = factory.createCacheWithEviction(new FIFOEvicitionPolicy<>(), 2000);
+        fifoCache.put(1, new CacheEntry<>("java"));
+        fifoCache.put(2, new CacheEntry<>("kotlin"));
 
     }
 
-    public static void main(String[] args) {
-        CachePerformance cachePerformance = new CachePerformance();
-        cachePerformance.startApplication(65000); // Run for 65 secon
+    public static void main(String[] args) throws InterruptedException {
+        new CachePerformance().runFlow();
+        Thread.sleep(60000);
     }
-
-    public void startApplication(long runtimeMillis) {
-        spawnDemonThread();
-        try {
-            Thread.sleep(runtimeMillis);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        stopDaemonThread();
-    }
-
-    public void stopDaemonThread() {
-        isRunning = false;
-    }
-
-    public void spawnDemonThread(){
-        Thread cleanupThread = new Thread(() -> {
-            while (true) {
-                try {
-                    cleanupExpiredEntries();
-                    sleep(2000); // Check every 2 seconds
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        });
-        cleanupThread.setDaemon(true);
-        cleanupThread.start();
-    }
-
-    protected void sleep(long millis) throws InterruptedException {
-        Thread.sleep(millis);
-    }
-
-    public void cleanupExpiredEntries() {
-        cache.cacheData.entrySet().removeIf(entry -> {
-            boolean expired = entry.getValue().isExpired();
-            if (expired) {
-                log.info("Removed after expiring the TTL: {}", entry.getValue().getValue());
-            }
-            return expired;
-        });
-    }
-
 }
