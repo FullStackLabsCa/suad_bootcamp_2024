@@ -1,0 +1,166 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ApplicationPropertiesUtils</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: ApplicationPropertiesUtils (io.reactivestax.utility)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ApplicationPropertiesUtils</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.utility;
+&nbsp;
+&nbsp;import java.io.FileNotFoundException;
+&nbsp;import java.io.IOException;
+&nbsp;import java.io.InputStream;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Properties;
+&nbsp;
+&nbsp;import io.reactivestax.factory.BeanFactory;
+&nbsp;import lombok.Setter;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;@Slf4j</b>
+<b class="nc">&nbsp;public class ApplicationPropertiesUtils {</b>
+&nbsp;
+&nbsp;    private static final String DEFAULT_APPLICATION_PROPERTIES = &quot;application.properties&quot;;
+<b class="nc">&nbsp;    @Setter</b>
+<b class="nc">&nbsp;    private static String applicationResource = DEFAULT_APPLICATION_PROPERTIES;</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    public static String readFromApplicationPropertiesStringFormat(String propertyName) {
+<b class="nc">&nbsp;        Properties properties = new Properties();</b>
+&nbsp;
+<b class="nc">&nbsp;        try (InputStream inputStream = ApplicationPropertiesUtils.class.getClassLoader().getResourceAsStream(applicationResource)) {</b>
+<b class="nc">&nbsp;            if (inputStream == null) {</b>
+<b class="nc">&nbsp;                throw new FileNotFoundException(&quot;Property file &quot; + applicationResource + &quot;not found in the classpath&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            properties.load(inputStream);</b>
+<b class="nc">&nbsp;            return properties.getProperty(propertyName);</b>
+&nbsp;        } catch (IOException e) {
+<b class="nc">&nbsp;            log.error(e.getMessage());</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public static Integer readFromApplicationPropertiesIntegerFormat(String propertyName) throws IOException {
+<b class="nc">&nbsp;        Properties properties = new Properties();</b>
+&nbsp;
+&nbsp;        // Use class loader to load the file from the resources folder
+<b class="nc">&nbsp;        try (InputStream inputStream = ApplicationPropertiesUtils.class.getClassLoader().getResourceAsStream(applicationResource)) {</b>
+<b class="nc">&nbsp;            if (inputStream == null) {</b>
+<b class="nc">&nbsp;                throw new FileNotFoundException(&quot;Property file &quot; + applicationResource + &quot;not found in the classpath&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            properties.load(inputStream);</b>
+<b class="nc">&nbsp;            return Integer.parseInt(properties.getProperty(propertyName));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

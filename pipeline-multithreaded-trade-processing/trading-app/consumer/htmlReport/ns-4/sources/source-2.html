@@ -1,0 +1,157 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > HibernateSecuritiesReferenceRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.repository.hibernate</a>
+</div>
+
+<h1>Coverage Summary for Class: HibernateSecuritiesReferenceRepository (io.reactivestax.repository.hibernate)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HibernateSecuritiesReferenceRepository</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.repository.hibernate;
+&nbsp;
+&nbsp;import io.reactivestax.types.contract.repository.SecuritiesReferenceRepository;
+&nbsp;import io.reactivestax.repository.hibernate.entity.SecuritiesReference;
+&nbsp;import io.reactivestax.utility.database.HibernateUtil;
+&nbsp;import jakarta.persistence.criteria.CriteriaQuery;
+&nbsp;import jakarta.persistence.criteria.Root;
+&nbsp;import org.hibernate.Session;
+&nbsp;import org.hibernate.query.criteria.HibernateCriteriaBuilder;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class HibernateSecuritiesReferenceRepository implements SecuritiesReferenceRepository {
+&nbsp;    private static HibernateSecuritiesReferenceRepository instance;
+&nbsp;
+<b class="nc">&nbsp;    private HibernateSecuritiesReferenceRepository() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static synchronized HibernateSecuritiesReferenceRepository getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new HibernateSecuritiesReferenceRepository();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean lookUpSecurities(String cusip) {
+<b class="nc">&nbsp;        Session session = HibernateUtil.getInstance().getConnection();</b>
+<b class="nc">&nbsp;        HibernateCriteriaBuilder cb = session.getCriteriaBuilder();</b>
+&nbsp;        // Step 2: Create CriteriaQuery
+&nbsp;        CriteriaQuery&lt;SecuritiesReference&gt; cq = cb.createQuery(SecuritiesReference.class);
+<b class="nc">&nbsp;        // Step 3: Define the Root (FROM clause)</b>
+&nbsp;        Root&lt;SecuritiesReference&gt; root = cq.from(SecuritiesReference.class);
+&nbsp;        // Step 4: Define the WHERE clause
+<b class="nc">&nbsp;        cq.select(root).where(cb.equal(root.get(&quot;cusip&quot;), cusip));</b>
+&nbsp;        // Step 5: Execute the query
+&nbsp;        List&lt;SecuritiesReference&gt; cusipList = session.createQuery(cq).getResultList();
+<b class="nc">&nbsp;        // Return true if the list is not empty, meaning the cusip was found</b>
+&nbsp;        return !cusipList.isEmpty();
+&nbsp;    }
+<b class="nc">&nbsp;}</b>
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

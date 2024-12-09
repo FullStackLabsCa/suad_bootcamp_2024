@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > TradeProcessorService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.service</a>
+</div>
+
+<h1>Coverage Summary for Class: TradeProcessorService (io.reactivestax.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TradeProcessorService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.service;
+&nbsp;
+&nbsp;import io.reactivestax.types.contract.QueueLoader;
+&nbsp;import io.reactivestax.types.contract.TradeProcessor;
+&nbsp;import io.reactivestax.types.contract.repository.JournalEntryRepository;
+&nbsp;import io.reactivestax.types.contract.repository.PayloadRepository;
+&nbsp;import io.reactivestax.types.contract.repository.PositionRepository;
+&nbsp;import io.reactivestax.types.contract.repository.SecuritiesReferenceRepository;
+&nbsp;import io.reactivestax.types.dto.Trade;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.util.concurrent.atomic.AtomicInteger;
+&nbsp;
+&nbsp;import static io.reactivestax.factory.BeanFactory.*;
+&nbsp;import static io.reactivestax.utility.Utility.prepareTrade;
+&nbsp;
+<b class="nc">&nbsp;@Slf4j</b>
+&nbsp;public class TradeProcessorService implements TradeProcessor {
+<b class="nc">&nbsp;    private static final AtomicInteger countSec = new AtomicInteger(0);</b>
+&nbsp;    private static TradeProcessorService instance;
+&nbsp;
+<b class="nc">&nbsp;    private TradeProcessorService() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static synchronized TradeProcessorService getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new TradeProcessorService();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void processTrade(String tradeId) throws SQLException {
+<b class="nc">&nbsp;        PayloadRepository tradePayloadRepository = getTradePayloadRepository();</b>
+<b class="nc">&nbsp;        SecuritiesReferenceRepository lookupSecuritiesRepository = getLookupSecuritiesRepository();</b>
+<b class="nc">&nbsp;        JournalEntryRepository journalEntryRepository = getJournalEntryRepository();</b>
+<b class="nc">&nbsp;        tradePayloadRepository.readTradePayloadByTradeId(tradeId).ifPresent(payload -&gt; {</b>
+<b class="nc">&nbsp;            Trade trade = prepareTrade(payload);</b>
+<b class="nc">&nbsp;            log.info(&quot;result journal{}&quot;, payload);</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                boolean validSecurity = lookupSecuritiesRepository.lookUpSecurities(trade.getCusip());</b>
+<b class="nc">&nbsp;                if (validSecurity) {</b>
+<b class="nc">&nbsp;                    journalEntryRepository.saveJournalEntry(trade);</b>
+<b class="nc">&nbsp;                    tradePayloadRepository.updateLookUpStatus(tradeId);</b>
+<b class="nc">&nbsp;                    tradePayloadRepository.updateJournalStatus(tradeId);</b>
+<b class="nc">&nbsp;                    executePositionTransaction(trade);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    log.debug(&quot;times {} {}&quot;, trade.getCusip(), countSec.incrementAndGet());</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(); // For checking the max retry mechanism throwing error and catching it in retry mechanism.....</b>
+&nbsp;                }
+&nbsp;            } catch (SQLException e) {
+<b class="nc">&nbsp;                log.info(&quot;Exception while processing journal entries&quot;);</b>
+<b class="nc">&nbsp;                throw new RuntimeException(e);</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;
+&nbsp;    public void executePositionTransaction(Trade trade) throws SQLException {
+<b class="nc">&nbsp;        PositionRepository positionsRepository = getPositionsRepository();</b>
+<b class="nc">&nbsp;        Integer version = positionsRepository.getCusipVersion(trade);</b>
+<b class="nc">&nbsp;        if (version != null) {</b>
+<b class="nc">&nbsp;            positionsRepository.upsertPosition(trade, version);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            positionsRepository.insertPosition(trade);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

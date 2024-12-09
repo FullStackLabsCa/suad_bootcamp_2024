@@ -1,0 +1,192 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RabbitMQLoader</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.utility.messaging</a>
+</div>
+
+<h1>Coverage Summary for Class: RabbitMQLoader (io.reactivestax.utility.messaging)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RabbitMQLoader</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.utility.messaging;
+&nbsp;
+&nbsp;import com.rabbitmq.client.CancelCallback;
+&nbsp;import com.rabbitmq.client.Channel;
+&nbsp;import com.rabbitmq.client.DeliverCallback;
+&nbsp;import io.reactivestax.types.contract.QueueLoader;
+&nbsp;import io.reactivestax.types.enums.RabbitMQHeaders;
+&nbsp;import io.reactivestax.utility.messaging.reciever.dlq.CustomCancelCallback;
+&nbsp;import io.reactivestax.utility.messaging.reciever.dlq.RabbitMQMessageCallBack;
+&nbsp;import io.reactivestax.utility.RabbitMQUtils;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.concurrent.TimeoutException;
+&nbsp;
+&nbsp;import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+&nbsp;
+&nbsp;public class RabbitMQLoader implements QueueLoader {
+&nbsp;
+&nbsp;    private static RabbitMQLoader instance;
+&nbsp;
+<b class="nc">&nbsp;    private RabbitMQLoader() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static synchronized RabbitMQLoader getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new RabbitMQLoader();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void consumeMessage(String queueName) throws IOException, TimeoutException {
+&nbsp;
+<b class="nc">&nbsp;        Channel channel = setUpQueueWithRetry(queueName);</b>
+&nbsp;
+<b class="nc">&nbsp;        DeliverCallback deliverCallback = new RabbitMQMessageCallBack(channel, queueName);</b>
+&nbsp;
+<b class="nc">&nbsp;        CancelCallback cancelCallback = new CustomCancelCallback();</b>
+&nbsp;
+&nbsp;        // Start consuming messages with manual acknowledgment
+<b class="nc">&nbsp;        channel.basicConsume(queueName, false, deliverCallback, cancelCallback);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Channel setUpQueueWithRetry(String queueName) throws IOException, TimeoutException {
+<b class="nc">&nbsp;        String dlxExchange = readFromApplicationPropertiesStringFormat(&quot;queue.dlx.exchange&quot;);</b>
+<b class="nc">&nbsp;        Channel channel = RabbitMQUtils.getRabbitMQChannel();</b>
+<b class="nc">&nbsp;        channel.exchangeDeclare(dlxExchange, &quot;direct&quot;);</b>
+&nbsp;        // DLQ should have a TTL and dead-lettering back to the main queue
+<b class="nc">&nbsp;        Map&lt;String, Object&gt; dlqArguments = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        dlqArguments.put(RabbitMQHeaders.X_TTL.getHeaderKey(), 5000);</b>
+<b class="nc">&nbsp;        dlqArguments.put(RabbitMQHeaders.X_DLE.getHeaderKey(),</b>
+<b class="nc">&nbsp;                readFromApplicationPropertiesStringFormat(&quot;queue.exchange.name&quot;)); // Requeue to main exchange</b>
+<b class="nc">&nbsp;        dlqArguments.put(RabbitMQHeaders.X_DLRK.getHeaderKey() + queueName, queueName); // Requeue to the main queue, here the main key routing key is queueName.</b>
+&nbsp;
+&nbsp;        // Declare DLQ with TTL
+<b class="nc">&nbsp;        channel.queueDeclare(readFromApplicationPropertiesStringFormat(&quot;queue.dlx&quot;) + queueName, true, false, false, dlqArguments);</b>
+<b class="nc">&nbsp;        channel.queueBind(readFromApplicationPropertiesStringFormat(&quot;queue.dlx&quot;) + queueName, dlxExchange, queueName);</b>
+&nbsp;
+&nbsp;        // Declare the main Quorum Queue with DLX routing
+<b class="nc">&nbsp;        Map&lt;String, Object&gt; mainQueueArguments = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        mainQueueArguments.put(RabbitMQHeaders.X_QT.getHeaderKey(), &quot;quorum&quot;); // Declare quorum queue</b>
+<b class="nc">&nbsp;        mainQueueArguments.put(RabbitMQHeaders.X_DLE.getHeaderKey(), dlxExchange); // If a message is rejected, send to DLX</b>
+<b class="nc">&nbsp;        mainQueueArguments.put(RabbitMQHeaders.X_DLRK.getHeaderKey(), queueName);</b>
+&nbsp;
+<b class="nc">&nbsp;        channel.queueDeclare(queueName, true, false, false, mainQueueArguments); //Declaring the main queue with the argument</b>
+&nbsp;
+&nbsp;
+&nbsp;        //dead-queue to hold the rejected trade after reaching max retries.
+<b class="nc">&nbsp;        channel.queueBind(queueName, readFromApplicationPropertiesStringFormat(&quot;queue.exchange.name&quot;), queueName);</b>
+<b class="nc">&nbsp;        channel.exchangeDeclare(RabbitMQHeaders.X_DLE.getHeaderKey(), &quot;direct&quot;);</b>
+<b class="nc">&nbsp;        channel.queueDeclare(RabbitMQHeaders.X_DEATH.getHeaderKey(), true, false, false, null);</b>
+<b class="nc">&nbsp;        channel.queueBind(RabbitMQHeaders.X_DEATH.getHeaderKey(), RabbitMQHeaders.X_DLE.getHeaderKey(), &quot;dead-routing-key&quot;);</b>
+<b class="nc">&nbsp;        return channel;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

@@ -50,7 +50,7 @@ class HibernateTradePayloadRepositoryTest {
     }
 
     @Test
-    void insertTradeIntoTradePayloadTable() throws Exception {
+    void insertTradeIntoTradePayloadTable() {
 
         try (MockedStatic<HibernateUtil> mockedHibernateUtil = Mockito.mockStatic(HibernateUtil.class)) {
             //Since it is singleton and getInstance() is static method we have to access through the mockstatic

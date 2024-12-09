@@ -1,0 +1,147 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Utility</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.utility</a>
+</div>
+
+<h1>Coverage Summary for Class: Utility (io.reactivestax.utility)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Utility</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.utility;
+&nbsp;
+&nbsp;import io.reactivestax.types.dto.Trade;
+&nbsp;import io.reactivestax.types.enums.Direction;
+&nbsp;import jakarta.persistence.Enumerated;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;public class Utility {</b>
+&nbsp;
+&nbsp;    public static boolean checkValidity(String[] split) {
+<b class="nc">&nbsp;        return (split[0] != null &amp;&amp; split[1] != null &amp;&amp; split[2] != null &amp;&amp; split[3] != null &amp;&amp; split[4] != null &amp;&amp; split[5] != null &amp;&amp; split[6] != null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static Trade prepareTrade(String payload) {
+<b class="nc">&nbsp;        String[] payloads = payload.split(&quot;,&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        return Trade.builder()</b>
+<b class="nc">&nbsp;                .tradeIdentifier(payloads[0])</b>
+<b class="nc">&nbsp;                .tradeDateTime(payloads[1])</b>
+<b class="nc">&nbsp;                .accountNumber(payloads[2])</b>
+<b class="nc">&nbsp;                .cusip(payloads[3])</b>
+<b class="nc">&nbsp;                .direction(Direction.valueOf(payloads[4]))</b>
+<b class="nc">&nbsp;                .quantity(Integer.parseInt(payloads[5]))</b>
+<b class="nc">&nbsp;                .price(Double.parseDouble(payloads[6]))</b>
+<b class="nc">&nbsp;                .position(Integer.parseInt(payloads[5]))</b>
+<b class="nc">&nbsp;                .build();</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

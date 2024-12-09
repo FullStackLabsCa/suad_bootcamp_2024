@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DBUtils</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.utility.database</a>
+</div>
+
+<h1>Coverage Summary for Class: DBUtils (io.reactivestax.utility.database)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DBUtils</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.utility.database;
+&nbsp;
+&nbsp;import com.zaxxer.hikari.HikariConfig;
+&nbsp;import com.zaxxer.hikari.HikariDataSource;
+&nbsp;import io.reactivestax.types.contract.repository.ConnectionUtil;
+&nbsp;import io.reactivestax.types.contract.repository.TransactionUtil;
+&nbsp;import io.reactivestax.types.exception.HikariCPConnectionException;
+&nbsp;import io.reactivestax.types.exception.TransactionHandlingException;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;
+&nbsp;import javax.sql.DataSource;
+&nbsp;import java.io.FileNotFoundException;
+&nbsp;import java.sql.Connection;
+&nbsp;import java.sql.SQLException;
+&nbsp;
+&nbsp;import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+&nbsp;
+<b class="nc">&nbsp;@Slf4j</b>
+&nbsp;public class DBUtils implements TransactionUtil, ConnectionUtil&lt;Connection&gt; {
+&nbsp;
+&nbsp;    private static DBUtils instance;
+&nbsp;    private DataSource dataSource;
+<b class="nc">&nbsp;    @Getter</b>
+&nbsp;    private final ThreadLocal&lt;Connection&gt; connectionHolder = new ThreadLocal&lt;&gt;();
+&nbsp;
+<b class="nc">&nbsp;    private DBUtils() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void createDataSource() {
+<b class="nc">&nbsp;        HikariConfig config = new HikariConfig();</b>
+<b class="nc">&nbsp;        config.setJdbcUrl(readFromApplicationPropertiesStringFormat(&quot;db.url&quot;));</b>
+<b class="nc">&nbsp;        config.setUsername(readFromApplicationPropertiesStringFormat(&quot;db.username&quot;));</b>
+<b class="nc">&nbsp;        config.setPassword(readFromApplicationPropertiesStringFormat(&quot;db.password&quot;));</b>
+&nbsp;
+&nbsp;        // Optional HikariCP settings
+<b class="nc">&nbsp;        config.setMaximumPoolSize(10); // Max 50 connections in the pool</b>
+<b class="nc">&nbsp;        config.setMinimumIdle(5); // Minimum idle connections</b>
+<b class="nc">&nbsp;        config.setConnectionTimeout(30000); // 30 seconds timeout for obtaining a connection</b>
+<b class="nc">&nbsp;        config.setIdleTimeout(600000); // 10 minutes idle timeout</b>
+&nbsp;
+&nbsp;        // Create the HikariCP data source
+<b class="nc">&nbsp;        dataSource = new HikariDataSource(config);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public static synchronized DBUtils getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new DBUtils();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Connection getConnection() {
+<b class="nc">&nbsp;        Connection connection = connectionHolder.get();</b>
+<b class="nc">&nbsp;        if (connection == null) {</b>
+<b class="nc">&nbsp;            dataSource = getHikkariDataSource();</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                connection = dataSource.getConnection();</b>
+<b class="nc">&nbsp;                connectionHolder.set(connection);</b>
+&nbsp;            } catch (Exception e) {
+<b class="nc">&nbsp;                log.error(e.getMessage());</b>
+<b class="nc">&nbsp;                throw new HikariCPConnectionException(&quot;Error getting connection from HikkariCp&quot;, e);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return connection;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private synchronized DataSource getHikkariDataSource() {
+<b class="nc">&nbsp;        if (dataSource == null) {</b>
+<b class="nc">&nbsp;            createDataSource();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return dataSource;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void closeConnection() {
+<b class="nc">&nbsp;        Connection connection = connectionHolder.get();</b>
+<b class="nc">&nbsp;        if (connection != null) {</b>
+&nbsp;            try {
+&nbsp;                connection.close();
+&nbsp;            } catch (Exception e) {
+<b class="nc">&nbsp;                log.error(e.getMessage());</b>
+&nbsp;            } finally {
+<b class="nc">&nbsp;                connectionHolder.remove();</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void startTransaction() {
+&nbsp;        try {
+<b class="nc">&nbsp;            getConnection().setAutoCommit(false);</b>
+&nbsp;        } catch (SQLException e) {
+<b class="nc">&nbsp;            log.error(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void commitTransaction() {
+&nbsp;        try {
+<b class="nc">&nbsp;            connectionHolder.get().commit();</b>
+<b class="nc">&nbsp;            connectionHolder.get().setAutoCommit(false);</b>
+<b class="nc">&nbsp;            closeConnection();</b>
+&nbsp;        } catch (SQLException e) {
+<b class="nc">&nbsp;            log.error(e.getMessage());</b>
+<b class="nc">&nbsp;            throw new TransactionHandlingException(&quot;error committing transaction&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void rollbackTransaction() {
+&nbsp;        try {
+<b class="nc">&nbsp;            connectionHolder.get().rollback();</b>
+<b class="nc">&nbsp;            connectionHolder.get().setAutoCommit(false);</b>
+<b class="nc">&nbsp;            closeConnection();</b>
+&nbsp;        } catch (SQLException e) {
+<b class="nc">&nbsp;            log.error(e.getMessage());</b>
+<b class="nc">&nbsp;            throw new TransactionHandlingException(&quot;error rolling back transaction&quot;, e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

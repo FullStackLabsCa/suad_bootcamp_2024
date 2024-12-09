@@ -1,0 +1,201 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > HibernateTradePayloadRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.repository.hibernate</a>
+</div>
+
+<h1>Coverage Summary for Class: HibernateTradePayloadRepository (io.reactivestax.repository.hibernate)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HibernateTradePayloadRepository</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/45)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.repository.hibernate;
+&nbsp;
+&nbsp;import io.reactivestax.types.contract.repository.PayloadRepository;
+&nbsp;import io.reactivestax.types.dto.Trade;
+&nbsp;import io.reactivestax.repository.hibernate.entity.TradePayload;
+&nbsp;import io.reactivestax.types.enums.LookUpStatusEnum;
+&nbsp;import io.reactivestax.types.enums.PostedStatusEnum;
+&nbsp;import io.reactivestax.types.enums.StatusReasonEnum;
+&nbsp;import io.reactivestax.types.enums.ValidityStatusEnum;
+&nbsp;import io.reactivestax.utility.database.HibernateUtil;
+&nbsp;import org.hibernate.Session;
+&nbsp;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;import static io.reactivestax.utility.Utility.checkValidity;
+&nbsp;import static io.reactivestax.utility.Utility.prepareTrade;
+&nbsp;
+&nbsp;
+&nbsp;public class HibernateTradePayloadRepository implements PayloadRepository {
+&nbsp;
+&nbsp;    private static HibernateTradePayloadRepository instance;
+&nbsp;
+&nbsp;    private HibernateTradePayloadRepository() {
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public static synchronized HibernateTradePayloadRepository getInstance() {</b>
+&nbsp;        if (instance == null) {
+&nbsp;            instance = new HibernateTradePayloadRepository();
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+&nbsp;    public Optional&lt;String&gt; insertTradeIntoTradePayloadTable(String payload) throws Exception {
+&nbsp;        Session session = HibernateUtil.getInstance().getConnection();
+&nbsp;        Trade trade = prepareTrade(payload);
+&nbsp;        TradePayload tradePayload = TradePayload.builder()
+<b class="nc">&nbsp;                .tradeId(trade.getTradeIdentifier())</b>
+<b class="nc">&nbsp;                .validityStatus(checkValidity(payload.split(&quot;,&quot;)) ? ValidityStatusEnum.VALID : ValidityStatusEnum.INVALID)</b>
+<b class="nc">&nbsp;                .statusReason(checkValidity(payload.split(&quot;,&quot;)) ? StatusReasonEnum.ALL_FIELDS_PRESENT : StatusReasonEnum.FIELDS_MISSING)</b>
+<b class="nc">&nbsp;                .lookupStatus(LookUpStatusEnum.FAIL)</b>
+<b class="nc">&nbsp;                .jeStatus(PostedStatusEnum.NOT_POSTED)</b>
+<b class="nc">&nbsp;                .payload(payload)</b>
+<b class="nc">&nbsp;                .build();</b>
+<b class="nc">&nbsp;        session.persist(tradePayload);</b>
+<b class="nc">&nbsp;        return Optional.ofNullable(tradePayload.getTradeId());</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;    @Override</b>
+<b class="nc">&nbsp;    public void updateLookUpStatus(String tradeId) {</b>
+&nbsp;        Session session = HibernateUtil.getInstance().getConnection();
+&nbsp;        session.beginTransaction();
+&nbsp;        Optional&lt;TradePayload&gt; optionalTradePayload = session.createQuery(&quot;FROM TradePayload WHERE tradeId = :tradeId&quot;, TradePayload.class)
+&nbsp;                .setParameter(&quot;tradeId&quot;, tradeId)
+&nbsp;                .stream()
+<b class="nc">&nbsp;                .findFirst();</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        optionalTradePayload.ifPresent(tradePayload -&gt; {</b>
+<b class="nc">&nbsp;                    tradePayload.setLookupStatus(LookUpStatusEnum.PASS);</b>
+<b class="nc">&nbsp;                    session.persist(tradePayload);</b>
+<b class="nc">&nbsp;                }</b>
+&nbsp;        );
+<b class="nc">&nbsp;        session.getTransaction().commit();</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;</b>
+&nbsp;
+&nbsp;    @Override
+<b class="nc">&nbsp;    public void updateJournalStatus(String tradeId) {</b>
+&nbsp;        Session session = HibernateUtil.getInstance().getConnection();
+&nbsp;        session.beginTransaction();
+&nbsp;        Optional&lt;TradePayload&gt; optionalTradePayload = session.createQuery(&quot;FROM TradePayload WHERE tradeId = :tradeId&quot;, TradePayload.class)
+&nbsp;                .setParameter(&quot;tradeId&quot;, tradeId)
+&nbsp;                .stream()
+<b class="nc">&nbsp;                .findFirst();</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        optionalTradePayload.ifPresent(tradePayload -&gt; {</b>
+<b class="nc">&nbsp;            tradePayload.setJeStatus(PostedStatusEnum.POSTED);</b>
+<b class="nc">&nbsp;            session.persist(tradePayload);</b>
+<b class="nc">&nbsp;        });</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;        session.getTransaction().commit();</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+<b class="nc">&nbsp;</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

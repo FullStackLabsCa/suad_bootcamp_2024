@@ -1,0 +1,219 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ChunkGeneratorService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.service</a>
+</div>
+
+<h1>Coverage Summary for Class: ChunkGeneratorService (io.reactivestax.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ChunkGeneratorService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/39)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.service;
+&nbsp;
+&nbsp;import io.reactivestax.types.contract.ChunkGenerator;
+&nbsp;import io.reactivestax.factory.BeanFactory;
+&nbsp;import io.reactivestax.utility.ApplicationPropertiesUtils;
+&nbsp;import io.reactivestax.utility.Utility;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;
+&nbsp;import java.io.*;
+&nbsp;import java.net.URISyntaxException;
+&nbsp;import java.nio.file.Paths;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.concurrent.ExecutorService;
+&nbsp;import java.util.concurrent.Executors;
+&nbsp;import java.util.concurrent.atomic.AtomicInteger;
+&nbsp;import java.util.stream.IntStream;
+&nbsp;
+&nbsp;import static io.reactivestax.utility.ApplicationPropertiesUtils.readFromApplicationPropertiesStringFormat;
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;@Slf4j</b>
+&nbsp;public class ChunkGeneratorService implements ChunkGenerator {
+&nbsp;
+&nbsp;    private static ChunkGeneratorService instance;
+&nbsp;
+<b class="nc">&nbsp;    private ChunkGeneratorService() {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static ChunkGeneratorService getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new ChunkGeneratorService();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected BufferedReader createBufferReader(InputStream inputStream) throws IOException {
+<b class="nc">&nbsp;        return new BufferedReader(new InputStreamReader(inputStream));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Integer generateAndSubmitChunks(String filePath, Integer numberOfChunks) throws IOException {
+<b class="nc">&nbsp;        List&lt;String&gt; lines = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        try (InputStream inputStream = Utility.getResourceAsStream(ApplicationPropertiesUtils.class, filePath);</b>
+<b class="nc">&nbsp;             BufferedReader reader = createBufferReader(inputStream)) {</b>
+&nbsp;
+&nbsp;            String line;
+<b class="nc">&nbsp;            while ((line = reader.readLine()) != null) {</b>
+<b class="nc">&nbsp;                lines.add(line);</b>
+&nbsp;            }
+&nbsp;        } catch (IOException e) {
+<b class="nc">&nbsp;            log.info(&quot;File not found.. {}&quot;, e.getMessage());</b>
+<b class="nc">&nbsp;            throw new FileNotFoundException(e.getMessage());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        int totalLines = lines.size();</b>
+<b class="nc">&nbsp;        int linesPerChunk = (totalLines - 1) / numberOfChunks; //excluding the header here so doing -1</b>
+&nbsp;
+<b class="nc">&nbsp;        String header = lines.get(0);</b>
+<b class="nc">&nbsp;        generateChunks(numberOfChunks, header, linesPerChunk, totalLines, lines);</b>
+<b class="nc">&nbsp;        return numberOfChunks;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private static void generateChunks(Integer numberOfChunks, String header, int linesPerChunk, int totalLines, List&lt;String&gt; lines) {
+<b class="nc">&nbsp;        ExecutorService executorService = Executors.newSingleThreadExecutor();</b>
+&nbsp;
+&nbsp;        //creating the chunks and submitting to the executorService
+<b class="nc">&nbsp;        AtomicInteger startLine = new AtomicInteger(1);</b>
+&nbsp;
+&nbsp;        String resourceDirectory;
+&nbsp;        try {
+<b class="nc">&nbsp;            resourceDirectory = Paths.get(ClassLoader.getSystemResource(&quot;&quot;).toURI()).toString();</b>
+&nbsp;        } catch (URISyntaxException e) {
+<b class="nc">&nbsp;            log.error(&quot;Failed to locate resource directory&quot;, e);</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        IntStream.range(0, numberOfChunks).forEach(i -&gt; {</b>
+<b class="nc">&nbsp;            String relativePath = readFromApplicationPropertiesStringFormat(&quot;chunks.file.path&quot;) + &quot;trades_chunk_&quot; + (i + 1) + &quot;.csv&quot;;</b>
+<b class="nc">&nbsp;            String outputFile = Paths.get(resourceDirectory, relativePath).toString(); //Paths.get(resource) retrieves the baseFilePath tills the resources and concatenate with the chunks file path</b>
+&nbsp;
+<b class="nc">&nbsp;            executorService.submit(() -&gt; {</b>
+&nbsp;
+<b class="nc">&nbsp;                try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {</b>
+<b class="nc">&nbsp;                    writer.write(header);</b>
+<b class="nc">&nbsp;                    writer.newLine();</b>
+<b class="nc">&nbsp;                    int endLine = Math.min(startLine.get() + linesPerChunk, totalLines); // this ensures that line doesn&#39;t read beyond the last-line.</b>
+<b class="nc">&nbsp;                    for (int j = startLine.get(); j &lt; endLine; j++) {</b>
+<b class="nc">&nbsp;                        writer.write(lines.get(j));</b>
+<b class="nc">&nbsp;                        writer.newLine();</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    startLine.set(endLine);</b>
+&nbsp;                    //adding to queue for making the chunk generator and chunk processor decoupled
+<b class="nc">&nbsp;                    BeanFactory.setChunksFileMappingQueue(outputFile);</b>
+<b class="nc">&nbsp;                    log.info(&quot;Created  {}&quot;, outputFile);</b>
+&nbsp;                } catch (IOException e) {
+<b class="nc">&nbsp;                    log.info(&quot;Error in chunks generation {}&quot;, e.getMessage());</b>
+&nbsp;                }
+&nbsp;            });
+&nbsp;        });
+<b class="nc">&nbsp;        executorService.shutdown();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>

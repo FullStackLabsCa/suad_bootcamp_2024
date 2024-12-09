@@ -1,0 +1,168 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ChunkProcessorService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">io.reactivestax.service</a>
+</div>
+
+<h1>Coverage Summary for Class: ChunkProcessorService (io.reactivestax.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ChunkProcessorService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package io.reactivestax.service;
+&nbsp;
+&nbsp;import io.reactivestax.factory.BeanFactory;
+&nbsp;import io.reactivestax.types.contract.ChunkProcessor;
+&nbsp;import io.reactivestax.types.contract.repository.PayloadRepository;
+&nbsp;import io.reactivestax.types.contract.repository.TransactionUtil;
+&nbsp;import io.reactivestax.types.dto.Trade;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;
+&nbsp;import java.io.BufferedReader;
+&nbsp;import java.io.FileReader;
+&nbsp;
+&nbsp;import static io.reactivestax.utility.Utility.prepareTrade;
+&nbsp;
+<b class="nc">&nbsp;@Slf4j</b>
+<b class="nc">&nbsp;public class ChunkProcessorService implements ChunkProcessor {</b>
+&nbsp;
+&nbsp;
+&nbsp;    private static ChunkProcessorService instance;
+&nbsp;
+&nbsp;
+&nbsp;    public static ChunkProcessorService getInstance() {
+<b class="nc">&nbsp;        if (instance == null) {</b>
+<b class="nc">&nbsp;            instance = new ChunkProcessorService();</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void processChunks(String filePath) throws Exception {
+<b class="nc">&nbsp;        PayloadRepository tradePayloadRepository = BeanFactory.getTradePayloadRepository();</b>
+<b class="nc">&nbsp;        TransactionUtil transactionUtil = BeanFactory.getTransactionUtil();</b>
+<b class="nc">&nbsp;        MessagePublisherService messagePublisherService = MessagePublisherService.getInstance();</b>
+<b class="nc">&nbsp;        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {</b>
+<b class="nc">&nbsp;            reader.</b>
+<b class="nc">&nbsp;                    lines().</b>
+<b class="nc">&nbsp;                    skip(1). //skipping the header</b>
+<b class="nc">&nbsp;                    forEach(line -&gt; {</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    Trade trade = prepareTrade(line);</b>
+<b class="nc">&nbsp;                    transactionUtil.startTransaction();</b>
+<b class="nc">&nbsp;                    tradePayloadRepository.insertTradeIntoTradePayloadTable(line);</b>
+<b class="nc">&nbsp;                    transactionUtil.commitTransaction();</b>
+<b class="nc">&nbsp;                    messagePublisherService.figureTheNextQueue(trade);</b>
+&nbsp;                } catch (Exception e) {
+<b class="nc">&nbsp;                    log.error(&quot;error while processing the trade&quot;);</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;            });
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-12-09 14:45</div>
+</div>
+</body>
+</html>
