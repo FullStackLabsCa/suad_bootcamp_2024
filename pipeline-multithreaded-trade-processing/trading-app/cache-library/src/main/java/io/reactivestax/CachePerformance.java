@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CachePerformance {
 
     public void runFlow() {
-        CacheFactory<Integer, String> factory = new CacheFactory<>();
+        CacheFactory<Integer, String> factory = new CacheFactory<>(new EvictionManager<>());
         
         Cache<Integer, String> ttlCache = new Cache<>();
         ttlCache.put(1, new CacheEntry<>("physics", 5000));
