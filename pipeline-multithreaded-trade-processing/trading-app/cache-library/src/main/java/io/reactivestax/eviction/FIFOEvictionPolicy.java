@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-public class FIFOEvicitionPolicy<K, V> implements EvictionPolicy<K,V> {
+public class FIFOEvictionPolicy<K, V> implements EvictionPolicy<K,V> {
     @Override
     public void evict(Cache<K, V> cache) {
         cache.getCacheData().entrySet().stream()

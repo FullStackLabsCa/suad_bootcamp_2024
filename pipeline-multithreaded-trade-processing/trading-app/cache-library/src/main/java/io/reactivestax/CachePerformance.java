@@ -1,13 +1,10 @@
 package io.reactivestax;
 
-import io.reactivestax.eviction.FIFOEvicitionPolicy;
-import io.reactivestax.eviction.LRUEvicitionPolicy;
-import io.reactivestax.eviction.TTLEvictionPolicy;
+import io.reactivestax.eviction.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CachePerformance {
-
 
     public void runFlow() {
         CacheFactory<Integer, String> factory = new CacheFactory<>();
@@ -26,12 +23,27 @@ public class CachePerformance {
         lruCache.put(1, new CacheEntry<>("java", 5000));
         lruCache.put(2, new CacheEntry<>("kotlin", 6000));
 
+
+        Cache<Integer, String> sizeBasedCache = new Cache<>();
+        sizeBasedCache.put(1, new CacheEntry<>("oracle"));
+        sizeBasedCache.put(2, new CacheEntry<>("postgres"));
+        sizeBasedCache.put(3, new CacheEntry<>("mysql", -1));
+
+        Cache<Integer, String> randomCache = new Cache<>();
+        randomCache.put(1, new CacheEntry<>("docker"));
+        randomCache.put(2, new CacheEntry<>("kubernetes"));
+        randomCache.put(3, new CacheEntry<>("aws"));
+
         factory.applyEvictionPolicy(ttlCache, new TTLEvictionPolicy<>(), 2000);
-        factory.applyEvictionPolicy(fifoCache, new FIFOEvicitionPolicy<>(), 3000);
+        factory.applyEvictionPolicy(fifoCache, new FIFOEvictionPolicy<>(), 3000);
+       //checking the demon thread call
         ttlCache.put(4, new CacheEntry<>("updated", 3000));
         ttlCache.put(2, new CacheEntry<>("updated", 4000));
-        factory.applyEvictionPolicy(lruCache, new LRUEvicitionPolicy<>(), 2000);
+
+        factory.applyEvictionPolicy(lruCache, new LREvictionPolicy<>(), 2000);
         factory.applyEvictionPolicy(ttlCache, new TTLEvictionPolicy<>(), 2000);
+        factory.applyEvictionPolicy(sizeBasedCache, new SizedBasedEvictionPolicy<>(), 3000);
+        factory.applyEvictionPolicy(randomCache, new RandomReplacementEvictionPolicy<>(), 2000);
 
     }
 

@@ -16,7 +16,7 @@ public class EvictionManager<K, V> {
 
     public void registerEvictionPolicy(Cache<K, V> cache, EvictionPolicy<K, V> policy, long  evictionInterval){
 
-        String uniqueKey = generateUniqueKey(cache, policy);
+        String uniqueKey = generateUniqueKey(policy);
 
         evictionTasks.computeIfAbsent(uniqueKey, key -> {
             log.info("hit the threads...");
@@ -42,7 +42,7 @@ public class EvictionManager<K, V> {
     }
 
     public void stopEvictionPolicy(Cache<K, V> cache, EvictionPolicy<K, V> policy) {
-        String uniqueKey = generateUniqueKey(cache, policy);
+        String uniqueKey = generateUniqueKey(policy);
         AtomicBoolean isRunning = evictionTasks.remove(uniqueKey);
         Thread evictionThread = evictionThreads.remove(uniqueKey);
 
@@ -62,7 +62,7 @@ public class EvictionManager<K, V> {
         evictionThreads.clear();
     }
 
-    private String generateUniqueKey(Cache<K, V> cache, EvictionPolicy<K, V> policy) {
+    private String generateUniqueKey(EvictionPolicy<K, V> policy) {
         return  policy.getClass().getName();
     }
 }
