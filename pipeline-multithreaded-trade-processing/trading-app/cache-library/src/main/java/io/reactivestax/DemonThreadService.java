@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 public class DemonThreadService {
-    public static <K, V>  AtomicBoolean spawnDemonOnEviction(Cache<K, V> cache, EvictionPolicy<K, V> policy, long evictionInterval) {
+    public static  <K, V>  AtomicBoolean spawnDemonOnEviction(Cache<K, V> cache, EvictionPolicy<K, V> policy, long evictionInterval) {
         AtomicBoolean isRunning = new AtomicBoolean(true);
         Thread evictionThread = new Thread(() -> {
             while (isRunning.get()) {

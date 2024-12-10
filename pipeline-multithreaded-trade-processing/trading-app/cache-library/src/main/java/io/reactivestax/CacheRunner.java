@@ -8,7 +8,7 @@ public class CacheRunner {
 
     public void runFlow() {
         CacheFactory factory = new CacheFactory();
-        
+
         Cache<Integer, String> ttlCache = new Cache<>();
         ttlCache.put(1, new CacheEntry<>("physics", 5000));
         ttlCache.put(2, new CacheEntry<>("chemistry", 6000));
@@ -36,7 +36,7 @@ public class CacheRunner {
 
         factory.applyEvictionPolicy(ttlCache, new TTLEvictionPolicy<>(), 2000);
         factory.applyEvictionPolicy(fifoCache, new FIFOEvictionPolicy<>(), 3000);
-       //checking the demon thread call
+        //checking the demon thread call
         ttlCache.put(4, new CacheEntry<>("updated", 3000));
         ttlCache.put(2, new CacheEntry<>("updated", 4000));
 
@@ -55,4 +55,5 @@ public class CacheRunner {
         new CacheRunner().runFlow();
         Thread.sleep(60000);
     }
+
 }

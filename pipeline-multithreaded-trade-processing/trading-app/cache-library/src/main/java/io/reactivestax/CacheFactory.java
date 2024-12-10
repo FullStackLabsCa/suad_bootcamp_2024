@@ -16,7 +16,7 @@ public class CacheFactory {
         String uniqueKey = generateUniqueKey(policy);
         evictionTasks.computeIfAbsent(uniqueKey, key -> {
             log.info("hit the threads...");
-            return DemonThreadService.spawnDemonOnEviction(cache, policy, evictionInterval);
+            return  DemonThreadService.spawnDemonOnEviction(cache, policy, evictionInterval);
         });
     }
 
