@@ -4,16 +4,17 @@ import io.reactivestax.contract.EvictionPolicy;
 import lombok.extern.slf4j.Slf4j;
 
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 public class DemonThreadService {
-    public static  <K, V>  AtomicBoolean spawnDemonOnEviction(Cache<K, V> cache, EvictionPolicy<K, V> policy, long evictionInterval) {
+    public static  <K, V>  AtomicBoolean spawnDemonOnEviction(List<Cache<K, V>> cacheList, EvictionPolicy<K, V> policy, long evictionInterval) {
         AtomicBoolean isRunning = new AtomicBoolean(true);
         Thread evictionThread = new Thread(() -> {
             while (isRunning.get()) {
                 try {
-                    policy.evict(cache);
+                    policy.evict(cacheList);
                     Thread.sleep(evictionInterval);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();

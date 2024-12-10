@@ -3,11 +3,16 @@ package io.reactivestax;
 import io.reactivestax.eviction.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 public class CacheRunner {
 
     public void runFlow() {
-        CacheFactory factory = new CacheFactory();
+        CacheFactory<Integer, String> factory = new CacheFactory<>();
+        TTLEvictionPolicy<Integer, String> ttlPolicy = new TTLEvictionPolicy<>();
+        List<Cache<Integer, String>> ttlCacheList =  new ArrayList<>();
 
         Cache<Integer, String> ttlCache = new Cache<>();
         ttlCache.put(1, new CacheEntry<>("physics", 5000));
@@ -34,26 +39,29 @@ public class CacheRunner {
         randomCache.put(2, new CacheEntry<>("kubernetes"));
         randomCache.put(3, new CacheEntry<>("aws"));
 
-        factory.applyEvictionPolicy(ttlCache, new TTLEvictionPolicy<>(), 2000);
-        factory.applyEvictionPolicy(fifoCache, new FIFOEvictionPolicy<>(), 3000);
-        //checking the demon thread call
-        ttlCache.put(4, new CacheEntry<>("updated", 3000));
-        ttlCache.put(2, new CacheEntry<>("updated", 4000));
+        ttlCacheList.add(ttlCache);
 
-        factory.applyEvictionPolicy(lruCache, new LREvictionPolicy<>(), 2000);
+        factory.applyEvictionPolicy(ttlCache, ttlPolicy, 1000);
+        factory.applyEvictionPolicy(fifoCache, new FIFOEvictionPolicy<>(), 1000);
+
+        //checking the demon thread call
+        ttlCache.put(9, new CacheEntry<>("updated", 3000));
+        ttlCache.put(8, new CacheEntry<>("updated1", 4500));
+
+        factory.applyEvictionPolicy(lruCache, new LRUEvictionPolicy<>(), 2000);
         factory.applyEvictionPolicy(ttlCache, new TTLEvictionPolicy<>(), 2000);
         factory.applyEvictionPolicy(sizeBasedCache, new SizedBasedEvictionPolicy<>(), 3000);
         factory.applyEvictionPolicy(randomCache, new RandomReplacementEvictionPolicy<>(), 2000);
 
         Cache<Integer, String> ttlCache1 = new Cache<>();
         ttlCache1.put(88, new CacheEntry<>("json", 3000));
-        ttlCache1.put(99, new CacheEntry<>("soap", 3500));
-        factory.applyEvictionPolicy(ttlCache1, new TTLEvictionPolicy<>(), 2000);
+        ttlCache1.put(99, new CacheEntry<>("soap", 5500));
+        factory.applyEvictionPolicy(ttlCache1, ttlPolicy, 2000);
     }
 
     public static void main(String[] args) throws InterruptedException {
         new CacheRunner().runFlow();
-        Thread.sleep(60000);
+        Thread.sleep(80000);
     }
 
 }

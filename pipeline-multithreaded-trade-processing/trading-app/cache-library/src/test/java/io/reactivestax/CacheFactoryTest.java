@@ -1,6 +1,7 @@
 package io.reactivestax;
 
 import io.reactivestax.contract.EvictionPolicy;
+import io.reactivestax.eviction.TTLEvictionPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,22 +21,27 @@ import static org.mockito.Mockito.*;
 class CacheFactoryTest {
 
     @InjectMocks
-    private CacheFactory cacheFactory;
-
-    @Mock
-    private Cache<String, String> mockCache;
+    private CacheFactory<String, String> cacheFactory;
 
     @Mock
     private EvictionPolicy<String, String> mockPolicy;
 
+    private Cache<String, String> cache;
+
     @Mock
-    private DemonThreadService  mockDemonThreadService;
+    private EvictionPolicy<String, String> policy;
+
+    @BeforeEach
+    void setUp(){
+        cache = new Cache<>();
+        policy = new TTLEvictionPolicy<>();
+    }
 
 
     @Test
     @DisplayName("Should generate unique key correctly")
     void testGenerateUniqueKey() {
-        String uniqueKey = cacheFactory.generateUniqueKey(mockCache, mockPolicy);
+        String uniqueKey = cacheFactory.generateUniqueKey(mockPolicy);
         assertEquals(mockPolicy.getClass().getName(), uniqueKey);
     }
 
@@ -47,7 +53,7 @@ class CacheFactoryTest {
         try (MockedStatic<DemonThreadService> demonThreadServiceMockedStatic = mockStatic(DemonThreadService.class)) {
             demonThreadServiceMockedStatic.when(() -> DemonThreadService.spawnDemonOnEviction(any(), any(), anyLong())).thenReturn(new AtomicBoolean(true));
 
-            cacheFactory.applyEvictionPolicy(mockCache, mockPolicy, evictionInterval);
+            cacheFactory.applyEvictionPolicy(cache, new TTLEvictionPolicy<>(), evictionInterval);
             Thread.sleep(evictionInterval * 2);
             demonThreadServiceMockedStatic.verify(()->DemonThreadService.spawnDemonOnEviction(Mockito.any(), Mockito.any(), anyLong()), times(1));
         }
@@ -59,8 +65,8 @@ class CacheFactoryTest {
     void testAvoidDuplicateEvictionTasks() {
         long evictionInterval = 50L;
 
-        cacheFactory.applyEvictionPolicy(mockCache, mockPolicy, evictionInterval);
-        cacheFactory.applyEvictionPolicy(mockCache, mockPolicy, evictionInterval);
+        cacheFactory.applyEvictionPolicy(cache, policy, evictionInterval);
+        cacheFactory.applyEvictionPolicy(cache, policy, evictionInterval);
 
         // Ensure only one task/thread is created
         assertEquals(1, cacheFactory.evictionTasks.size());

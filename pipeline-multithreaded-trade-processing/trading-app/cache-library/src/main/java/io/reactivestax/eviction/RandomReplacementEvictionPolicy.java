@@ -15,12 +15,14 @@ public class RandomReplacementEvictionPolicy<K,V> implements EvictionPolicy<K,V>
 
     private final Random random = new Random();
     @Override
-    public void evict(Cache<K, V> cache) {
-         List<K> keys = new ArrayList<>(cache.keys());
-        if(!keys.isEmpty()){
-             K randomKey = keys.get(random.nextInt(keys.size()));
-             cache.remove(randomKey);
-            log.info("Evicted (RRE): {}", randomKey);
-         }
+    public void evict(List<Cache<K, V>> cache) {
+        cache.forEach(cacheData -> {
+            List<K> keys = new ArrayList<>(cacheData.keys());
+            if (!keys.isEmpty()) {
+                K randomKey = keys.get(random.nextInt(keys.size()));
+                cacheData.remove(randomKey);
+                log.info("Evicted (RRE): {}", randomKey);
+            }
+        });
     }
 }
