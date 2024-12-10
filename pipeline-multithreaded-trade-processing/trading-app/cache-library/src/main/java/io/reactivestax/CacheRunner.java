@@ -46,8 +46,8 @@ public class CacheRunner {
         factory.applyEvictionPolicy(randomCache, new RandomReplacementEvictionPolicy<>(), 2000);
 
         Cache<Integer, String> ttlCache1 = new Cache<>();
-        ttlCache1.put(1, new CacheEntry<>("json", 3000));
-        ttlCache1.put(2, new CacheEntry<>("soap", 3500));
+        ttlCache1.put(88, new CacheEntry<>("json", 3000));
+        ttlCache1.put(99, new CacheEntry<>("soap", 3500));
         factory.applyEvictionPolicy(ttlCache1, new TTLEvictionPolicy<>(), 2000);
     }
 

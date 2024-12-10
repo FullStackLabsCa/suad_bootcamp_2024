@@ -35,7 +35,7 @@ class CacheFactoryTest {
     @Test
     @DisplayName("Should generate unique key correctly")
     void testGenerateUniqueKey() {
-        String uniqueKey = cacheFactory.generateUniqueKey(mockPolicy);
+        String uniqueKey = cacheFactory.generateUniqueKey(mockCache, mockPolicy);
         assertEquals(mockPolicy.getClass().getName(), uniqueKey);
     }
 
