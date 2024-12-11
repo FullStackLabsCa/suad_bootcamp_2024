@@ -32,7 +32,7 @@ class CacheFactoryTest {
     private EvictionPolicy<String, String> policy;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         cache = new Cache<>();
         policy = new TTLEvictionPolicy<>();
     }
@@ -49,13 +49,12 @@ class CacheFactoryTest {
     @Test
     @DisplayName("Should register eviction policy and start eviction thread")
     void testApplyEvictionPolicy() throws InterruptedException {
-            long evictionInterval = 50L;
+        long evictionInterval = 50L;
         try (MockedStatic<DemonThreadService> demonThreadServiceMockedStatic = mockStatic(DemonThreadService.class)) {
             demonThreadServiceMockedStatic.when(() -> DemonThreadService.spawnDemonOnEviction(any(), any(), anyLong())).thenReturn(new AtomicBoolean(true));
-
             cacheFactory.applyEvictionPolicy(cache, new TTLEvictionPolicy<>(), evictionInterval);
             Thread.sleep(evictionInterval * 2);
-            demonThreadServiceMockedStatic.verify(()->DemonThreadService.spawnDemonOnEviction(Mockito.any(), Mockito.any(), anyLong()), times(1));
+            demonThreadServiceMockedStatic.verify(() -> DemonThreadService.spawnDemonOnEviction(Mockito.any(), Mockito.any(), anyLong()), times(1));
         }
     }
 
