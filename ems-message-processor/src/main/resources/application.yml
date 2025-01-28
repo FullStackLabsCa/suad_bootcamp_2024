@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: EMS-message-processor
+  artemis:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ems_database
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8085
+twilio:
+  account-sid: AC8e01688b33fff403e0f8457a4c81a05e
+  auth-token: e665236c623a71ad598ab831ed7f8444
+  phone-number: +12696054569
