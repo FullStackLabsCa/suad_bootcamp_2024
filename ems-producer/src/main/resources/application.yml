@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: spring-boot-ems
+  artemis:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ems_database
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+otp:
+  max-otp-generation-attempts: 5
+  max-verification-attempts: 3
+  sliding-window-hours: 8
+  verification-block-time-hours: 2
+queue:
+  name: ems-queue

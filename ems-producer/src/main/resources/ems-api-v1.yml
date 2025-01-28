@@ -1,0 +1,186 @@
+openapi: 3.0.1
+info:
+  title: Enterprise Messaging Service API
+  description: API for sending SMS, Emails, Calls, and OTP operations.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+    description: Production server
+  - url: https://staging.api.example.com
+    description: Staging server
+paths:
+  /api/v1/ems/sms:
+    post:
+      summary: Send SMS message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  example: "123e4567-e89b-42d3-a456-556642440000"
+                phone:
+                  type: string
+                  example: "+1234567890"
+                message:
+                  type: string
+                  example: "Hi how are you"
+      responses:
+        200:
+          description: SMS sent successfully
+        400:
+          description: Invalid request
+
+  /api/v1/ems/email:
+    post:
+      summary: Send Email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  example: "123e4567-e89b-42d3-a456-556642440000"
+                to:
+                  type: string
+                  example: "user@example.com"
+                subject:
+                  type: string
+                  example: "Welcome Email"
+                body:
+                  type: string
+                  example: "Welcome to our service!"
+      responses:
+        200:
+          description: Email sent successfully
+        400:
+          description: Invalid request
+
+  /api/v1/ems/call:
+    post:
+      summary: Initiate a phone call
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  example: "123e4567-e89b-42d3-a456-556642440000"
+                phone:
+                  type: string
+                  example: "+1234567890"
+                message:
+                  type: string
+                  example: "Hello, this is a test call."
+      responses:
+        200:
+          description: Call initiated successfully
+        400:
+          description: Invalid request
+
+  /api/v1/otp/sms:
+    post:
+      summary: Generate and send OTP via sms
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  example: "123e4567-e89b-42d3-a456-556642440000"
+                phone:
+                  type: string
+                  example: "+1234567890"
+      responses:
+        200:
+          description: OTP sent successfully via sms
+        400:
+          description: Invalid request
+
+  /api/v1/otp/call:
+    post:
+      summary: Generate and send OTP via call
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  example: "123e4567-e89b-42d3-a456-556642440000"
+                phone:
+                  type: string
+                  example: "+1234567890"
+      responses:
+        200:
+          description: OTP sent successfully via call
+        400:
+          description: Invalid request
+
+  /api/v1/otp/email:
+    post:
+      summary: Generate and send OTP via email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  example: "123e4567-e89b-42d3-a456-556642440000"
+                email:
+                  type: string
+                  example: "DoeJohn@example.com"
+      responses:
+        200:
+          description: OTP sent successfully via email
+        400:
+          description: Invalid request
+
+  /api/v1/otp/verify:
+    put:
+      summary: Verify OTP status
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "123e4567-e89b-42d3-a456-556642440000"
+      responses:
+        200:
+          description: OTP verified successfully
+        404:
+          description: OTP not found
+
+  /api/v1/otp/status:
+    get:
+      summary: Get OTP status
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "123e4567-e89b-42d3-a456-556642440000"
+      responses:
+        200:
+          description: OTP is valid
+        404:
+          description: OTP is not valid
