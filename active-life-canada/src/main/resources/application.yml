@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: active-life-canada
+  artemis:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+  datasource:
+    url: jdbc:postgresql://localhost:5432/active-life-db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+queue:
+  name: active-life-queue
