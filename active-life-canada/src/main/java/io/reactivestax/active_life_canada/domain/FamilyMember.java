@@ -33,14 +33,14 @@ public class FamilyMember {
     private String businessPhone;
     private String language;
     private String memberLoginId;
-    private Boolean isActive;
+    private Boolean isActive = false;
     private String preferredContact;
 
     @OneToMany(mappedBy = "familyMember")
     @JsonManagedReference
     private List<FamilyCourseRegistration> familyCourseRegistration = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     @JoinColumn(name = "family_group_id", nullable = false)
     private FamilyGroup familyGroup;

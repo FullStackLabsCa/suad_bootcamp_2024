@@ -3,9 +3,7 @@ package io.reactivestax.active_life_canada.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +11,8 @@ import java.util.List;
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class FamilyGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

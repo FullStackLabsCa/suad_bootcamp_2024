@@ -12,6 +12,8 @@ import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class FamilyGroupService {
 
@@ -26,5 +28,11 @@ public class FamilyGroupService {
         FamilyGroup entity = familyGroupMapper.toEntity(familyGroupDto);
         return familyGroupMapper.toDto(familyGroupRepository.save(entity));
     }
+
+    public FamilyGroup findById(Long id){
+       return familyGroupRepository.findById(id).orElseThrow(() -> new RuntimeException("Family group not found"));
+    }
+
+
 
 }
