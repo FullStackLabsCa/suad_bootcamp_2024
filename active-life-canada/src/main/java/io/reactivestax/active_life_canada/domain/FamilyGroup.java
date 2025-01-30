@@ -1,6 +1,7 @@
 package io.reactivestax.active_life_canada.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -17,20 +18,22 @@ public class FamilyGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyGroupId;
     private String familyPin;
-    private Integer credits;
-    private String status;
+    private Integer credits = 0;
+    private String status = "inActive";
+    private String groupOwner;
     private Integer failedLoginAttempts;
 
     @OneToMany(mappedBy = "familyGroup", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     @ToString.Exclude
     private List<FamilyMember> familyMember;
 
     @Column(name = "created_ts")
-    private LocalDateTime createdTimeStamps;
+    private LocalDateTime createdTimeStamps = LocalDateTime.now();
     @Column(name = "last_updated_ts")
     private LocalDateTime lastUpdatedTimeStamps;
     private Long createdBy;
     private Long updatedBy;
+
 
 }

@@ -1,10 +1,8 @@
 package io.reactivestax.active_life_canada.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -26,8 +24,18 @@ public class FamilyCourseRegistration {
     private String enrollmentActor;
     private Long enrollmentActorId;
     private LocalDateTime createdTimeStamp;
-    private Long offeredCourseId;
-    private Long familyMemberId;
+
+    @ManyToOne
+    @JsonBackReference
+    @ToString.Exclude
+    @JoinColumn(name = "family_member_id")
+    private FamilyMember familyMember;
+
+    @ManyToOne
+    @JsonBackReference
+    @ToString.Exclude
+    @JoinColumn(name = "offered_course_id")
+    private OfferedCourse offeredCourse;
 
     @Column(name = "last_updated_ts")
     private LocalDateTime lastUpdatedTimeStamp;

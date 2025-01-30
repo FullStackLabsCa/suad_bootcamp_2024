@@ -1,13 +1,13 @@
 package io.reactivestax.active_life_canada.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,14 +34,21 @@ public class FamilyMember {
     private String language;
     private String memberLoginId;
     private Boolean isActive;
+    private String preferredContact;
+
+    @OneToMany(mappedBy = "familyMember")
+    @JsonManagedReference
+    private List<FamilyCourseRegistration> familyCourseRegistration = new ArrayList<>();
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference
     @JoinColumn(name = "family_group_id", nullable = false)
     private FamilyGroup familyGroup;
 
-    @OneToOne
-    private LoginRequest loginRequest;
+    @OneToMany(mappedBy = "familyMember")
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<LoginRequest> loginRequests = new ArrayList<>();
 }
 
 

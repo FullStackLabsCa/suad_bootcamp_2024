@@ -24,6 +24,7 @@ public class OfferedCourse {
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer numberOfClassesOffered;
+    private Integer numberOfSeats;
     private LocalTime startTIme;
     private LocalTime endTIme;
     private Boolean isAllDayCourse;
@@ -36,6 +37,12 @@ public class OfferedCourse {
     @JsonManagedReference
     @ToString.Exclude
     private List<OfferedCourseFee> offeredCourseFees = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "offeredCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<FamilyCourseRegistration> familyCourseRegistrations = new ArrayList<>();
 
     @ManyToOne
     @JsonBackReference
