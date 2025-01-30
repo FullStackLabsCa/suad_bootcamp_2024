@@ -1,6 +1,5 @@
 package io.reactivestax.dto;
 
-import jakarta.persistence.Entity;
 import lombok.Data;
 
 

@@ -26,8 +26,8 @@ public class ArtemisConsumer {
         String[] splittedMessage = message.split(",");
         String messageType = splittedMessage[0];
         String receivedMessage = splittedMessage[1];
-//        twilioService.callTwilioBasedOnMessageType(receivedMessage, messageType);
-        twilioRestService.callTwilio(receivedMessage);
+        twilioService.callTwilioBasedOnMessageType(receivedMessage, messageType);
+//        twilioRestService.callTwilio(receivedMessage);
     }
 
 }

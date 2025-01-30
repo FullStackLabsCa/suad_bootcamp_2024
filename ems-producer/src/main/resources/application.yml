@@ -20,3 +20,5 @@ otp:
   verification-block-time-hours: 2
 queue:
   name: ems-queue
+server:
+  port: 8081

@@ -22,6 +22,7 @@ public class Otp {
 
     private List<LocalDateTime> generationTimeStamps = new ArrayList<>();
     private Integer validationRetryCount = 0;
+
     @Enumerated(EnumType.STRING)
     private Status otpStatus;
 

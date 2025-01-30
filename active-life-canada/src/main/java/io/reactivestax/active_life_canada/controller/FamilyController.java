@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("api/v1/family")
 @Slf4j
@@ -41,5 +43,10 @@ public class FamilyController {
     @DeleteMapping("/members/{memberId}")
     public Status deleteMembers(@PathVariable Long memberId) {
         return familyMemberService.deleteFamilyMember(memberId);
+    }
+
+    @PostMapping("/members/{memberId}/activation/{uuid}")
+    public Status addMembers(@PathVariable Long memberId, @PathVariable String uuid) {
+        return familyMemberService.validateUUUIDToken(memberId, UUID.fromString(uuid));
     }
 }

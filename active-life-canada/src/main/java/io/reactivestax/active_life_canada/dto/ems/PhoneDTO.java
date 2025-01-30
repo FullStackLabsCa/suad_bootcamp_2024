@@ -1,6 +1,5 @@
-package io.reactivestax.dto;
+package io.reactivestax.active_life_canada.dto.ems;
 
-import jakarta.persistence.Entity;
 import lombok.Data;
 
 @Data

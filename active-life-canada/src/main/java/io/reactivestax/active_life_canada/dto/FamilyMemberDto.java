@@ -24,7 +24,7 @@ public class FamilyMemberDto {
     private String memberLoginId;
     private Boolean isActive;
     private String preferredContact;
-    private List<Long> familyCourseRegistrationId;
+    private List<Long> familyCourseRegistrationIds;
     private Long familyGroupId;
     private List<Long> loginRequestIds;
 }

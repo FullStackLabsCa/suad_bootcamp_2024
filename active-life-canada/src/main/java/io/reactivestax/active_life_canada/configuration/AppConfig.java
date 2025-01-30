@@ -1,4 +1,4 @@
-package io.reactivestax.EMS_message_processor.configuration;
+package io.reactivestax.active_life_canada.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
