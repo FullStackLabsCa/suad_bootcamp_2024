@@ -5,7 +5,9 @@ import io.reactivestax.active_life_canada.domain.FamilyMember;
 import io.reactivestax.active_life_canada.domain.SignUpRequest;
 import io.reactivestax.active_life_canada.dto.FamilyGroupDto;
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
+import io.reactivestax.active_life_canada.dto.LoginRequestDto;
 import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
+import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
 import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
 import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
 import io.reactivestax.active_life_canada.enums.Status;
@@ -34,7 +36,10 @@ public class FamilyMemberService {
     private SignUpRequestRepository signUpRequestRepository;
 
     @Autowired
-    private EmsRestCallService emsRestCallService;
+    private EmsNotificationRestCallService emsNotificationRestCallService;
+
+    @Autowired
+    private EmsOtpRestCallService emsOtpRestCallService;
 
     public FamilyMemberDto saveFamilyMemberAndCreateFamilyGroup(FamilyMemberDto familyMemberDto) {
         FamilyGroupDto familyGroupDto = familyGroupService.saveGroup(FamilyGroupDto.builder().familyPin(familyMemberDto.getFamilyPin()).groupOwner(familyMemberDto.getName()).build());
@@ -56,17 +61,17 @@ public class FamilyMemberService {
             SmsDTO smsDTO = new SmsDTO();
             smsDTO.setPhone(familyMemberDto.getHomePhone());
             smsDTO.setMessage(uuid.toString());
-            emsRestCallService.sendSmsNotification(smsDTO);
+            emsNotificationRestCallService.sendSmsNotification(smsDTO);
         } else if (familyMemberDto.getPreferredContact().equalsIgnoreCase("email")) {
             EmailDTO emailDTO = new EmailDTO();
             emailDTO.setBody(uuid.toString());
             emailDTO.setReceiverEmailId(familyMemberDto.getEmailId());
             emailDTO.setSubject("Signup Activation");
-            emsRestCallService.sendEmailSignUpNotification(emailDTO);
+            emsNotificationRestCallService.sendEmailSignUpNotification(emailDTO);
         } else {
             PhoneDTO phoneDTO = new PhoneDTO();
             phoneDTO.setOutgoingPhoneNumber(phoneDTO.getOutgoingPhoneNumber());
-            emsRestCallService.sendPhoneNotification(phoneDTO);
+            emsNotificationRestCallService.sendPhoneNotification(phoneDTO);
         }
     }
 
@@ -75,11 +80,9 @@ public class FamilyMemberService {
         return familyMemberMapper.toDto(familyMemberRepository.save(familyMember));
     }
 
-
     public FamilyMemberDto addFamilyMembers(Long familyGroupId, FamilyMemberDto familyDto) {
-        FamilyMember entity = familyMemberMapper.toEntity(familyDto);
-        entity.setFamilyGroup(familyGroupService.findById(familyGroupId));
-        return familyMemberMapper.toDto(familyMemberRepository.save(entity));
+        familyDto.setFamilyGroupId(familyGroupId);
+        return save(familyDto);
     }
 
     public FamilyMemberDto findFamilyMemberById(Long memberId) {
@@ -115,13 +118,45 @@ public class FamilyMemberService {
         return Status.SUCCESS;
     }
 
-    public Status validateUUUIDToken(Long familyMemberId, UUID uuid) {
+    public Status activateMemberByUuid(Long familyMemberId, UUID uuid) {
         if (signUpRequestRepository.findByFamilyMemberIdAndUuidToken(familyMemberId, uuid) == null) {
             return Status.FAILED;
         }
         FamilyMemberDto familyMemberDto = findFamilyMemberById(familyMemberId);
+        FamilyGroupDto familyGroupDto = familyGroupService.findById(familyMemberDto.getFamilyGroupId());
+        familyGroupDto.setStatus("active");
+        familyGroupService.saveGroup(familyGroupDto);
         familyMemberDto.setIsActive(true);
         save(familyMemberDto);
+        return Status.SUCCESS;
+    }
+
+    public Status loginFamilyMember(LoginRequestDto loginRequestDto) {
+        //From family grp check the familyPin
+        FamilyMemberDto familyMemberDto = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
+        //fetch familyGrp
+        FamilyGroupDto familyGroupDto = familyGroupService.findById(familyMemberDto.getFamilyGroupId());
+
+        if(!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroupDto.getFamilyPin())){
+            throw new RuntimeException("Invalid FamilyPin...");
+        }
+        //call for the 2fa
+        return Status.SUCCESS;
+    }
+
+    public Status login2FA(LoginRequestDto loginRequestDto) {
+        FamilyMemberDto familyMemberDto = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
+
+        //send the otp on preferred contact
+        OtpDTO otpDTO = OtpDTO.builder()
+                .email(familyMemberDto.getEmailId())
+                .phone(familyMemberDto.getHomePhone())
+                .build();
+
+        emsOtpRestCallService.sendOTP(otpDTO, familyMemberDto.getPreferredContact());
+        //verify otp
+
+
         return Status.SUCCESS;
     }
 }

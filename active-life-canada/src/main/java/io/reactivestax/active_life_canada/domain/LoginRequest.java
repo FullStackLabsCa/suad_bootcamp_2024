@@ -18,6 +18,7 @@ public class LoginRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loginRequestId;
+
     @Column(name = "created_ts")
     private LocalDateTime createdTimeStamp;
 

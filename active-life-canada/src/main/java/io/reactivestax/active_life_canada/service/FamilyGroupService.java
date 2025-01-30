@@ -29,10 +29,8 @@ public class FamilyGroupService {
         return familyGroupMapper.toDto(familyGroupRepository.save(entity));
     }
 
-    public FamilyGroup findById(Long id){
-       return familyGroupRepository.findById(id).orElseThrow(() -> new RuntimeException("Family group not found"));
+    public FamilyGroupDto findById(Long id){
+       return familyGroupMapper.toDto(familyGroupRepository.findById(id).get());
     }
-
-
 
 }

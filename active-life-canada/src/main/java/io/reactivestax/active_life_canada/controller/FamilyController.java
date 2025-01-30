@@ -2,6 +2,7 @@ package io.reactivestax.active_life_canada.controller;
 
 
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
+import io.reactivestax.active_life_canada.dto.LoginRequestDto;
 import io.reactivestax.active_life_canada.enums.Status;
 import io.reactivestax.active_life_canada.service.FamilyMemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,16 @@ public class FamilyController {
         return familyMemberDto;
     }
 
+    @PostMapping("/login")
+    public Status loginFamilyMember(@RequestBody LoginRequestDto loginRequestDto) {
+        return familyMemberService.loginFamilyMember(loginRequestDto);
+    }
+
+    @PostMapping("/login/2fa")
+    public Status loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto) {
+        return familyMemberService.login2FA(loginRequestDto);
+    }
+
     @PostMapping("/members")
     public FamilyMemberDto addMembers(@RequestHeader("X-family-group-id") Long familyGroupId, @RequestBody FamilyMemberDto familyDto) {
         return familyMemberService.addFamilyMembers(familyGroupId, familyDto);
@@ -45,8 +56,8 @@ public class FamilyController {
         return familyMemberService.deleteFamilyMember(memberId);
     }
 
-    @PostMapping("/members/{memberId}/activation/{uuid}")
-    public Status addMembers(@PathVariable Long memberId, @PathVariable String uuid) {
-        return familyMemberService.validateUUUIDToken(memberId, UUID.fromString(uuid));
+    @PostMapping("/members/{memberId}/activation")
+    public Status activateMember(@PathVariable Long memberId, @RequestHeader("X-uuid-token") String uuid) {
+        return familyMemberService.activateMemberByUuid(memberId, UUID.fromString(uuid));
     }
 }

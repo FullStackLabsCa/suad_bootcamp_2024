@@ -12,7 +12,7 @@ import org.springframework.http.*;
 
 @Service
 @Slf4j
-public class EmsRestCallService {
+public class EmsNotificationRestCallService {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -20,7 +20,7 @@ public class EmsRestCallService {
 
     private static final String EMS_BASE_URL = "http://localhost:8081/api/v1/ems";
 
-    public EmailDTO sendEmailSignUpNotification(EmailDTO emailDTO) {
+    public void sendEmailSignUpNotification(EmailDTO emailDTO) {
         String emailUrl = EMS_BASE_URL + "/email";
 
         HttpHeaders headers = createAuthHeaders();
@@ -33,10 +33,10 @@ public class EmsRestCallService {
                 requestEntity,
                 EmailDTO.class
         );
-        return responseEntity.getBody();
+        responseEntity.getBody();
     }
 
-    public PhoneDTO sendPhoneNotification(PhoneDTO phoneDTO) {
+    public void sendPhoneNotification(PhoneDTO phoneDTO) {
         String phoneUrl = EMS_BASE_URL + "/phone";
 
         HttpHeaders headers = createAuthHeaders();
@@ -50,11 +50,11 @@ public class EmsRestCallService {
                 PhoneDTO.class
         );
 
-        return responseEntity.getBody();
+        responseEntity.getBody();
     }
 
 
-    public SmsDTO sendSmsNotification(SmsDTO smsDTO) {
+    public void sendSmsNotification(SmsDTO smsDTO) {
         String smsUrl = EMS_BASE_URL + "/sms";
 
         HttpHeaders headers = createAuthHeaders();
@@ -68,10 +68,9 @@ public class EmsRestCallService {
                 SmsDTO.class
         );
 
-        return responseEntity.getBody();
+        responseEntity.getBody();
     }
 
-    //
     private HttpHeaders createAuthHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/json");
