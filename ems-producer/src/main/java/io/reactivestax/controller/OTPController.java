@@ -35,6 +35,12 @@ public class OTPController {
         return ResponseEntity.ok(otpService.verifyOtp(otpDTO));
     }
 
+    @PutMapping("/verify/activeLife")
+    public ResponseEntity<Status> verifyOtpForActiveLife(@Valid @RequestBody OtpDTO otpDTO) {
+        return ResponseEntity.ok(otpService.verifyOtpForActiveLife(otpDTO));
+    }
+
+
     @GetMapping("/status/{clientId}")
     public ResponseEntity<Status> statusForOTP(@Valid @PathVariable Long clientId) {
         return ResponseEntity.ok(otpService.statusForOTP(clientId));

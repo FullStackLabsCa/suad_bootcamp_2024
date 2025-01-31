@@ -76,10 +76,10 @@ public class OTPService {
 
         otp.getGenerationTimeStamps().removeIf(timeStamp -> timeStamp.isBefore(slidingWindowStart));
 
-        if (otp.getGenerationTimeStamps().size() >= maxOtpGenerationAttempts) {
-            otp.setIsLocked(true);
-            throw new ExceededGenerationException("Max OTP generation attempts reached. Try again later.");
-        }
+//        if (otp.getGenerationTimeStamps().size() >= maxOtpGenerationAttempts) {
+//            otp.setIsLocked(true);
+//            throw new ExceededGenerationException("Max OTP generation attempts reached. Try again later.");
+//        }
         otp.setPhone(otpDTO.getPhone());
         otp.setEmail(otpDTO.getEmail());
         otp.setIsLocked(false);
@@ -111,6 +111,13 @@ public class OTPService {
         return convertToOtpDTO(otp);
     }
 
+    public Status verifyOtpForActiveLife(OtpDTO otpDTO) {
+        Otp otpByValidOtp = otpRepository.findOtpByValidOtp(otpDTO.getValidOtp());
+        if (!otpByValidOtp.getValidOtp().equals(otpDTO.getValidOtp())) {
+            return Status.INVALID;
+        }
+        return Status.VALID;
+    }
 
     public Status statusForOTP(Long clientId) {
         Otp otp = otpRepository.findOtpByClientId(clientId);
