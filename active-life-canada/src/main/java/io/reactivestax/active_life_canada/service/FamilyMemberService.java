@@ -1,22 +1,28 @@
 package io.reactivestax.active_life_canada.service;
 
 
+import io.reactivestax.active_life_canada.domain.FamilyGroup;
 import io.reactivestax.active_life_canada.domain.FamilyMember;
 import io.reactivestax.active_life_canada.domain.SignUpRequest;
 import io.reactivestax.active_life_canada.dto.FamilyGroupDto;
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
 import io.reactivestax.active_life_canada.dto.LoginRequestDto;
+import io.reactivestax.active_life_canada.dto.SignUpDto;
 import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
 import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
 import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
 import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
 import io.reactivestax.active_life_canada.enums.Status;
+import io.reactivestax.active_life_canada.enums.StatusLevel;
+import io.reactivestax.active_life_canada.exception.UserNotFoundException;
 import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
 import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
 import io.reactivestax.active_life_canada.repository.SignUpRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -41,22 +47,126 @@ public class FamilyMemberService {
     @Autowired
     private EmsOtpRestCallService emsOtpRestCallService;
 
-    public FamilyMemberDto saveFamilyMemberAndCreateFamilyGroup(FamilyMemberDto familyMemberDto) {
-        FamilyGroupDto familyGroupDto = familyGroupService.saveGroup(FamilyGroupDto.builder().familyPin(familyMemberDto.getFamilyPin()).groupOwner(familyMemberDto.getName()).build());
-        familyMemberDto.setFamilyGroupId(familyGroupDto.getFamilyGroupId());
-        FamilyMember familyMember = familyMemberMapper.toEntity(familyMemberDto);
-        FamilyMemberDto savedDto = familyMemberMapper.toDto(familyMemberRepository.save(familyMember));
+    @Transactional
+    public FamilyMemberDto saveFamilyMemberAndCreateFamilyGroup(SignUpDto signUpDto) {
+        FamilyGroup familyGroup = familyGroupService.saveGroupByFamilyGroupDto(FamilyGroupDto.builder().familyPin(signUpDto.getFamilyPin()).groupOwner(signUpDto.getName()).build());
+
+        FamilyMember familyMember = familyMemberMapper.toFamilyMember(signUpDto);
+        familyMember.setFamilyGroup(familyGroup);
+        familyMember.setIsActive(false);
+
+        familyGroup.setFamilyMember(List.of(familyMember));
+        familyMemberRepository.save(familyMember);
 
         //generate uuid and store in signUp table
         UUID uuid = UUID.randomUUID();
-        SignUpRequest signUpRequest = SignUpRequest.builder().familyMemberId(savedDto.getFamilyMemberId()).uuidToken(uuid).build();
+        SignUpRequest signUpRequest = SignUpRequest.builder().familyMemberId(familyMember.getFamilyMemberId()).uuidToken(uuid).build();
         signUpRequestRepository.save(signUpRequest);
         //send it to the user via ems rest call in preferred method...
-        sendNotification(familyMemberDto, uuid);
-        return savedDto;
+        sendNotification(familyMember, uuid);
+        return familyMemberMapper.toDto(familyMember);
     }
 
-    private void sendNotification(FamilyMemberDto familyMemberDto, UUID uuid) {
+
+    public FamilyMemberDto save(FamilyMemberDto familyMemberDto) {
+        FamilyMember familyMember = familyMemberMapper.toEntity(familyMemberDto);
+        return familyMemberMapper.toDto(familyMemberRepository.save(familyMember));
+    }
+
+    @Transactional
+    public FamilyMemberDto addFamilyMembers(Long familyGroupId, FamilyMemberDto familyDto) {
+        FamilyGroup familyGroup = familyGroupService.findById(familyGroupId);
+        FamilyMember familyMember = familyMemberMapper.toEntity(familyDto);
+        familyMember.setFamilyGroup(familyGroup);
+        familyGroup.getFamilyMember().add(familyMember);
+        familyMemberRepository.save(familyMember);
+        return familyMemberMapper.toDto(familyMember);
+    }
+
+    public FamilyMemberDto findFamilyMemberDtoById(Long memberId) {
+        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("Family Member not found"));
+        return familyMemberMapper.toDto(familyMember);
+    }
+
+    public FamilyMember findFamilyMemberById(Long memberId) {
+        return familyMemberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("Family Member not found"));
+    }
+
+    public FamilyMemberDto updateFamilyMember(Long familyGroupId, Long memberId, FamilyMemberDto familyMemberDto) {
+        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("Family Member not found"));
+        familyMember.setName(familyMemberDto.getName());
+        familyMember.setDob(familyMemberDto.getDob());
+        familyMember.setEmailId(familyMemberDto.getEmailId());
+        familyMember.setStreetNumber(familyMemberDto.getStreetNumber());
+        familyMember.setStreetName(familyMemberDto.getStreetName());
+        familyMember.setCity(familyMemberDto.getCity());
+        familyMember.setProvince(familyMemberDto.getProvince());
+        familyMember.setCountry(familyMemberDto.getCountry());
+        familyMember.setHomePhone(familyMemberDto.getHomePhone());
+        familyMember.setBusinessPhone(familyMemberDto.getBusinessPhone());
+        familyMember.setLanguage(familyMemberDto.getLanguage());
+        familyMember.setPreferredContact(familyMemberDto.getPreferredContact());
+        familyMemberRepository.save(familyMember);
+
+        return familyMemberMapper.toDto(familyMember);
+    }
+
+    public StatusLevel deleteFamilyMember(Long memberId) {
+        FamilyMember familyMember = findFamilyMemberById(memberId);
+        familyMember.setIsActive(false);
+        familyMemberRepository.save(familyMember);
+        return StatusLevel.SUCCESS;
+    }
+
+    @Transactional
+    public StatusLevel activateMemberByUuid(Long familyMemberId, UUID uuid) {
+        if (signUpRequestRepository.findByFamilyMemberIdAndUuidToken(familyMemberId, uuid) == null) {
+            return StatusLevel.FAILED;
+        }
+        FamilyMember familyMember = findFamilyMemberById(familyMemberId);
+        FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
+        familyGroup.setStatus("active");
+        familyMember.setIsActive(true);
+        familyGroupService.saveGroup(familyGroup);
+        return StatusLevel.SUCCESS;
+    }
+
+    public StatusLevel loginFamilyMember(LoginRequestDto loginRequestDto) {
+        //From family grp check the familyPin
+        FamilyMember familyMember = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
+        //fetch familyGrp
+        FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
+
+        if (!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroup.getFamilyPin())) {
+            throw new RuntimeException("Invalid FamilyPin...");
+        }
+        //call for the 2fa
+        //send the otp on preferred contact
+        OtpDTO generationOtpDto = OtpDTO.builder()
+                .email(familyMember.getEmailId())
+                .phone(familyMember.getHomePhone())
+                .build();
+
+        emsOtpRestCallService.sendOTP(generationOtpDto, familyMember.getPreferredContact());
+
+        return StatusLevel.SUCCESS;
+    }
+
+    public Status login2FA(LoginRequestDto loginRequestDto) {
+        FamilyMember familyMember = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
+
+
+        OtpDTO validateOtpDto = OtpDTO.builder()
+                .email(familyMember.getEmailId())
+                .phone(familyMember.getHomePhone())
+                .validOtp(loginRequestDto.getOtp())
+                .build();
+
+        //verify otp
+       return emsOtpRestCallService.verifyOTP(validateOtpDto);
+    }
+
+    private void sendNotification(FamilyMember familyMemberDto, UUID uuid) {
         if (familyMemberDto.getPreferredContact().equalsIgnoreCase("sms")) {
             SmsDTO smsDTO = new SmsDTO();
             smsDTO.setPhone(familyMemberDto.getHomePhone());
@@ -73,90 +183,5 @@ public class FamilyMemberService {
             phoneDTO.setOutgoingPhoneNumber(phoneDTO.getOutgoingPhoneNumber());
             emsNotificationRestCallService.sendPhoneNotification(phoneDTO);
         }
-    }
-
-    public FamilyMemberDto save(FamilyMemberDto familyMemberDto) {
-        FamilyMember familyMember = familyMemberMapper.toEntity(familyMemberDto);
-        return familyMemberMapper.toDto(familyMemberRepository.save(familyMember));
-    }
-
-    public FamilyMemberDto addFamilyMembers(Long familyGroupId, FamilyMemberDto familyDto) {
-        familyDto.setFamilyGroupId(familyGroupId);
-        return save(familyDto);
-    }
-
-    public FamilyMemberDto findFamilyMemberById(Long memberId) {
-        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("Family Member not found"));
-        return familyMemberMapper.toDto(familyMember);
-    }
-
-    public FamilyMemberDto updateFamilyMember(Long familyGroupId, Long memberId, FamilyMemberDto familyMemberDto) {
-        FamilyMemberDto familyMember = findFamilyMemberById(memberId);
-        familyMember.setName(familyMemberDto.getName());
-        familyMember.setDob(familyMemberDto.getDob());
-        familyMember.setEmailId(familyMemberDto.getEmailId());
-        familyMember.setStreetNumber(familyMemberDto.getStreetNumber());
-        familyMember.setStreetName(familyMemberDto.getStreetName());
-        familyMember.setCity(familyMemberDto.getCity());
-        familyMember.setProvince(familyMemberDto.getProvince());
-        familyMember.setCountry(familyMemberDto.getCountry());
-        familyMember.setHomePhone(familyMemberDto.getHomePhone());
-        familyMember.setBusinessPhone(familyMemberDto.getBusinessPhone());
-        familyMember.setLanguage(familyMemberDto.getLanguage());
-        familyMember.setMemberLoginId(familyMemberDto.getMemberLoginId());
-        familyMember.setPreferredContact(familyMemberDto.getPreferredContact());
-        familyMember.setFamilyCourseRegistrationIds(familyMemberDto.getFamilyCourseRegistrationIds());
-        familyMember.setFamilyGroupId(familyGroupId);
-        familyMember.setLoginRequestIds(familyMemberDto.getLoginRequestIds());
-        return save(familyMember);
-    }
-
-    public Status deleteFamilyMember(Long memberId) {
-        FamilyMemberDto familyMemberDto = findFamilyMemberById(memberId);
-        familyMemberDto.setIsActive(false);
-        save(familyMemberDto);
-        return Status.SUCCESS;
-    }
-
-    public Status activateMemberByUuid(Long familyMemberId, UUID uuid) {
-        if (signUpRequestRepository.findByFamilyMemberIdAndUuidToken(familyMemberId, uuid) == null) {
-            return Status.FAILED;
-        }
-        FamilyMemberDto familyMemberDto = findFamilyMemberById(familyMemberId);
-        FamilyGroupDto familyGroupDto = familyGroupService.findById(familyMemberDto.getFamilyGroupId());
-        familyGroupDto.setStatus("active");
-        familyGroupService.saveGroup(familyGroupDto);
-        familyMemberDto.setIsActive(true);
-        save(familyMemberDto);
-        return Status.SUCCESS;
-    }
-
-    public Status loginFamilyMember(LoginRequestDto loginRequestDto) {
-        //From family grp check the familyPin
-        FamilyMemberDto familyMemberDto = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
-        //fetch familyGrp
-        FamilyGroupDto familyGroupDto = familyGroupService.findById(familyMemberDto.getFamilyGroupId());
-
-        if(!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroupDto.getFamilyPin())){
-            throw new RuntimeException("Invalid FamilyPin...");
-        }
-        //call for the 2fa
-        return Status.SUCCESS;
-    }
-
-    public Status login2FA(LoginRequestDto loginRequestDto) {
-        FamilyMemberDto familyMemberDto = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
-
-        //send the otp on preferred contact
-        OtpDTO otpDTO = OtpDTO.builder()
-                .email(familyMemberDto.getEmailId())
-                .phone(familyMemberDto.getHomePhone())
-                .build();
-
-        emsOtpRestCallService.sendOTP(otpDTO, familyMemberDto.getPreferredContact());
-        //verify otp
-
-
-        return Status.SUCCESS;
     }
 }

@@ -20,8 +20,8 @@ public class OtpDTO {
 
     //    @Max(value = 3, message = "Max attempt for OTP validation is 3")
     private Integer validationRetryCount;
-    private Status otpStatus;
-    private Status verificationStatus;
+    private Status otpStatusLevel;
+    private Status verificationStatusLevel;
     private String phone;
     private String email;
     private Boolean isLocked;

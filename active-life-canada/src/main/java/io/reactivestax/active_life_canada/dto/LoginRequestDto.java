@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Builder
 public class LoginRequestDto {
     private Long loginRequestId;
-    private String familyPin;
     private Long familyMemberId;
+    private String familyPin;
+    private String otp;
     private LocalDateTime createdTimeStamp;
 }

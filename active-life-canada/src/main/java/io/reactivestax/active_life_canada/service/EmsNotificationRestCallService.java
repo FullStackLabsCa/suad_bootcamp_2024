@@ -22,11 +22,8 @@ public class EmsNotificationRestCallService {
 
     public void sendEmailSignUpNotification(EmailDTO emailDTO) {
         String emailUrl = EMS_BASE_URL + "/email";
-
         HttpHeaders headers = createAuthHeaders();
-
         HttpEntity<EmailDTO> requestEntity = new HttpEntity<>(emailDTO, headers);
-
         ResponseEntity<EmailDTO> responseEntity = restTemplate.exchange(
                 emailUrl,
                 HttpMethod.POST,
@@ -38,11 +35,8 @@ public class EmsNotificationRestCallService {
 
     public void sendPhoneNotification(PhoneDTO phoneDTO) {
         String phoneUrl = EMS_BASE_URL + "/phone";
-
         HttpHeaders headers = createAuthHeaders();
-
         HttpEntity<PhoneDTO> requestEntity = new HttpEntity<>(phoneDTO, headers);
-
         ResponseEntity<PhoneDTO> responseEntity = restTemplate.exchange(
                 phoneUrl,
                 HttpMethod.POST,
@@ -56,18 +50,14 @@ public class EmsNotificationRestCallService {
 
     public void sendSmsNotification(SmsDTO smsDTO) {
         String smsUrl = EMS_BASE_URL + "/sms";
-
         HttpHeaders headers = createAuthHeaders();
-
         HttpEntity<SmsDTO> requestEntity = new HttpEntity<>(smsDTO, headers);
-
         ResponseEntity<SmsDTO> responseEntity = restTemplate.exchange(
                 smsUrl,
                 HttpMethod.POST,
                 requestEntity,
                 SmsDTO.class
         );
-
         responseEntity.getBody();
     }
 

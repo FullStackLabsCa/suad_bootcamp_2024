@@ -23,8 +23,4 @@ public class FamilyGroupDto {
     private String groupOwner;
     private Integer failedLoginAttempts;
     private List<Long> familyMemberIds;
-    private LocalDateTime createdTimeStamps;
-    private LocalDateTime lastUpdatedTimeStamps;
-    private Long createdBy;
-    private Long updatedBy;
 }

@@ -2,17 +2,11 @@ package io.reactivestax.active_life_canada.service;
 
 
 import io.reactivestax.active_life_canada.domain.FamilyGroup;
-import io.reactivestax.active_life_canada.domain.FamilyMember;
 import io.reactivestax.active_life_canada.dto.FamilyGroupDto;
-import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
 import io.reactivestax.active_life_canada.mapper.FamilyGroupMapper;
-import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
 import io.reactivestax.active_life_canada.repository.FamilyGroupRepository;
-import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class FamilyGroupService {
@@ -24,13 +18,17 @@ public class FamilyGroupService {
     private FamilyGroupMapper familyGroupMapper;
 
 
-    public FamilyGroupDto saveGroup(FamilyGroupDto familyGroupDto){
+    public FamilyGroup saveGroupByFamilyGroupDto(FamilyGroupDto familyGroupDto){
         FamilyGroup entity = familyGroupMapper.toEntity(familyGroupDto);
-        return familyGroupMapper.toDto(familyGroupRepository.save(entity));
+        return familyGroupRepository.save(entity);
     }
 
-    public FamilyGroupDto findById(Long id){
-       return familyGroupMapper.toDto(familyGroupRepository.findById(id).get());
+    public FamilyGroup saveGroup(FamilyGroup familyGroup){
+        return familyGroupRepository.save(familyGroup);
+    }
+
+    public FamilyGroup findById(Long id){
+       return familyGroupRepository.findById(id).get();
     }
 
 }

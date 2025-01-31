@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,14 +27,13 @@ public class FamilyGroup {
     @OneToMany(mappedBy = "familyGroup", cascade = CascadeType.ALL)
     @JsonManagedReference
     @ToString.Exclude
-    private List<FamilyMember> familyMember;
+    private List<FamilyMember> familyMember = new ArrayList<>();
 
     @Column(name = "created_ts")
     private LocalDateTime createdTimeStamps = LocalDateTime.now();
+
     @Column(name = "last_updated_ts")
     private LocalDateTime lastUpdatedTimeStamps;
     private Long createdBy;
     private Long updatedBy;
-
-
 }

@@ -3,10 +3,13 @@ package io.reactivestax.active_life_canada.controller;
 
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
 import io.reactivestax.active_life_canada.dto.LoginRequestDto;
+import io.reactivestax.active_life_canada.dto.SignUpDto;
 import io.reactivestax.active_life_canada.enums.Status;
+import io.reactivestax.active_life_canada.enums.StatusLevel;
 import io.reactivestax.active_life_canada.service.FamilyMemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -20,44 +23,42 @@ public class FamilyController {
     private FamilyMemberService familyMemberService;
 
     @PostMapping("/signup")
-    public FamilyMemberDto signUpFamilyMember(@RequestBody FamilyMemberDto familyDto) {
-        FamilyMemberDto familyMemberDto = familyMemberService.saveFamilyMemberAndCreateFamilyGroup(familyDto);
-        log.debug("Family Member saved: " + familyMemberDto);
-        return familyMemberDto;
+    public ResponseEntity<FamilyMemberDto> signUpFamilyMember(@RequestBody SignUpDto signUpDto) {
+       return ResponseEntity.ok(familyMemberService.saveFamilyMemberAndCreateFamilyGroup(signUpDto));
     }
 
     @PostMapping("/login")
-    public Status loginFamilyMember(@RequestBody LoginRequestDto loginRequestDto) {
-        return familyMemberService.loginFamilyMember(loginRequestDto);
+    public ResponseEntity<StatusLevel> loginFamilyMember(@RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.ok(familyMemberService.loginFamilyMember(loginRequestDto));
     }
 
     @PostMapping("/login/2fa")
-    public Status loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto) {
-        return familyMemberService.login2FA(loginRequestDto);
+    public ResponseEntity<Status> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.ok(familyMemberService.login2FA(loginRequestDto));
     }
 
     @PostMapping("/members")
-    public FamilyMemberDto addMembers(@RequestHeader("X-family-group-id") Long familyGroupId, @RequestBody FamilyMemberDto familyDto) {
-        return familyMemberService.addFamilyMembers(familyGroupId, familyDto);
+    public ResponseEntity<FamilyMemberDto> addMembers(@RequestHeader("X-family-group-id") Long familyGroupId, @RequestBody FamilyMemberDto familyDto) {
+        return ResponseEntity.ok(familyMemberService.addFamilyMembers(familyGroupId, familyDto));
     }
 
     @GetMapping("/members/{memberId}")
-    public FamilyMemberDto getMembers(@PathVariable Long memberId) {
-        return familyMemberService.findFamilyMemberById(memberId);
+    public ResponseEntity<FamilyMemberDto> getMembers(@PathVariable Long memberId) {
+        return ResponseEntity.ok(familyMemberService.findFamilyMemberDtoById(memberId));
     }
 
     @PutMapping("/members/{memberId}")
-    public FamilyMemberDto updateMembers(@RequestHeader("X-family-group-id") Long familyGroupId, @PathVariable Long memberId, @RequestBody FamilyMemberDto familyDto) {
-        return familyMemberService.updateFamilyMember(familyGroupId, memberId, familyDto);
+    public ResponseEntity<FamilyMemberDto> updateMembers(@RequestHeader("X-family-group-id") Long familyGroupId, @PathVariable Long memberId, @RequestBody FamilyMemberDto familyDto) {
+        return ResponseEntity.ok(familyMemberService.updateFamilyMember(familyGroupId, memberId, familyDto));
     }
 
     @DeleteMapping("/members/{memberId}")
-    public Status deleteMembers(@PathVariable Long memberId) {
-        return familyMemberService.deleteFamilyMember(memberId);
+    public ResponseEntity<StatusLevel> deleteMembers(@PathVariable Long memberId) {
+        return ResponseEntity.ok(familyMemberService.deleteFamilyMember(memberId));
     }
 
     @PostMapping("/members/{memberId}/activation")
-    public Status activateMember(@PathVariable Long memberId, @RequestHeader("X-uuid-token") String uuid) {
-        return familyMemberService.activateMemberByUuid(memberId, UUID.fromString(uuid));
+    public ResponseEntity<StatusLevel> activateMember(@PathVariable Long memberId, @RequestHeader("X-uuid-token") String uuid) {
+        return ResponseEntity.ok(familyMemberService.activateMemberByUuid(memberId, UUID.fromString(uuid)));
     }
 }

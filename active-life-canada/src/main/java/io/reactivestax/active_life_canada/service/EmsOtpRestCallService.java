@@ -1,9 +1,7 @@
 package io.reactivestax.active_life_canada.service;
 
-import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
 import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
-import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
-import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
+import io.reactivestax.active_life_canada.enums.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -45,6 +43,20 @@ public class EmsOtpRestCallService {
         responseEntity.getBody();
     }
 
+
+    public Status verifyOTP(OtpDTO otpDTO) {
+        String url = EMS_BASE_URL + "/verify/activeLife" ;
+
+        HttpHeaders headers = createAuthHeaders();
+        HttpEntity<OtpDTO> requestEntity = new HttpEntity<>(otpDTO, headers);
+        ResponseEntity<Status> responseEntity = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                requestEntity,
+                Status.class
+        );
+        return responseEntity.getBody();
+    }
 
     private HttpHeaders createAuthHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();

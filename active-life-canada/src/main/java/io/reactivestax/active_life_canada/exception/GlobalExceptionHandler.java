@@ -29,6 +29,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)    //404 not found
+    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(
+            UserNotFoundException ex, WebRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "Not Found");
+        body.put("message", ex.getMessage());
+        body.put("path", request.getDescription(false).replace("uri=", ""));
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     // Handle general exceptions
     @ExceptionHandler(Exception.class)     // internal server error 500 
     public ResponseEntity<Map<String, Object>> handleGlobalException(
@@ -71,14 +83,4 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-
-//    @ExceptionHandler(jakarta.validation.ConstraintViolationException.class) //400 BAD request
-//    public ResponseEntity<Map<String, String>> handleValidationErrors(
-//            jakarta.validation.ConstraintViolationException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getConstraintViolations().forEach(violation->{
-//            errors.put(violation.getMessage(), violation.getMessage());
-//        });
-//        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-//    }
 }

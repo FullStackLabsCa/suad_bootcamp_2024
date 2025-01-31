@@ -1,9 +1,9 @@
 package io.reactivestax.active_life_canada.enums;
 
 public enum Status {
-    ACTIVE,
-    INACTIVE,
+    VALID,
+    INVALID,
+    VERIFIED,
     PENDING,
-    SUCCESS,
-    FAILED
+    EXPIRED
 }
