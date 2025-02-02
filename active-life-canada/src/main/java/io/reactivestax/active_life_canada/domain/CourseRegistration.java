@@ -17,15 +17,15 @@ public class FamilyCourseRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyCourseRegistrationId;
-    private BigInteger cost;
+    private Double cost;
     private LocalDate enrollmentDate;
     private Boolean isWithdraw;
-    private BigInteger withdrawCredits;
+    private Double withdrawCredits;
     private String enrollmentActor;
     private Long enrollmentActorId;
     private LocalDateTime createdTimeStamp;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     @ToString.Exclude
     @JoinColumn(name = "family_member_id")
