@@ -1,4 +1,4 @@
-package io.reactivestax.active_life_canada.service;
+package io.reactivestax.active_life_canada.service.ems;
 
 import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
 import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;

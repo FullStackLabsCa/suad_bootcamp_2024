@@ -1,4 +1,4 @@
-package io.reactivestax.active_life_canada.service;
+package io.reactivestax.active_life_canada.service.ems;
 
 import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
 import io.reactivestax.active_life_canada.enums.Status;
@@ -46,7 +46,6 @@ public class EmsOtpRestCallService {
 
     public Status verifyOTP(OtpDTO otpDTO) {
         String url = EMS_BASE_URL + "/verify/activeLife" ;
-
         HttpHeaders headers = createAuthHeaders();
         HttpEntity<OtpDTO> requestEntity = new HttpEntity<>(otpDTO, headers);
         ResponseEntity<Status> responseEntity = restTemplate.exchange(
