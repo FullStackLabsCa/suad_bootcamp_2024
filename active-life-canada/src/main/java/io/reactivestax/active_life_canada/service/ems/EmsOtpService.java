@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
-public class EmsOtpRestCallService {
+public class EmsOtpService {
 
     @Autowired
     private RestTemplate restTemplate;

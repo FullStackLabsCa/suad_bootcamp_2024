@@ -12,11 +12,10 @@ import org.springframework.http.*;
 
 @Service
 @Slf4j
-public class EmsNotificationRestCallService {
+public class EmsNotificationService {
 
     @Autowired
     private RestTemplate restTemplate;
-
 
     private static final String EMS_BASE_URL = "http://localhost:8081/api/v1/ems";
 

@@ -38,7 +38,7 @@ public class FamilyMember {
 
     @OneToMany(mappedBy = "familyMember")
     @JsonManagedReference
-    private List<FamilyCourseRegistration> familyCourseRegistrations = new ArrayList<>();
+    private List<CourseRegistration> courseRegistrations = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference

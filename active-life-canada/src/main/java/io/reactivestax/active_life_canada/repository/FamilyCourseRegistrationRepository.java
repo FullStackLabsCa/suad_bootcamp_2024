@@ -1,8 +1,7 @@
 package io.reactivestax.active_life_canada.repository;
 
-import io.reactivestax.active_life_canada.domain.Category;
-import io.reactivestax.active_life_canada.domain.FamilyCourseRegistration;
+import io.reactivestax.active_life_canada.domain.CourseRegistration;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FamilyCourseRegistrationRepository extends JpaRepository<FamilyCourseRegistration, Long> {
+public interface FamilyCourseRegistrationRepository extends JpaRepository<CourseRegistration, Long> {
 }

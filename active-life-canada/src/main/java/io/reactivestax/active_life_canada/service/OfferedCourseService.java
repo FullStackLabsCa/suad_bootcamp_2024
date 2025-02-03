@@ -1,187 +1,125 @@
 package io.reactivestax.active_life_canada.service;
 
 
-import io.reactivestax.active_life_canada.domain.FamilyGroup;
-import io.reactivestax.active_life_canada.domain.FamilyMember;
-import io.reactivestax.active_life_canada.domain.SignUpRequest;
-import io.reactivestax.active_life_canada.dto.FamilyGroupDto;
-import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
-import io.reactivestax.active_life_canada.dto.LoginRequestDto;
-import io.reactivestax.active_life_canada.dto.SignUpDto;
-import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
-import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
-import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
-import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
-import io.reactivestax.active_life_canada.enums.Status;
+import io.reactivestax.active_life_canada.domain.OfferedCourse;
+import io.reactivestax.active_life_canada.domain.OfferedCourseFee;
+import io.reactivestax.active_life_canada.dto.*;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
-import io.reactivestax.active_life_canada.exception.UserNotFoundException;
-import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
-import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
-import io.reactivestax.active_life_canada.repository.SignUpRequestRepository;
+import io.reactivestax.active_life_canada.exception.ResourceNotFoundException;
+import io.reactivestax.active_life_canada.mapper.OfferedCourseFeeMapper;
+import io.reactivestax.active_life_canada.mapper.OfferedCourseMapper;
+import io.reactivestax.active_life_canada.repository.OfferedCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 
 @Service
-public class FamilyMemberService {
+public class OfferedCourseService {
 
     @Autowired
-    private FamilyMemberRepository familyMemberRepository;
+    private OfferedCourseRepository offeredCourseRepository;
 
     @Autowired
-    private FamilyMemberMapper familyMemberMapper;
+    private OfferedCourseMapper offeredCourseMapper;
 
     @Autowired
-    private FamilyGroupService familyGroupService;
+    private OfferedCourseFeeMapper offeredCourseFeeMapper;
 
-    @Autowired
-    private SignUpRequestRepository signUpRequestRepository;
-
-    @Autowired
-    private EmsNotificationRestCallService emsNotificationRestCallService;
-
-    @Autowired
-    private EmsOtpRestCallService emsOtpRestCallService;
 
     @Transactional
-    public FamilyMemberDto saveFamilyMemberAndCreateFamilyGroup(SignUpDto signUpDto) {
-        FamilyGroup familyGroup = familyGroupService.saveGroupByFamilyGroupDto(FamilyGroupDto.builder().familyPin(signUpDto.getFamilyPin()).groupOwner(signUpDto.getName()).build());
-
-        FamilyMember familyMember = familyMemberMapper.toFamilyMember(signUpDto);
-        familyMember.setFamilyGroup(familyGroup);
-        familyMember.setIsActive(false);
-
-        familyGroup.setFamilyMember(List.of(familyMember));
-        familyMemberRepository.save(familyMember);
-
-        //generate uuid and store in signUp table
-        UUID uuid = UUID.randomUUID();
-        SignUpRequest signUpRequest = SignUpRequest.builder().familyMemberId(familyMember.getFamilyMemberId()).uuidToken(uuid).build();
-        signUpRequestRepository.save(signUpRequest);
-        //send it to the user via ems rest call in preferred method...
-        sendNotification(familyMember, uuid);
-        return familyMemberMapper.toDto(familyMember);
+    public OfferedCourseDto save(OfferedCourseDto offeredCourseDto) {
+        OfferedCourse entity = toOfferedCourseEntity(offeredCourseDto);
+        offeredCourseRepository.save(entity);
+        return toOfferedCourseDto(entity);
     }
 
-
-    public FamilyMemberDto save(FamilyMemberDto familyMemberDto) {
-        FamilyMember familyMember = familyMemberMapper.toEntity(familyMemberDto);
-        return familyMemberMapper.toDto(familyMemberRepository.save(familyMember));
+    public OfferedCourse toOfferedCourseEntity(OfferedCourseDto offeredCourseDto) {
+        OfferedCourse entity = offeredCourseMapper.toEntity(offeredCourseDto);
+        List<OfferedCourseFee> offeredCourseFees = offeredCourseDto.getOfferedCourseFeeDto().stream().map(offeredCourseFeeMapper::toEntity).toList();
+        entity.setOfferedCourseFees(offeredCourseFees);
+        entity.setCreatedTimeStamp(LocalDateTime.now());
+        entity.setLastUpdatedTimeStamp(LocalDateTime.now());
+        return entity;
     }
 
+    public OfferedCourseDto toOfferedCourseDto(OfferedCourse offeredCourse) {
+        OfferedCourseDto offeredCourseDto = offeredCourseMapper.toDto(offeredCourse);
+        List<OfferedCourseFeeDto> offeredCourseFeeDtos = offeredCourse.getOfferedCourseFees().stream().map(offeredCourseFeeMapper::toDto).toList();
+        offeredCourseDto.setOfferedCourseFeeDto(offeredCourseFeeDtos);
+        return offeredCourseDto;
+    }
     @Transactional
-    public FamilyMemberDto addFamilyMembers(Long familyGroupId, FamilyMemberDto familyDto) {
-        FamilyGroup familyGroup = familyGroupService.findById(familyGroupId);
-        FamilyMember familyMember = familyMemberMapper.toEntity(familyDto);
-        familyMember.setFamilyGroup(familyGroup);
-        familyGroup.getFamilyMember().add(familyMember);
-        familyMemberRepository.save(familyMember);
-        return familyMemberMapper.toDto(familyMember);
+    public OfferedCourseDto updateOfferedCourse(Long offeredCourseId, OfferedCourseDto offeredCourseDto) {
+        OfferedCourse offeredCourse = findById(offeredCourseId);
+        if (offeredCourseDto.getStartDate() != null) offeredCourse.setStartDate(offeredCourseDto.getStartDate());
+        if (offeredCourseDto.getEndDate() != null) offeredCourse.setStartDate(offeredCourseDto.getEndDate());
+        if (offeredCourseDto.getNumberOfClassesOffered() != null)
+            offeredCourse.setNumberOfClassesOffered(offeredCourseDto.getNumberOfClassesOffered());
+        if (offeredCourseDto.getNumberOfSeats() != null)
+            offeredCourse.setNumberOfSeats(offeredCourseDto.getNumberOfSeats());
+        if (offeredCourseDto.getStartTime() != null) offeredCourse.setStartTime(offeredCourseDto.getStartTime());
+        if (offeredCourseDto.getEndTime() != null) offeredCourse.setEndTime(offeredCourseDto.getEndTime());
+        if (offeredCourseDto.getIsAllDayCourse() != null)
+            offeredCourse.setIsAllDayCourse(offeredCourseDto.getIsAllDayCourse());
+        if (offeredCourseDto.getRegistrationStartDate() != null)
+            offeredCourse.setRegistrationStartDate(offeredCourseDto.getRegistrationStartDate());
+        if (!offeredCourseDto.getOfferedCourseFeeDto().isEmpty()) {
+            updateOfferedCourseFee(offeredCourseDto, offeredCourse);
+        }
+        offeredCourse.setLastUpdatedTimeStamp(LocalDateTime.now());
+        offeredCourseRepository.save(offeredCourse);
+        return toOfferedCourseDto(offeredCourse);
     }
 
-    public FamilyMemberDto findFamilyMemberDtoById(Long memberId) {
-        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("Family Member not found"));
-        return familyMemberMapper.toDto(familyMember);
+    private void updateOfferedCourseFee(OfferedCourseDto offeredCourseDto, OfferedCourse offeredCourse) {
+        offeredCourse.getOfferedCourseFees().clear();
+        List<OfferedCourseFee> offeredCourseFees = offeredCourseDto.getOfferedCourseFeeDto().stream().map(offeredCourseFeeMapper::toEntity).toList();
+        offeredCourse.getOfferedCourseFees().clear();
+        for (OfferedCourseFee fee : offeredCourseFees) {
+            fee.setOfferedCourse(offeredCourse);
+        }
+        offeredCourse.getOfferedCourseFees().addAll(offeredCourseFees);
     }
 
-    public FamilyMember findFamilyMemberById(Long memberId) {
-        return familyMemberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("Family Member not found"));
+    public List<OfferedCourseDto> getAllOfferedCourse() {
+        List<OfferedCourse> offeredCourses = offeredCourseRepository.findAll();
+        return offeredCourses.stream().map(this::toOfferedCourseDto).toList();
     }
 
-    public FamilyMemberDto updateFamilyMember(Long familyGroupId, Long memberId, FamilyMemberDto familyMemberDto) {
-        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("Family Member not found"));
-        familyMember.setName(familyMemberDto.getName());
-        familyMember.setDob(familyMemberDto.getDob());
-        familyMember.setEmailId(familyMemberDto.getEmailId());
-        familyMember.setStreetNumber(familyMemberDto.getStreetNumber());
-        familyMember.setStreetName(familyMemberDto.getStreetName());
-        familyMember.setCity(familyMemberDto.getCity());
-        familyMember.setProvince(familyMemberDto.getProvince());
-        familyMember.setCountry(familyMemberDto.getCountry());
-        familyMember.setHomePhone(familyMemberDto.getHomePhone());
-        familyMember.setBusinessPhone(familyMemberDto.getBusinessPhone());
-        familyMember.setLanguage(familyMemberDto.getLanguage());
-        familyMember.setPreferredContact(familyMemberDto.getPreferredContact());
-        familyMemberRepository.save(familyMember);
-
-        return familyMemberMapper.toDto(familyMember);
+    public OfferedCourse findById(Long offeredCourseId){
+        return offeredCourseRepository.findById(offeredCourseId).orElseThrow(() -> new ResourceNotFoundException("Offered course not found"));
     }
 
-    public StatusLevel deleteFamilyMember(Long memberId) {
-        FamilyMember familyMember = findFamilyMemberById(memberId);
-        familyMember.setIsActive(false);
-        familyMemberRepository.save(familyMember);
+
+    public OfferedCourseDto getOfferedCourse(Long offeredCourseId) {
+        OfferedCourse offeredCourse = findById(offeredCourseId);
+        return toOfferedCourseDto(offeredCourse);
+    }
+
+    public StatusLevel deleteOfferedCourse(Long offeredCourseId) {
+        OfferedCourse offeredCourse = findById(offeredCourseId);
+        offeredCourse.setAvailableForEnrollment(false);
+        offeredCourseRepository.save(offeredCourse);
         return StatusLevel.SUCCESS;
     }
 
-    @Transactional
-    public StatusLevel activateMemberByUuid(Long familyMemberId, UUID uuid) {
-        if (signUpRequestRepository.findByFamilyMemberIdAndUuidToken(familyMemberId, uuid) == null) {
-            return StatusLevel.FAILED;
-        }
-        FamilyMember familyMember = findFamilyMemberById(familyMemberId);
-        FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
-        familyGroup.setStatus("active");
-        familyMember.setIsActive(true);
-        familyGroupService.saveGroup(familyGroup);
-        return StatusLevel.SUCCESS;
+    public void handleWithdraw(OfferedCourse offeredCourse) {
+        offeredCourse.setNumberOfSeats(offeredCourse.getNumberOfSeats() + 1);
+        offeredCourseRepository.save(offeredCourse);
     }
 
-    public StatusLevel loginFamilyMember(LoginRequestDto loginRequestDto) {
-        //From family grp check the familyPin
-        FamilyMember familyMember = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
-        //fetch familyGrp
-        FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
-
-        if (!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroup.getFamilyPin())) {
-            throw new RuntimeException("Invalid FamilyPin...");
-        }
-        //call for the 2fa
-        //send the otp on preferred contact
-        OtpDTO generationOtpDto = OtpDTO.builder()
-                .email(familyMember.getEmailId())
-                .phone(familyMember.getHomePhone())
-                .build();
-
-        emsOtpRestCallService.sendOTP(generationOtpDto, familyMember.getPreferredContact());
-
-        return StatusLevel.SUCCESS;
+    public void updateNumberOfSeatsForRegistration(OfferedCourse offeredCourse) {
+        offeredCourse.setNumberOfSeats(offeredCourse.getNumberOfSeats() - 1);
+        offeredCourseRepository.save(offeredCourse);
     }
 
-    public Status login2FA(LoginRequestDto loginRequestDto) {
-        FamilyMember familyMember = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
-
-
-        OtpDTO validateOtpDto = OtpDTO.builder()
-                .email(familyMember.getEmailId())
-                .phone(familyMember.getHomePhone())
-                .validOtp(loginRequestDto.getOtp())
-                .build();
-
-        //verify otp
-       return emsOtpRestCallService.verifyOTP(validateOtpDto);
-    }
-
-    private void sendNotification(FamilyMember familyMemberDto, UUID uuid) {
-        if (familyMemberDto.getPreferredContact().equalsIgnoreCase("sms")) {
-            SmsDTO smsDTO = new SmsDTO();
-            smsDTO.setPhone(familyMemberDto.getHomePhone());
-            smsDTO.setMessage(uuid.toString());
-            emsNotificationRestCallService.sendSmsNotification(smsDTO);
-        } else if (familyMemberDto.getPreferredContact().equalsIgnoreCase("email")) {
-            EmailDTO emailDTO = new EmailDTO();
-            emailDTO.setBody(uuid.toString());
-            emailDTO.setReceiverEmailId(familyMemberDto.getEmailId());
-            emailDTO.setSubject("Signup Activation");
-            emsNotificationRestCallService.sendEmailSignUpNotification(emailDTO);
-        } else {
-            PhoneDTO phoneDTO = new PhoneDTO();
-            phoneDTO.setOutgoingPhoneNumber(phoneDTO.getOutgoingPhoneNumber());
-            emsNotificationRestCallService.sendPhoneNotification(phoneDTO);
-        }
+    public List<OfferedCourseDto> searchOfferedCourses(Long courseId, Long categoryId, Long facilityId, Long familyMemberId, Long subCategoryId) {
+        Specification<OfferedCourse> spec = OfferedCourseSpecification.searchOfferedCourses(courseId, categoryId, facilityId, familyMemberId, subCategoryId);
+        return  offeredCourseRepository.findAll(spec).stream().map(offeredCourseMapper::toDto).toList();
     }
 }

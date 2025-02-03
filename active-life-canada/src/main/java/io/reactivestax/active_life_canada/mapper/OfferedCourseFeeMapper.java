@@ -1,16 +1,18 @@
 package io.reactivestax.active_life_canada.mapper;
 
-import io.reactivestax.active_life_canada.domain.FamilyMember;
 import io.reactivestax.active_life_canada.domain.OfferedCourse;
-import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
+import io.reactivestax.active_life_canada.domain.OfferedCourseFee;
 import io.reactivestax.active_life_canada.dto.OfferedCourseDto;
-import io.reactivestax.active_life_canada.dto.SignUpDto;
+import io.reactivestax.active_life_canada.dto.OfferedCourseFeeDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
-public interface OfferedCourseMapper {
+@Component
+public interface OfferedCourseFeeMapper {
 
-    OfferedCourse toEntity(OfferedCourseDto offeredCourseDto);
+    OfferedCourseFee toEntity(OfferedCourseFeeDto offeredCourseFeeDto);
 
-    OfferedCourseDto toDto(OfferedCourse offeredCourse);
+    OfferedCourseFeeDto toDto(OfferedCourseFee offeredCourseFee);
 }

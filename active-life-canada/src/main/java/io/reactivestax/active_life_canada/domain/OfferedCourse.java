@@ -25,29 +25,27 @@ public class OfferedCourse {
     private LocalDate endDate;
     private Integer numberOfClassesOffered;
     private Integer numberOfSeats;
-    private LocalTime startTIme;
-    private LocalTime endTIme;
+    private Integer totalNumberOfSeats;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private Boolean isAllDayCourse;
-    private Integer noOfSeats;
     private LocalDate registrationStartDate;
     private Boolean availableForEnrollment;
-
 
     @OneToMany(mappedBy = "offeredCourse", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     @ToString.Exclude
     private List<OfferedCourseFee> offeredCourseFees = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "offeredCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "offeredCourse", cascade = CascadeType.MERGE, orphanRemoval = true)
     @JsonManagedReference
     @ToString.Exclude
-    private List<FamilyCourseRegistration> familyCourseRegistrations = new ArrayList<>();
+    private List<CourseRegistration> courseRegistrations = new ArrayList<>();
 
     @ManyToOne
     @JsonBackReference
     @ToString.Exclude
-    @JoinColumn(name = "course_id", nullable = false)
+    @JoinColumn(name = "course_id")
     private Course course;
 
     @ManyToOne
@@ -56,9 +54,17 @@ public class OfferedCourse {
     @JoinColumn(name = "facility_id")
     private  Facility facility;
 
+    @OneToMany(mappedBy = "offeredCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<WaitList> waitLists = new ArrayList<>();
+
+
     @Column(name = "created_ts")
     private LocalDateTime createdTimeStamp;
+
     @Column(name = "last_updated_ts")
     private LocalDateTime lastUpdatedTimeStamp;
+
     private  Long createdBy;
 }

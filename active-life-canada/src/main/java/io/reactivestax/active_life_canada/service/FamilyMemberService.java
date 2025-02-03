@@ -3,26 +3,18 @@ package io.reactivestax.active_life_canada.service;
 
 import io.reactivestax.active_life_canada.domain.FamilyGroup;
 import io.reactivestax.active_life_canada.domain.FamilyMember;
-import io.reactivestax.active_life_canada.domain.SignUpRequest;
-import io.reactivestax.active_life_canada.dto.FamilyGroupDto;
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
-import io.reactivestax.active_life_canada.dto.LoginRequestDto;
-import io.reactivestax.active_life_canada.dto.SignUpDto;
-import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
-import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
-import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
-import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
-import io.reactivestax.active_life_canada.enums.Status;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
-import io.reactivestax.active_life_canada.exception.UserNotFoundException;
+import io.reactivestax.active_life_canada.exception.ResourceNotFoundException;
 import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
 import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
 import io.reactivestax.active_life_canada.repository.SignUpRequestRepository;
+import io.reactivestax.active_life_canada.service.ems.EmsNotificationService;
+import io.reactivestax.active_life_canada.service.ems.EmsOtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -42,36 +34,10 @@ public class FamilyMemberService {
     private SignUpRequestRepository signUpRequestRepository;
 
     @Autowired
-    private EmsNotificationRestCallService emsNotificationRestCallService;
+    private EmsNotificationService emsNotificationService;
 
     @Autowired
-    private EmsOtpRestCallService emsOtpRestCallService;
-
-    @Transactional
-    public FamilyMemberDto saveFamilyMemberAndCreateFamilyGroup(SignUpDto signUpDto) {
-        FamilyGroup familyGroup = familyGroupService.saveGroupByFamilyGroupDto(FamilyGroupDto.builder().familyPin(signUpDto.getFamilyPin()).groupOwner(signUpDto.getName()).build());
-
-        FamilyMember familyMember = familyMemberMapper.toFamilyMember(signUpDto);
-        familyMember.setFamilyGroup(familyGroup);
-        familyMember.setIsActive(false);
-
-        familyGroup.setFamilyMember(List.of(familyMember));
-        familyMemberRepository.save(familyMember);
-
-        //generate uuid and store in signUp table
-        UUID uuid = UUID.randomUUID();
-        SignUpRequest signUpRequest = SignUpRequest.builder().familyMemberId(familyMember.getFamilyMemberId()).uuidToken(uuid).build();
-        signUpRequestRepository.save(signUpRequest);
-        //send it to the user via ems rest call in preferred method...
-        sendNotification(familyMember, uuid);
-        return familyMemberMapper.toDto(familyMember);
-    }
-
-
-    public FamilyMemberDto save(FamilyMemberDto familyMemberDto) {
-        FamilyMember familyMember = familyMemberMapper.toEntity(familyMemberDto);
-        return familyMemberMapper.toDto(familyMemberRepository.save(familyMember));
-    }
+    private EmsOtpService emsOtpService;
 
     @Transactional
     public FamilyMemberDto addFamilyMembers(Long familyGroupId, FamilyMemberDto familyDto) {
@@ -84,7 +50,7 @@ public class FamilyMemberService {
     }
 
     public FamilyMemberDto findFamilyMemberDtoById(Long memberId) {
-        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("Family Member not found"));
+        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Family Member not found"));
         return familyMemberMapper.toDto(familyMember);
     }
 
@@ -92,8 +58,8 @@ public class FamilyMemberService {
         return familyMemberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("Family Member not found"));
     }
 
-    public FamilyMemberDto updateFamilyMember(Long familyGroupId, Long memberId, FamilyMemberDto familyMemberDto) {
-        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new UserNotFoundException("Family Member not found"));
+    public FamilyMemberDto updateFamilyMember(Long memberId, FamilyMemberDto familyMemberDto) {
+        FamilyMember familyMember = familyMemberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Family Member not found"));
         familyMember.setName(familyMemberDto.getName());
         familyMember.setDob(familyMemberDto.getDob());
         familyMember.setEmailId(familyMemberDto.getEmailId());
@@ -107,7 +73,6 @@ public class FamilyMemberService {
         familyMember.setLanguage(familyMemberDto.getLanguage());
         familyMember.setPreferredContact(familyMemberDto.getPreferredContact());
         familyMemberRepository.save(familyMember);
-
         return familyMemberMapper.toDto(familyMember);
     }
 
@@ -129,59 +94,5 @@ public class FamilyMemberService {
         familyMember.setIsActive(true);
         familyGroupService.saveGroup(familyGroup);
         return StatusLevel.SUCCESS;
-    }
-
-    public StatusLevel loginFamilyMember(LoginRequestDto loginRequestDto) {
-        //From family grp check the familyPin
-        FamilyMember familyMember = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
-        //fetch familyGrp
-        FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
-
-        if (!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroup.getFamilyPin())) {
-            throw new RuntimeException("Invalid FamilyPin...");
-        }
-        //call for the 2fa
-        //send the otp on preferred contact
-        OtpDTO generationOtpDto = OtpDTO.builder()
-                .email(familyMember.getEmailId())
-                .phone(familyMember.getHomePhone())
-                .build();
-
-        emsOtpRestCallService.sendOTP(generationOtpDto, familyMember.getPreferredContact());
-
-        return StatusLevel.SUCCESS;
-    }
-
-    public Status login2FA(LoginRequestDto loginRequestDto) {
-        FamilyMember familyMember = findFamilyMemberById(loginRequestDto.getFamilyMemberId());
-
-
-        OtpDTO validateOtpDto = OtpDTO.builder()
-                .email(familyMember.getEmailId())
-                .phone(familyMember.getHomePhone())
-                .validOtp(loginRequestDto.getOtp())
-                .build();
-
-        //verify otp
-       return emsOtpRestCallService.verifyOTP(validateOtpDto);
-    }
-
-    private void sendNotification(FamilyMember familyMemberDto, UUID uuid) {
-        if (familyMemberDto.getPreferredContact().equalsIgnoreCase("sms")) {
-            SmsDTO smsDTO = new SmsDTO();
-            smsDTO.setPhone(familyMemberDto.getHomePhone());
-            smsDTO.setMessage(uuid.toString());
-            emsNotificationRestCallService.sendSmsNotification(smsDTO);
-        } else if (familyMemberDto.getPreferredContact().equalsIgnoreCase("email")) {
-            EmailDTO emailDTO = new EmailDTO();
-            emailDTO.setBody(uuid.toString());
-            emailDTO.setReceiverEmailId(familyMemberDto.getEmailId());
-            emailDTO.setSubject("Signup Activation");
-            emsNotificationRestCallService.sendEmailSignUpNotification(emailDTO);
-        } else {
-            PhoneDTO phoneDTO = new PhoneDTO();
-            phoneDTO.setOutgoingPhoneNumber(phoneDTO.getOutgoingPhoneNumber());
-            emsNotificationRestCallService.sendPhoneNotification(phoneDTO);
-        }
     }
 }

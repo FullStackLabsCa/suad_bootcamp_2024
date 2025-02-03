@@ -1,6 +1,6 @@
 package io.reactivestax.active_life_canada.mapper;
 
-import io.reactivestax.active_life_canada.domain.FamilyCourseRegistration;
+import io.reactivestax.active_life_canada.domain.CourseRegistration;
 import io.reactivestax.active_life_canada.domain.FamilyGroup;
 import io.reactivestax.active_life_canada.domain.LoginRequest;
 import io.reactivestax.active_life_canada.repository.FamilyCourseRegistrationRepository;
@@ -30,14 +30,14 @@ public class FamilyMemberMapperHelper {
     }
 
     @Named("mapFamilyCourseRegistration")
-    public List<Long> mapFamilyCourseRegistration(List<FamilyCourseRegistration> registrations) {
+    public List<Long> mapFamilyCourseRegistration(List<CourseRegistration> registrations) {
         return registrations != null ? registrations.stream()
-                .map(FamilyCourseRegistration::getFamilyCourseRegistrationId)
+                .map(CourseRegistration::getFamilyCourseRegistrationId)
                 .collect(Collectors.toList()) : null;
     }
 
     @Named("mapFamilyCourseRegistrationList")
-    public List<FamilyCourseRegistration> mapFamilyCourseRegistrationList(List<Long> registrationIds) {
+    public List<CourseRegistration> mapFamilyCourseRegistrationList(List<Long> registrationIds) {
         return registrationIds != null ? familyCourseRegistrationRepository.findAllById(registrationIds) : null;
     }
 

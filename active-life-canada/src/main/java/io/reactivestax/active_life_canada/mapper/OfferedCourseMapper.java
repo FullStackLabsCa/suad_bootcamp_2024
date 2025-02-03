@@ -1,25 +1,24 @@
 package io.reactivestax.active_life_canada.mapper;
 
 import io.reactivestax.active_life_canada.domain.FamilyMember;
+import io.reactivestax.active_life_canada.domain.OfferedCourse;
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
+import io.reactivestax.active_life_canada.dto.OfferedCourseDto;
+import io.reactivestax.active_life_canada.dto.OfferedCourseFeeDto;
 import io.reactivestax.active_life_canada.dto.SignUpDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {FamilyMemberMapperHelper.class})
-public interface FamilyMemberMapper {
+@Mapper(componentModel = "spring", uses = {OfferedCourseMapperHelper.class})
+public interface OfferedCourseMapper {
 
-//    @Mapping(source = "familyGroupId", target = "familyGroup", qualifiedByName = "mapFamilyGroup")
-//    @Mapping(source = "familyCourseRegistrationIds", target = "familyCourseRegistrations", qualifiedByName = "mapFamilyCourseRegistrationList")
-//    @Mapping(source = "loginRequestIds", target = "loginRequests", qualifiedByName = "mapLoginRequestList")
-    FamilyMember toEntity(FamilyMemberDto familyMemberDto);
+    @Mapping(source = "courseId", target = "course", qualifiedByName = "mapCourseIdToCourse")
+//    @Mapping(source = "offeredCourseFeeDto", target = "offeredCourseFee", qualifiedByName = "mapCourseFeeDtoToFee")
+//    @Mapping(source = "offeredCourseFeeDto", target = "offeredCourseFee")
+    OfferedCourse toEntity(OfferedCourseDto offeredCourseDto);
 
-//    @Mapping(source = "familyGroup.familyGroupId", target = "familyGroupId")
-//    @Mapping(source = "familyCourseRegistrations", target = "familyCourseRegistrationIds", qualifiedByName = "mapFamilyCourseRegistration")
-//    @Mapping(source = "loginRequests", target = "loginRequestIds", qualifiedByName = "mapLoginRequestIds")
-    FamilyMemberDto toDto(FamilyMember familyMember);
-
-    FamilyMemberDto toFamilyMemberDto(SignUpDto signUpDto);
-
-    FamilyMember toFamilyMember(SignUpDto signUpDto);
+    @Mapping(source = "course.courseId", target = "courseId")
+//    @Mapping(source = "offeredCourseFee", target = "offeredCourseFeeDto", qualifiedByName = "mapCourseFeeToDTo")
+//    @Mapping(source = "offeredCourseFee", target = "offeredCourseFeeDto")
+    OfferedCourseDto toDto(OfferedCourse offeredCourse);
 }

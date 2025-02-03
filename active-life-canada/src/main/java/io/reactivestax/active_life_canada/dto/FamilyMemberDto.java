@@ -1,14 +1,21 @@
 package io.reactivestax.active_life_canada.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FamilyMemberDto {
 //    private Long familyMemberId;
     private String name;
-//    private String familyPin;
     private LocalDate dob;
     private String gender;
     private String emailId;
@@ -20,10 +27,5 @@ public class FamilyMemberDto {
     private String homePhone;
     private String businessPhone;
     private String language;
-//    private String memberLoginId;
-//    private Boolean isActive;
     private String preferredContact;
-//    private List<Long> familyCourseRegistrationIds;
-//    private Long familyGroupId;
-//    private List<Long> loginRequestIds;
 }

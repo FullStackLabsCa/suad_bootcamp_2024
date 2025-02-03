@@ -1,64 +1,41 @@
 package io.reactivestax.active_life_canada.controller;
 
 
-import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
-import io.reactivestax.active_life_canada.dto.LoginRequestDto;
-import io.reactivestax.active_life_canada.dto.SignUpDto;
-import io.reactivestax.active_life_canada.enums.Status;
-import io.reactivestax.active_life_canada.enums.StatusLevel;
-import io.reactivestax.active_life_canada.service.FamilyMemberService;
+import io.reactivestax.active_life_canada.dto.CourseRegistrationDto;
+import io.reactivestax.active_life_canada.service.CourseRegistrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/family")
+@RequestMapping("api/v1/courseRegistrations/enrollment")
 @Slf4j
-public class FamilyController {
+public class CourseRegistrationController {
 
     @Autowired
-    private FamilyMemberService familyMemberService;
+    private CourseRegistrationService courseRegistrationService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<FamilyMemberDto> signUpFamilyMember(@RequestBody SignUpDto signUpDto) {
-       return ResponseEntity.ok(familyMemberService.saveFamilyMemberAndCreateFamilyGroup(signUpDto));
+    //Add to the waitlist if the no of seats is full and show the table accordingly..
+    @PostMapping
+    public ResponseEntity<CourseRegistrationDto> enrollToOfferedCourse(@RequestHeader("X-family-member-id") Long familyMemberId, @RequestBody CourseRegistrationDto courseRegistrationDto) {
+       return ResponseEntity.ok(courseRegistrationService.save(familyMemberId, courseRegistrationDto));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<StatusLevel> loginFamilyMember(@RequestBody LoginRequestDto loginRequestDto) {
-        return ResponseEntity.ok(familyMemberService.loginFamilyMember(loginRequestDto));
+    @GetMapping("/{memberId}")
+    public ResponseEntity<List<CourseRegistrationDto>> getEnrolledCourses(@PathVariable Long memberId) {
+        return ResponseEntity.ok(courseRegistrationService.findEnrolledCourses(memberId));
     }
 
-    @PostMapping("/login/2fa")
-    public ResponseEntity<Status> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto) {
-        return ResponseEntity.ok(familyMemberService.login2FA(loginRequestDto));
+    @PutMapping
+    public ResponseEntity<CourseRegistrationDto> updateCourseRegistration(@RequestHeader("X-family-member-id") Long familyMemberId, @RequestBody CourseRegistrationDto courseRegistrationDto) {
+        return ResponseEntity.ok(courseRegistrationService.save(familyMemberId, courseRegistrationDto));
     }
 
-    @PostMapping("/members")
-    public ResponseEntity<FamilyMemberDto> addMembers(@RequestHeader("X-family-group-id") Long familyGroupId, @RequestBody FamilyMemberDto familyDto) {
-        return ResponseEntity.ok(familyMemberService.addFamilyMembers(familyGroupId, familyDto));
-    }
-
-    @GetMapping("/members/{memberId}")
-    public ResponseEntity<FamilyMemberDto> getMembers(@PathVariable Long memberId) {
-        return ResponseEntity.ok(familyMemberService.findFamilyMemberDtoById(memberId));
-    }
-
-    @PutMapping("/members/{memberId}")
-    public ResponseEntity<FamilyMemberDto> updateMembers(@RequestHeader("X-family-group-id") Long familyGroupId, @PathVariable Long memberId, @RequestBody FamilyMemberDto familyDto) {
-        return ResponseEntity.ok(familyMemberService.updateFamilyMember(familyGroupId, memberId, familyDto));
-    }
-
-    @DeleteMapping("/members/{memberId}")
-    public ResponseEntity<StatusLevel> deleteMembers(@PathVariable Long memberId) {
-        return ResponseEntity.ok(familyMemberService.deleteFamilyMember(memberId));
-    }
-
-    @PostMapping("/members/{memberId}/activation")
-    public ResponseEntity<StatusLevel> activateMember(@PathVariable Long memberId, @RequestHeader("X-uuid-token") String uuid) {
-        return ResponseEntity.ok(familyMemberService.activateMemberByUuid(memberId, UUID.fromString(uuid)));
+    @DeleteMapping("/withdraw/{id}")
+    public ResponseEntity<String> withDrawFromOfferedCourse(@PathVariable Long id) {
+        return ResponseEntity.ok(courseRegistrationService.withdrawRegisteredCourse(id));
     }
 }

@@ -4,13 +4,12 @@ package io.reactivestax.active_life_canada.service;
 import io.reactivestax.active_life_canada.domain.*;
 import io.reactivestax.active_life_canada.dto.*;
 import io.reactivestax.active_life_canada.exception.ResourceNotFoundException;
+import io.reactivestax.active_life_canada.exception.UnauthorizedException;
 import io.reactivestax.active_life_canada.mapper.CourseRegistrationMapper;
-import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
 import io.reactivestax.active_life_canada.repository.FamilyCourseRegistrationRepository;
 import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
 import io.reactivestax.active_life_canada.repository.OfferedCourseRepository;
 import io.reactivestax.active_life_canada.repository.WaitlistRepository;
-import io.reactivestax.active_life_canada.service.ems.EmsNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,7 @@ import java.util.List;
 
 
 @Service
-public class FamilyCourseRegistrationService {
+public class CourseRegistrationService {
 
     @Autowired
     private FamilyCourseRegistrationRepository courseRegistrationRepository;
@@ -39,6 +38,9 @@ public class FamilyCourseRegistrationService {
     private OfferedCourseService offeredCourseService;
 
     @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
     private OfferedCourseRepository offeredCourseRepository;
 
     @Autowired
@@ -47,16 +49,24 @@ public class FamilyCourseRegistrationService {
 
     @Transactional
     public CourseRegistrationDto save(Long familyMemberId, CourseRegistrationDto registrationDto) {
+        FamilyMember familyMember = familyMemberService.findFamilyMemberById(familyMemberId);
+
+       if(Boolean.FALSE.equals(familyMember.getIsActive())) {
+           throw new UnauthorizedException("User is not active and unauthorized for Course registration");
+       }
+
         OfferedCourse offeredCourse = offeredCourseService.findById(registrationDto.getOfferedCourseId());
         CourseRegistration entity = courseRegistrationMapper.toEntity(registrationDto);
-        FamilyMember familyMember = familyMemberService.findFamilyMemberById(familyMemberId);
+
         if (offeredCourse.getNumberOfSeats() == 0 && offeredCourse.getWaitLists().size() <=
                 offeredCourse.getTotalNumberOfSeats()) {
+            /*pending to check if the familyMember is already added in the waitList for same offeredCourse
+            * */
             WaitList waitList = WaitList.builder().familyMember(familyMember).offeredCourse(offeredCourse)
                     .createdAt(LocalDateTime.now()).updatedAt(LocalDateTime.now()).build();
             offeredCourse.getWaitLists().add(waitList);
             String message = "You have been added to the waiting list for " + offeredCourse.getCourse().getName() + " course";
-            familyMemberService.sendNotification(familyMember, message);
+            authenticationService.sendNotification(familyMember, message);
             offeredCourseRepository.save(offeredCourse);
             return registrationDto;
         }
@@ -97,9 +107,12 @@ public class FamilyCourseRegistrationService {
         courseRegistration.setWithdrawCredits(courseRegistration.getWithdrawCredits() + (courseRegistration.getCost()));
         courseRegistrationRepository.save(courseRegistration);
         OfferedCourse offeredCourse = offeredCourseService.findById(courseRegistration.getOfferedCourse().getOfferedCourseId());
+        if(!offeredCourse.getWaitLists().isEmpty()){
+            FamilyMember familyMember = offeredCourse.getWaitLists().get(0).getFamilyMember();
+            String message = "Hurry! Seats is available to enroll";
+            authenticationService.sendNotification(familyMember, message);
+        }
         offeredCourseService.handleWithdraw(offeredCourse);
         return "Successfully withdrawn from " + offeredCourse.getCourse().getName() + " course";
     }
-
-
 }

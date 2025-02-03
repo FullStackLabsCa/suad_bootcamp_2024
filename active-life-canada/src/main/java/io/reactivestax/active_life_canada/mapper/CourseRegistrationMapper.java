@@ -1,16 +1,15 @@
 package io.reactivestax.active_life_canada.mapper;
 
-import io.reactivestax.active_life_canada.domain.FamilyGroup;
-import io.reactivestax.active_life_canada.dto.FamilyGroupDto;
+import io.reactivestax.active_life_canada.domain.CourseRegistration;
+import io.reactivestax.active_life_canada.dto.CourseRegistrationDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {FamilyMemberMapperHelper.class, FamilyGroupMapperHelper.class})
-public interface FamilyGroupMapper {
+@Mapper(componentModel = "spring")
+public interface CourseRegistrationMapper {
 
-    @Mapping(source = "familyMemberIds", target = "familyMember", qualifiedByName = "mapFamilyMembers")
-    FamilyGroup toEntity(FamilyGroupDto familyGroupDto);
-    
-    @Mapping(source = "familyMember", target = "familyMemberIds", qualifiedByName = "mapFamilyMemberIds")
-    FamilyGroupDto toDto(FamilyGroup familyGroup);
+    CourseRegistration toEntity(CourseRegistrationDto courseRegistrationDto);
+
+    @Mapping(source = "offeredCourse.offeredCourseId", target = "offeredCourseId")
+    CourseRegistrationDto toDto(CourseRegistration courseRegistration);
 }

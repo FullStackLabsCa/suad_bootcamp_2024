@@ -1,64 +1,69 @@
-package io.reactivestax.active_life_canada.domain;
+package io.reactivestax.active_life_canada.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class OfferedCourse {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long offeredCourseId;
+public class OfferedCourseDto {
+
     private String barCode;
+
+    @NotNull(message = "Start Date cannot be null")
+    @FutureOrPresent(message = "Start Date can not be past date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+
+
+    @NotNull(message = "End Date cannot be null")
+    @FutureOrPresent(message = "End Date can not be past date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
     private Integer numberOfClassesOffered;
-    private Integer numberOfSeats;
-    private LocalTime startTIme;
-    private LocalTime endTIme;
+
+
+    @NotNull(message = "Start Time cannot be null")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    private LocalTime startTime;
+
+    @NotNull(message = "End Time cannot be null")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    private LocalTime endTime;
+
     private Boolean isAllDayCourse;
-    private Integer noOfSeats;
+
+    @Min(value = 1, message = "Number of seats must be greater than 0.")
+    private Integer numberOfSeats;
+
+    private Integer totalNumberOfSeats;
+
+    @NotNull(message = "Registration Start Date cannot be null")
+    @Future(message = "Registration date must be in the future")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate registrationStartDate;
+
+    @NotNull(message = "Course ID is required.")
+    private Long courseId;
+
+
     private Boolean availableForEnrollment;
 
-
-    @OneToMany(mappedBy = "offeredCourse", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    @ToString.Exclude
-    private List<OfferedCourseFee> offeredCourseFees = new ArrayList<>();
+    private List<OfferedCourseFeeDto> offeredCourseFeeDto = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "offeredCourse", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    @ToString.Exclude
-    private List<FamilyCourseRegistration> familyCourseRegistrations = new ArrayList<>();
-
-    @ManyToOne
-    @JsonBackReference
-    @ToString.Exclude
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
-
-    @ManyToOne
-    @JsonBackReference
-    @ToString.Exclude
-    @JoinColumn(name = "facility_id")
-    private  Facility facility;
-
-    @Column(name = "created_ts")
-    private LocalDateTime createdTimeStamp;
-    @Column(name = "last_updated_ts")
-    private LocalDateTime lastUpdatedTimeStamp;
-    private  Long createdBy;
 }

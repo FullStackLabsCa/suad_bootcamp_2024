@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FamilyCourseRegistration {
+public class CourseRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyCourseRegistrationId;
@@ -25,13 +24,13 @@ public class FamilyCourseRegistration {
     private Long enrollmentActorId;
     private LocalDateTime createdTimeStamp;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonBackReference
     @ToString.Exclude
     @JoinColumn(name = "family_member_id")
     private FamilyMember familyMember;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     @ToString.Exclude
     @JoinColumn(name = "offered_course_id")
