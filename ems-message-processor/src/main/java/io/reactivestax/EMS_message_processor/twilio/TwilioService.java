@@ -63,17 +63,18 @@ public class TwilioService {
             sendTwilioSms(sms.getPhone(), sms.getMessage());
             return;
         }
+        if(messageType.equals("otp-sms")) {
+            Otp otp = otpRepository.findById(Long.parseLong(message)).orElseThrow(() -> new RuntimeException("Phone to send the otp is not found"));
+            String otpDelivery = "Your valid otp is: " +  otp.getValidOtp();
+            sendTwilioSms(otp.getPhone(), otpDelivery);
+            return;
+        }
 
         if(messageType.equals("otp-phone")) {
             Otp otp = otpRepository.findById(Long.parseLong(message)).orElseThrow(() -> new RuntimeException("Phone to send the otp is not found"));
             sendTwilioCall(otp.getPhone(), otp.getValidOtp());
-            return;
         }
 
-        if(messageType.equals("otp-sms")) {
-            Otp otp = otpRepository.findById(Long.parseLong(message)).orElseThrow(() -> new RuntimeException("Phone to send the otp is not found"));
-            sendTwilioSms(otp.getPhone(), otp.getValidOtp());
-        }
 
     }
 
