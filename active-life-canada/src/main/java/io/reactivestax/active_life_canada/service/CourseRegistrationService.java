@@ -101,7 +101,7 @@ public class CourseRegistrationService {
     public String withdrawRegisteredCourse(Long id) {
         CourseRegistration courseRegistration = courseRegistrationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Course registration does not exist"));
         if (Boolean.TRUE.equals(courseRegistration.getIsWithdraw())) {
-            throw new RuntimeException("This course is already dropped");
+            throw new ResourceNotFoundException("This course is already dropped");
         }
         courseRegistration.setIsWithdraw(true);
         courseRegistration.setWithdrawCredits(courseRegistration.getWithdrawCredits() + (courseRegistration.getCost()));
