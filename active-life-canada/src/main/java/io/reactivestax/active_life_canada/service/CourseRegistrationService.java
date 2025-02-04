@@ -78,18 +78,6 @@ public class CourseRegistrationService {
         return courseRegistrationMapper.toDto(entity);
     }
 
-    private void setCourseRegistration(Long familyMemberId, CourseRegistration entity, FamilyMember familyMember, OfferedCourse offeredCourse) {
-        entity.setIsWithdraw(false);
-        entity.setCreatedTimeStamp(LocalDateTime.now());
-        entity.setLastUpdatedTimeStamp(LocalDateTime.now());
-        entity.setWithdrawCredits(0.0);
-        entity.setLastUpdatedBy(familyMemberId);
-        entity.setEnrollmentActorId(familyMemberId);
-        entity.setEnrollmentActor(familyMember.getName());
-        entity.setEnrollmentDate(LocalDate.now());
-        entity.setFamilyMember(familyMember);
-        entity.setOfferedCourse(offeredCourse);
-    }
 
     public List<CourseRegistrationDto> findEnrolledCourses(Long familyMemberId) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(familyMemberId);
@@ -98,8 +86,8 @@ public class CourseRegistrationService {
     }
 
     @Transactional
-    public String withdrawRegisteredCourse(Long id) {
-        CourseRegistration courseRegistration = courseRegistrationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Course registration does not exist"));
+    public String withdrawRegisteredCourse(Long registrationId) {
+        CourseRegistration courseRegistration = courseRegistrationRepository.findById(registrationId).orElseThrow(() -> new ResourceNotFoundException("Course registration does not exist"));
         if (Boolean.TRUE.equals(courseRegistration.getIsWithdraw())) {
             throw new ResourceNotFoundException("This course is already dropped");
         }
@@ -114,5 +102,17 @@ public class CourseRegistrationService {
         }
         offeredCourseService.handleWithdraw(offeredCourse);
         return "Successfully withdrawn from " + offeredCourse.getCourse().getName() + " course";
+    }
+
+    private void setCourseRegistration(Long familyMemberId, CourseRegistration entity, FamilyMember familyMember, OfferedCourse offeredCourse) {
+        entity.setIsWithdraw(false);
+        entity.setCreatedTimeStamp(LocalDateTime.now());
+        entity.setLastUpdatedTimeStamp(LocalDateTime.now());
+        entity.setWithdrawCredits(0.0);
+        entity.setLastUpdatedBy(familyMemberId);
+        entity.setEnrollmentActorId(familyMemberId);
+        entity.setEnrollmentActor(familyMember.getName());
+        entity.setFamilyMember(familyMember);
+        entity.setOfferedCourse(offeredCourse);
     }
 }

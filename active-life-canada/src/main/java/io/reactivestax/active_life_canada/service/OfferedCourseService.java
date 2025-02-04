@@ -30,6 +30,9 @@ public class OfferedCourseService {
     @Autowired
     private OfferedCourseFeeMapper offeredCourseFeeMapper;
 
+    @Autowired
+    private OfferedCourseSpecification offeredCourseSpecification;
+
 
     @Transactional
     public OfferedCourseDto save(OfferedCourseDto offeredCourseDto) {
@@ -113,13 +116,8 @@ public class OfferedCourseService {
         offeredCourseRepository.save(offeredCourse);
     }
 
-    public void updateNumberOfSeatsForRegistration(OfferedCourse offeredCourse) {
-        offeredCourse.setNumberOfSeats(offeredCourse.getNumberOfSeats() - 1);
-        offeredCourseRepository.save(offeredCourse);
-    }
-
     public List<OfferedCourseDto> searchOfferedCourses(Long courseId, Long categoryId, Long facilityId, Long familyMemberId, Long subCategoryId) {
-        Specification<OfferedCourse> spec = OfferedCourseSpecification.searchOfferedCourses(courseId, categoryId, facilityId, familyMemberId, subCategoryId);
+        Specification<OfferedCourse> spec = offeredCourseSpecification.searchOfferedCourses(courseId, categoryId, facilityId, familyMemberId, subCategoryId);
         return  offeredCourseRepository.findAll(spec).stream().map(offeredCourseMapper::toDto).toList();
     }
 }

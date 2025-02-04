@@ -15,7 +15,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import io.restassured.common.mapper.TypeRef;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -132,7 +131,7 @@ class OfferedCourseIntegrationTest {
 
     @Test
     void testGetOfferedCourses() {
-        Response response = given()
+        given()
                 .log().all()
                 .contentType(ContentType.JSON)
                 .when()
@@ -143,19 +142,11 @@ class OfferedCourseIntegrationTest {
                 .extract()
                 .response();
 
-        List<OfferedCourseDto> offeredCourseDtos = response.as(new TypeRef<List<OfferedCourseDto>>() {});
-
-//        assertThat(createdOfferedCourse.size()).isGreaterThan(0);
-//        assertThat(createdOfferedCourse.get(6).getStartDate()).isEqualTo(LocalDate.parse("2025-03-08"));
-//        assertThat(createdOfferedCourse.get(6).getEndDate()).isEqualTo(LocalDate.parse("2025-03-08"));
-//        assertThat(offeredCourseDtos.get(6).getIsAllDayCourse()).isTrue();
-//        assertThat(offeredCourseDtos.get(6).getNumberOfSeats()).isEqualTo(20);
     }
 
 
     @Test
     void testDeleteOfferedCourseById() {
-
         Response response = given()
                 .log().all()
                 .contentType(ContentType.JSON)
@@ -168,7 +159,7 @@ class OfferedCourseIntegrationTest {
                 .response();
 
         String statusString = response.as(String.class);
-        StatusLevel statusLevel = StatusLevel.valueOf(statusString); // Convert to Enum
+        StatusLevel statusLevel = StatusLevel.valueOf(statusString);
 
         assertEquals(StatusLevel.SUCCESS, statusLevel);
 

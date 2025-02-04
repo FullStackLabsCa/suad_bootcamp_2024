@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/courseRegistrations/enrollment")
@@ -18,7 +19,6 @@ public class CourseRegistrationController {
     @Autowired
     private CourseRegistrationService courseRegistrationService;
 
-    //Add to the waitlist if the no of seats is full and show the table accordingly..
     @PostMapping
     public ResponseEntity<CourseRegistrationDto> enrollToOfferedCourse(@RequestHeader("X-family-member-id") Long familyMemberId, @RequestBody CourseRegistrationDto courseRegistrationDto) {
        return ResponseEntity.ok(courseRegistrationService.save(familyMemberId, courseRegistrationDto));
@@ -34,8 +34,11 @@ public class CourseRegistrationController {
         return ResponseEntity.ok(courseRegistrationService.save(familyMemberId, courseRegistrationDto));
     }
 
-    @DeleteMapping("/withdraw/{id}")
-    public ResponseEntity<String> withDrawFromOfferedCourse(@PathVariable Long id) {
-        return ResponseEntity.ok(courseRegistrationService.withdrawRegisteredCourse(id));
+
+    @DeleteMapping("/withdraw/{registrationId}")
+    public ResponseEntity<Map<String, String>> withDrawFromOfferedCourse(@PathVariable Long registrationId) {
+        Map<String, String> response = Map.of("message", courseRegistrationService.withdrawRegisteredCourse(registrationId));
+        return ResponseEntity.ok(response);
     }
+
 }

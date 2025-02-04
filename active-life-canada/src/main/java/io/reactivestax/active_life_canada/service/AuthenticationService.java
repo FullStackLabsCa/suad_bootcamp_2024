@@ -14,6 +14,7 @@ import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
 import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
 import io.reactivestax.active_life_canada.enums.Status;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
+import io.reactivestax.active_life_canada.exception.UnauthorizedException;
 import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
 import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
 import io.reactivestax.active_life_canada.repository.SignUpRequestRepository;
@@ -51,6 +52,7 @@ public class AuthenticationService {
     @Autowired
     private EmsOtpService emsOtpService;
 
+
     @Transactional
     public FamilyMemberDto signUpAndCreateFamilyGroup(SignUpDto signUpDto) {
         FamilyGroup familyGroup = familyGroupService.saveGroupByFamilyGroupDto(FamilyGroupDto.builder().familyPin(signUpDto.getFamilyPin()).groupOwner(signUpDto.getName()).build());
@@ -68,15 +70,12 @@ public class AuthenticationService {
         return familyMemberMapper.toDto(familyMember);
     }
 
-
-
-
     public StatusLevel loginFamilyMember(LoginRequestDto loginRequestDto) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(loginRequestDto.getFamilyMemberId());
         FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
 
         if (!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroup.getFamilyPin())) {
-            throw new RuntimeException("Invalid FamilyPin...");
+            throw new UnauthorizedException("Invalid FamilyPin...");
         }
       /*  call for the 2fa*/
       /*  send the otp on preferred contact*/
@@ -86,7 +85,6 @@ public class AuthenticationService {
                 .build();
 
         emsOtpService.sendOTP(generationOtpDto, familyMember.getPreferredContact());
-
         return StatusLevel.SUCCESS;
     }
 

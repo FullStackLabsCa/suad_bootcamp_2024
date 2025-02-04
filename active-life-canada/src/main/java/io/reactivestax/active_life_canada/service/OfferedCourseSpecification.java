@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class OfferedCourseSpecification {
 
-    public static Specification<OfferedCourse> searchOfferedCourses(Long courseId, Long categoryId, Long facilityId, Long familyMemberId, Long subCategoryId) {
+    public Specification<OfferedCourse> searchOfferedCourses(Long courseId, Long categoryId, Long facilityId, Long familyMemberId, Long subCategoryId) {
         return (Root<OfferedCourse> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (courseId != null) {
@@ -26,9 +26,9 @@ public class OfferedCourseSpecification {
             if (facilityId != null) {
                 predicates.add(cb.equal(root.get("facility").get("id"), facilityId));
             }
-            if (familyMemberId != null) {
-                predicates.add(cb.equal(root.get("familyCourseRegistrations").get("familyMember").get("id"), familyMemberId));
-            }
+//            if (familyMemberId != null) {
+//                predicates.add(cb.equal(root.get("familyCourseRegistrations").get("familyMember").get("id"), familyMemberId));
+//            }
             if (subCategoryId != null) {
                 predicates.add(cb.equal(root.get("course").get("subCategory").get("id"), subCategoryId));
             }

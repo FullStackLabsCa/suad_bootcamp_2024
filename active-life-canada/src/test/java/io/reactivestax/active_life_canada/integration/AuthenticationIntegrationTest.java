@@ -30,7 +30,6 @@ class AuthenticationIntegrationTest {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = port;
         BASE_URL = "http://localhost:" + port + "/api/v1/authentication";
-
     }
 
     @Test
@@ -66,7 +65,6 @@ class AuthenticationIntegrationTest {
 
     @Test
     void testLogin() {
-
         LoginRequestDto loginRequestDto = LoginRequestDto.builder()
                 .familyMemberId(9L)
                 .familyPin("1234")

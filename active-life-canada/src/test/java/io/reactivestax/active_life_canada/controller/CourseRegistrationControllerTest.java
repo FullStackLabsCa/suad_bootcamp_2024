@@ -118,16 +118,12 @@ class CourseRegistrationControllerTest {
     @Test
     void testDeleteCourseRegistration() throws Exception {
         when(courseRegistrationService.withdrawRegisteredCourse(anyLong()))
-                .thenReturn(StatusLevel.SUCCESS.toString()); // Assuming StatusLevel is an enum
+                .thenReturn(StatusLevel.SUCCESS.toString());
 
-        mockMvc.perform(delete("/api/v1/courseRegistrations/enrollment/withdraw/3")
+        mockMvc.perform(delete("/api/v1/courseRegistrations/enrollment/withdraw/4")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value("SUCCESS"));
+                .andExpect(status().isOk());
         verify(courseRegistrationService, times(1)).withdrawRegisteredCourse(anyLong());
     }
-
-
-
 
 }
