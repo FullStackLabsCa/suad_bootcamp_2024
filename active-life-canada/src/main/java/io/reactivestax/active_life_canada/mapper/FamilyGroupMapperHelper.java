@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 class FamilyGroupMapperHelper {
@@ -19,7 +18,7 @@ class FamilyGroupMapperHelper {
     public List<Long> mapFamilyMemberIds(List<FamilyMember> familyMembers) {
         return familyMembers != null ? familyMembers.stream()
                 .map(FamilyMember::getFamilyMemberId)
-                .collect(Collectors.toList()) : null;
+                .toList() : null;
     }
     
     @Named("mapFamilyMembers")

@@ -101,7 +101,7 @@ class CourseRegistrationIntegrationTest {
         given()
                 .log().all()
                 .when()
-                .delete(BASE_URL + "/withdraw/23")
+                .delete(BASE_URL + "/withdraw/25")
                 .then()
                 .log().all()
                 .contentType(ContentType.JSON) // Ensure response content type

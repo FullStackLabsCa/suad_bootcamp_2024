@@ -3,6 +3,7 @@ package io.reactivestax.active_life_canada.service;
 
 import io.reactivestax.active_life_canada.domain.FamilyGroup;
 import io.reactivestax.active_life_canada.domain.FamilyMember;
+import io.reactivestax.active_life_canada.domain.LoginRequest;
 import io.reactivestax.active_life_canada.domain.SignUpRequest;
 import io.reactivestax.active_life_canada.dto.FamilyGroupDto;
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
@@ -16,7 +17,9 @@ import io.reactivestax.active_life_canada.enums.Status;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
 import io.reactivestax.active_life_canada.exception.UnauthorizedException;
 import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
+import io.reactivestax.active_life_canada.mapper.LoginRequestMapper;
 import io.reactivestax.active_life_canada.repository.FamilyMemberRepository;
+import io.reactivestax.active_life_canada.repository.LoginRequestRepository;
 import io.reactivestax.active_life_canada.repository.SignUpRequestRepository;
 import io.reactivestax.active_life_canada.service.ems.EmsNotificationService;
 import io.reactivestax.active_life_canada.service.ems.EmsOtpService;
@@ -52,6 +55,12 @@ public class AuthenticationService {
     @Autowired
     private EmsOtpService emsOtpService;
 
+    @Autowired
+    private LoginRequestRepository loginRequestRepository;
+
+    @Autowired
+    private LoginRequestMapper loginRequestMapper;
+
 
     @Transactional
     public FamilyMemberDto signUpAndCreateFamilyGroup(SignUpDto signUpDto) {
@@ -83,6 +92,10 @@ public class AuthenticationService {
                 .email(familyMember.getEmailId())
                 .phone(familyMember.getHomePhone())
                 .build();
+
+        LoginRequest entity = loginRequestMapper.toEntity(loginRequestDto);
+        entity.setFamilyMember(familyMember);
+        loginRequestRepository.save(entity);
 
         emsOtpService.sendOTP(generationOtpDto, familyMember.getPreferredContact());
         return StatusLevel.SUCCESS;
