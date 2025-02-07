@@ -12,7 +12,7 @@
     <artifactId>active-life-canada</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>active-life-canada</name>
-    <description>Recreational facilities maangement system for the cities of Canada .</description>
+    <description>Recreational facilities management system for the cities of Canada .</description>
     <url/>
     <licenses>
         <license/>
@@ -48,10 +48,21 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.15.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+
 
 
         <dependency>

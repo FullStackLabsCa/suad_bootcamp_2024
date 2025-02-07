@@ -65,5 +65,4 @@ public class OfferedCourseDto {
 
     private List<OfferedCourseFeeDto> offeredCourseFeeDto = new ArrayList<>();
 
-
 }

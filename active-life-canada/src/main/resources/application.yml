@@ -6,7 +6,7 @@ spring:
     user: admin
     password: admin
   datasource:
-    url: jdbc:postgresql://localhost:5432/active-life-db
+    url: jdbc:postgresql://localhost:5432/mydatabase
     username: postgres
     password: postgres
   jpa:
@@ -15,3 +15,10 @@ spring:
     show-sql: true
 queue:
   name: active-life-queue
+logging:
+  level:
+    org:
+      springframework:
+        cache=DEBUG:
+stripe:
+  secretKey: sk_test_51QpaHIGxFYAFJSJhwbFX5vEuzeyHJWAOdh2aELdI1sFknAewV9brvKNUBDszgDLlvRmKzUr50XK5a2HOjThPWTTp00IZnYgcQE

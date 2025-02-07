@@ -1,16 +1,16 @@
 package io.reactivestax.active_life_canada.mapper;
 
+import io.reactivestax.active_life_canada.domain.Cart;
 import io.reactivestax.active_life_canada.domain.OfferedCourse;
+import io.reactivestax.active_life_canada.dto.CartDto;
 import io.reactivestax.active_life_canada.dto.OfferedCourseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {OfferedCourseMapperHelper.class})
-public interface OfferedCourseMapper {
+public interface CartMapper {
 
-    @Mapping(source = "courseId", target = "course", qualifiedByName = "mapCourseIdToCourse")
-    OfferedCourse toEntity(OfferedCourseDto offeredCourseDto);
+    Cart toEntity(CartDto cartDto);
 
-    @Mapping(source = "course.courseId", target = "courseId")
-    OfferedCourseDto toDto(OfferedCourse offeredCourse);
+    CartDto toDto(Cart cart);
 }

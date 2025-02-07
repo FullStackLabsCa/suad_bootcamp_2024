@@ -19,7 +19,7 @@ public class FamilyGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long familyGroupId;
     private String familyPin;
-    private Integer credits = 0;
+    private Double credits = 0.0;
     private String status = "inActive";
     private String groupOwner;
     private Integer failedLoginAttempts;

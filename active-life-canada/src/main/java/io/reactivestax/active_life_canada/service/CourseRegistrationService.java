@@ -46,6 +46,9 @@ public class CourseRegistrationService {
     @Autowired
     private CourseRegistrationMapper courseRegistrationMapper;
 
+    @Autowired
+    private FamilyGroupService familyGroupService;
+
 
     @Transactional
     public CourseRegistrationDto save(Long familyMemberId, CourseRegistrationDto registrationDto) {
@@ -91,9 +94,13 @@ public class CourseRegistrationService {
         if (Boolean.TRUE.equals(courseRegistration.getIsWithdraw())) {
             throw new ResourceNotFoundException("This course is already dropped");
         }
+        FamilyMember member = familyMemberService.findFamilyMemberById(courseRegistration.getFamilyMember().getFamilyMemberId());
+        FamilyGroup familyGroup = familyGroupService.findById(member.getFamilyGroup().getFamilyGroupId());
+        familyGroup.setCredits(courseRegistration.getCost());
         courseRegistration.setIsWithdraw(true);
         courseRegistration.setWithdrawCredits(courseRegistration.getWithdrawCredits() + (courseRegistration.getCost()));
         courseRegistrationRepository.save(courseRegistration);
+        familyGroupService.saveGroup(familyGroup);
         OfferedCourse offeredCourse = offeredCourseService.findById(courseRegistration.getOfferedCourse().getOfferedCourseId());
         if(!offeredCourse.getWaitLists().isEmpty()){
             FamilyMember familyMember = offeredCourse.getWaitLists().get(0).getFamilyMember();

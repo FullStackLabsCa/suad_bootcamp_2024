@@ -49,6 +49,11 @@ public class FamilyMember {
     @JsonManagedReference
     @ToString.Exclude
     private List<LoginRequest> loginRequests = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "familyMember")
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<Cart> carts = new ArrayList<>();
 }
 
 
