@@ -7,6 +7,7 @@ import io.reactivestax.active_life_canada.dto.SignUpDto;
 import io.reactivestax.active_life_canada.enums.Status;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
 import io.reactivestax.active_life_canada.service.AuthenticationService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login/2fa")
-    public ResponseEntity<Status> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto) {
-        return ResponseEntity.ok(authenticationService.login2FA(loginRequestDto));
+    public ResponseEntity<String> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+        return ResponseEntity.ok(authenticationService.login2FA(loginRequestDto, session));
     }
 
 }

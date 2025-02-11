@@ -1,5 +1,6 @@
 package io.reactivestax.active_life_canada.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,10 @@ import java.time.LocalDate;
 public class FamilyMemberDto {
 //    private Long familyMemberId;
     private String name;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dob;
+
     private String gender;
     private String emailId;
     private String streetNumber;

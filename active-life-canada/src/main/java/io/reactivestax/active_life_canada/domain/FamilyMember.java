@@ -1,6 +1,7 @@
 package io.reactivestax.active_life_canada.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,6 +23,7 @@ public class FamilyMember {
 
     private String name;
     private LocalDate dob;
+
     private String gender;
     private String emailId;
     private String streetNumber;
@@ -51,7 +53,7 @@ public class FamilyMember {
     private List<LoginRequest> loginRequests = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "familyMember")
-    @JsonManagedReference
+    @JsonBackReference
     @ToString.Exclude
     private List<Cart> carts = new ArrayList<>();
 }

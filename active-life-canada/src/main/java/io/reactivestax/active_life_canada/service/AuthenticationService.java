@@ -13,7 +13,6 @@ import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
 import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
 import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
 import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
-import io.reactivestax.active_life_canada.enums.Status;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
 import io.reactivestax.active_life_canada.exception.UnauthorizedException;
 import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
@@ -23,6 +22,7 @@ import io.reactivestax.active_life_canada.repository.LoginRequestRepository;
 import io.reactivestax.active_life_canada.repository.SignUpRequestRepository;
 import io.reactivestax.active_life_canada.service.ems.EmsNotificationService;
 import io.reactivestax.active_life_canada.service.ems.EmsOtpService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,8 +86,8 @@ public class AuthenticationService {
         if (!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroup.getFamilyPin())) {
             throw new UnauthorizedException("Invalid FamilyPin...");
         }
-      /*  call for the 2fa*/
-      /*  send the otp on preferred contact*/
+        /*  call for the 2fa*/
+        /*  send the otp on preferred contact*/
         OtpDTO generationOtpDto = OtpDTO.builder()
                 .email(familyMember.getEmailId())
                 .phone(familyMember.getHomePhone())
@@ -101,15 +101,15 @@ public class AuthenticationService {
         return StatusLevel.SUCCESS;
     }
 
-    public Status login2FA(LoginRequestDto loginRequestDto) {
+    public String login2FA(LoginRequestDto loginRequestDto, HttpSession session) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(loginRequestDto.getFamilyMemberId());
         OtpDTO validateOtpDto = OtpDTO.builder()
                 .email(familyMember.getEmailId())
                 .phone(familyMember.getHomePhone())
                 .validOtp(loginRequestDto.getOtp())
                 .build();
-
-       return emsOtpService.verifyOTP(validateOtpDto);
+//        session.setAttribute("username", familyMember.getName());
+        return emsOtpService.verifyOTP(validateOtpDto).toString() + " and the session is active for: " + familyMember.getName();
     }
 
     public void sendNotification(FamilyMember familyMember, String message) {

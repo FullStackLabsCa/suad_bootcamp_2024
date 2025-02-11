@@ -1,8 +1,8 @@
 package io.reactivestax.active_life_canada.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +25,13 @@ public class Cart {
 
     @ManyToOne
     @JoinColumn(name = "family_member_id")
+    @JsonManagedReference
     private FamilyMember familyMember;
 
     @Column(name = "created_ts")
     private LocalDateTime createdTimeStamp;
 
     private Boolean isActive;
-
 }
 
 
