@@ -21,12 +21,11 @@ public class RedisConfig {
         RedisTemplate<String, Cart> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
 
-        // ✅ Use String Serializer for keys
         template.setKeySerializer(new StringRedisSerializer());
 
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // Register JavaTimeModule for LocalDate
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // Use ISO-8601
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 
@@ -35,7 +34,6 @@ public class RedisConfig {
 
         template.setValueSerializer(jackson2JsonRedisSerializer);
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
-
         return template;
     }
 }

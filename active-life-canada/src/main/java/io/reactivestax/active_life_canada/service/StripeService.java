@@ -25,13 +25,13 @@ public class StripeService {
         headers.set("Authorization", "Bearer " + stripeSecretKey);
         headers.set("Content-Type", "application/x-www-form-urlencoded");
 
-//        String body = "type=card"
-//                + "&card[number]=" + cardNumber
-//                + "&card[exp_month]=" + expMonth
-//                + "&card[exp_year]=" + expYear
-//                + "&card[cvc]=" + cvc;
+        String body = "type=card"
+                + "&card[number]=" + cardNumber
+                + "&card[exp_month]=" + expMonth
+                + "&card[exp_year]=" + expYear
+                + "&card[cvc]=" + cvc;
 
-        String body = "type=card&card[token]=tok_visa";
+//        String body = "type=card&card[token]=tok_visa";
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
         ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
         return exchange.getBody();
@@ -51,7 +51,6 @@ public class StripeService {
 
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-
         return response.getBody();
     }
 
