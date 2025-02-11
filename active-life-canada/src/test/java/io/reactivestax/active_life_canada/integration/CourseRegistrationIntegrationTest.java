@@ -1,10 +1,6 @@
 package io.reactivestax.active_life_canada.integration;
 
 import io.reactivestax.active_life_canada.dto.CourseRegistrationDto;
-import io.reactivestax.active_life_canada.dto.OfferedCourseDto;
-import io.reactivestax.active_life_canada.dto.OfferedCourseFeeDto;
-import io.reactivestax.active_life_canada.enums.FeeType;
-import io.reactivestax.active_life_canada.enums.StatusLevel;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
@@ -16,12 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -52,7 +46,7 @@ class CourseRegistrationIntegrationTest {
         Response response = given()
                 .log().all()
                 .contentType(ContentType.JSON)
-                .header("X-family-member-id", "19")
+                .header("X-family-member-id",2)
                 .body(courseRegistrationDto)
                 .when()
                 .post(BASE_URL)
@@ -66,7 +60,7 @@ class CourseRegistrationIntegrationTest {
 
         assertThat(createdOfferedCourse).isNotNull();
         assertThat(createdOfferedCourse.getEnrollmentDate()).isEqualTo(LocalDate.parse("2025-02-02"));
-        assertThat(createdOfferedCourse.getOfferedCourseId()).isEqualTo(5);
+        assertThat(createdOfferedCourse.getOfferedCourseId()).isEqualTo(3);
     }
 
     @Test
@@ -77,7 +71,7 @@ class CourseRegistrationIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(courseRegistrationDto)
                 .when()
-                .get(BASE_URL + "/19")
+                .get(BASE_URL + "/1")
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -88,10 +82,10 @@ class CourseRegistrationIntegrationTest {
 
         List<CourseRegistrationDto> courseRegistrationDtos = response.as(new TypeRef<List<CourseRegistrationDto>>() {});
 
-        assertThat(courseRegistrationDtos.get(4)).isNotNull();
-        assertThat(courseRegistrationDtos.get(4).getEnrollmentDate()).isEqualTo(LocalDate.parse("2025-02-02"));
-        assertThat(courseRegistrationDtos.get(4).getCost()).isEqualTo(2.5);
-        assertThat(courseRegistrationDtos.get(4).getOfferedCourseId()).isEqualTo(5);
+        assertThat(courseRegistrationDtos.get(2)).isNotNull();
+        assertThat(courseRegistrationDtos.get(2).getEnrollmentDate()).isEqualTo(LocalDate.parse("2025-02-02"));
+        assertThat(courseRegistrationDtos.get(2).getCost()).isEqualTo(2.5);
+        assertThat(courseRegistrationDtos.get(2).getOfferedCourseId()).isEqualTo(5);
     }
 
 
@@ -101,7 +95,7 @@ class CourseRegistrationIntegrationTest {
         given()
                 .log().all()
                 .when()
-                .delete(BASE_URL + "/withdraw/25")
+                .delete(BASE_URL + "/withdraw/2")
                 .then()
                 .log().all()
                 .contentType(ContentType.JSON) // Ensure response content type

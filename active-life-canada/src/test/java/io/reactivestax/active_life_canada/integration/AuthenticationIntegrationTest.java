@@ -66,8 +66,8 @@ class AuthenticationIntegrationTest {
     @Test
     void testLogin() {
         LoginRequestDto loginRequestDto = LoginRequestDto.builder()
-                .familyMemberId(9L)
-                .familyPin("1234")
+                .familyMemberId(3L)
+                .familyPin("2894")
                 .build();
 
         Response response = given()

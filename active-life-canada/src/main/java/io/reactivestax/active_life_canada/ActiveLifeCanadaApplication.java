@@ -11,5 +11,4 @@ public class ActiveLifeCanadaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ActiveLifeCanadaApplication.class, args);
 	}
-
 }

@@ -22,5 +22,4 @@ public class CacheConfig {
                 .maximumSize(100)
                 .recordStats();
     }
-
 }

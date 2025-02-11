@@ -37,10 +37,10 @@ class FamilyManagementIntegrationTest {
     @Test
     void testAddMember() {
         FamilyMemberDto familyMemberDto = FamilyMemberDto.builder()
-                .name("John Doe")
+                .name("Himesh panta")
                 .dob(LocalDate.of(1990, 1, 1))
                 .gender("Male")
-                .emailId("john.doe@example.com")
+                .emailId("himesh.Pant@example.com")
                 .city("Toronto")
                 .country("Canada")
                 .preferredContact("email")
@@ -131,7 +131,7 @@ class FamilyManagementIntegrationTest {
 
         Response response = given()
                 .log().all()
-                .header("X-uuid-token", "223152e1-ac86-422e-91a1-fab36490299d")
+                .header("X-uuid-token", "aa44c1f0-16c7-40aa-bc3e-789e4d73597f")
                 .when()
                 .post(BASE_URL + "/members/" + memberId + "/activation")
                 .then()
