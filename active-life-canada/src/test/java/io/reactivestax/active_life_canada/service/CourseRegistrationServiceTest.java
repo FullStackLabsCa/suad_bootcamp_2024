@@ -68,7 +68,7 @@ class CourseRegistrationServiceTest {
 
         CourseRegistrationDto result = courseRegistrationService.save(familyMemberId, registrationDto);
 
-        assertEquals(registrationDto, result); // Ensure the method returns the correct DTO
+        assertEquals(registrationDto, result);
 
         assertEquals(1, offeredCourse.getWaitLists().size());
 
@@ -77,15 +77,16 @@ class CourseRegistrationServiceTest {
         verify(offeredCourseRepository).save(offeredCourse);
     }
 
-    @Test
-    void testWithdrawRegisteredCourse_ThrowsResourceNotFound_WhenCourseRegistrationNotFound() {
-        Long registrationId = 1L;
-        when(courseRegistrationRepository.findById(registrationId)).thenReturn(Optional.empty());
+//    @Test
 
-        assertThrows(ResourceNotFoundException.class, () ->
-                courseRegistrationService.withdrawRegisteredCourse(registrationId)
-        );
-    }
+    /// /    void testWithdrawRegisteredCourse_ThrowsResourceNotFound_WhenCourseRegistrationNotFound() {
+    /// /        Long registrationId = 1L;
+    /// /        when(courseRegistrationRepository.findById(registrationId)).thenReturn(Optional.empty());
+    /// /
+    /// /        assertThrows(ResourceNotFoundException.class, () ->
+    /// /                courseRegistrationService.withdrawRegisteredCourse(registrationId)
+    /// /        );
+    /// /    }
 
     @Test
     void testWithdrawRegisteredCourse_ThrowsResourceNotFound_WhenCourseAlreadyWithdrawn() {

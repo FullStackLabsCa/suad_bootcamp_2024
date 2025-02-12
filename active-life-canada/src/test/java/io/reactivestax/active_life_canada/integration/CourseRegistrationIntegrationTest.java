@@ -21,7 +21,6 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -52,7 +51,7 @@ class CourseRegistrationIntegrationTest {
         Response response = given()
                 .log().all()
                 .contentType(ContentType.JSON)
-                .header("X-family-member-id", "19")
+                .header("X-family-member-id", "5")
                 .body(courseRegistrationDto)
                 .when()
                 .post(BASE_URL)
@@ -77,7 +76,7 @@ class CourseRegistrationIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(courseRegistrationDto)
                 .when()
-                .get(BASE_URL + "/19")
+                .get(BASE_URL + "/2")
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -88,10 +87,10 @@ class CourseRegistrationIntegrationTest {
 
         List<CourseRegistrationDto> courseRegistrationDtos = response.as(new TypeRef<List<CourseRegistrationDto>>() {});
 
-        assertThat(courseRegistrationDtos.get(4)).isNotNull();
-        assertThat(courseRegistrationDtos.get(4).getEnrollmentDate()).isEqualTo(LocalDate.parse("2025-02-02"));
-        assertThat(courseRegistrationDtos.get(4).getCost()).isEqualTo(2.5);
-        assertThat(courseRegistrationDtos.get(4).getOfferedCourseId()).isEqualTo(5);
+        assertThat(courseRegistrationDtos.get(0)).isNotNull();
+        assertThat(courseRegistrationDtos.get(0).getEnrollmentDate()).isEqualTo(LocalDate.parse("2025-02-02"));
+        assertThat(courseRegistrationDtos.get(0).getCost()).isEqualTo(2.5);
+        assertThat(courseRegistrationDtos.get(0).getOfferedCourseId()).isEqualTo(5);
     }
 
 
@@ -101,7 +100,7 @@ class CourseRegistrationIntegrationTest {
         given()
                 .log().all()
                 .when()
-                .delete(BASE_URL + "/withdraw/25")
+                .delete(BASE_URL + "/withdraw/5")
                 .then()
                 .log().all()
                 .contentType(ContentType.JSON) // Ensure response content type

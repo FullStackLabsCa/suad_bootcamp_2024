@@ -43,7 +43,7 @@ class OfferedCourseIntegrationTest {
      void testOfferedCourseCreation() {
 
         OfferedCourseFeeDto feeDto = OfferedCourseFeeDto.builder()
-                .feeType(FeeType.RESIDENTIAL)  // Example of FeeType
+                .feeType(FeeType.RESIDENTIAL)
                 .courseFee(100.0)
                 .build();
 

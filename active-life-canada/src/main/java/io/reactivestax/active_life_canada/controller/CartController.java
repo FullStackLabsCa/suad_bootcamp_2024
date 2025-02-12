@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("api/v1/cart")
@@ -23,7 +25,7 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}")
-    public ResponseEntity<CartDto> getEnrolledCourses(@PathVariable Long cartId) {
+    public ResponseEntity<CartDto> getEnrolledCourses(@PathVariable UUID cartId) {
         return ResponseEntity.ok(cartService.getCart(cartId));
     }
 
@@ -33,7 +35,7 @@ public class CartController {
     }
 
     @DeleteMapping("/deleteCart/{cartId}")
-    public ResponseEntity<String> withDrawFromOfferedCourse(@PathVariable Long cartId) {
+    public ResponseEntity<String> withDrawFromOfferedCourse(@PathVariable UUID cartId) {
        return  ResponseEntity.ok(cartService.deleteCart(cartId));
     }
 
