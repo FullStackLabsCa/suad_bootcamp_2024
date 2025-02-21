@@ -21,11 +21,23 @@ spring:
     show-sql: true
 queue:
   name: active-life-queue
+
 logging:
   level:
-    org:
-      springframework:
-        cache=DEBUG:
+    root: error
+    org.springframework: info
+    org.springframework.security: trace
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+
+springdoc:
+  show-actuator: true
+
+
 #stripe:
 #  secretKey: sk_test_51QpaHIGxFYAFJSJhwbFX5vEuzeyHJWAOdh2aELdI1sFknAewV9brvKNUBDszgDLlvRmKzUr50XK5a2HOjThPWTTp00IZnYgcQE
 #server:
