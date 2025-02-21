@@ -13,7 +13,9 @@ import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
 import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
 import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
 import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
+import io.reactivestax.active_life_canada.enums.Status;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
+import io.reactivestax.active_life_canada.exception.ResourceNotFoundException;
 import io.reactivestax.active_life_canada.exception.UnauthorizedException;
 import io.reactivestax.active_life_canada.mapper.FamilyMemberMapper;
 import io.reactivestax.active_life_canada.mapper.LoginRequestMapper;
@@ -22,12 +24,16 @@ import io.reactivestax.active_life_canada.repository.LoginRequestRepository;
 import io.reactivestax.active_life_canada.repository.SignUpRequestRepository;
 import io.reactivestax.active_life_canada.service.ems.EmsNotificationService;
 import io.reactivestax.active_life_canada.service.ems.EmsOtpService;
+import io.reactivestax.active_life_canada.utility.JwtUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -60,6 +66,9 @@ public class AuthenticationService {
 
     @Autowired
     private LoginRequestMapper loginRequestMapper;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     @Transactional
@@ -101,15 +110,27 @@ public class AuthenticationService {
         return StatusLevel.SUCCESS;
     }
 
-    public String login2FA(LoginRequestDto loginRequestDto, HttpSession session) {
+    public Map<String, String> login2FA(LoginRequestDto loginRequestDto, HttpSession session) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(loginRequestDto.getFamilyMemberId());
         OtpDTO validateOtpDto = OtpDTO.builder()
                 .email(familyMember.getEmailId())
                 .phone(familyMember.getHomePhone())
                 .validOtp(loginRequestDto.getOtp())
                 .build();
-//        session.setAttribute("username", familyMember.getName());
-        return emsOtpService.verifyOTP(validateOtpDto).toString() + " and the session is active for: " + familyMember.getName();
+
+        Status status = emsOtpService.verifyOTP(validateOtpDto);
+        if(status.equals(Status.VALID)){
+            Map<String, String> userData = new HashMap<>();
+            userData.put("userName", familyMember.getName());
+            userData.put("role", "ROLE_ADMIN");
+            userData.put("userId", familyMember.getFamilyMemberId().toString());
+            String token = jwtUtil.generateToken(userData);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return response;
+        }
+
+        throw new UsernameNotFoundException("Invalid User credentials..");
     }
 
     public void sendNotification(FamilyMember familyMember, String message) {

@@ -14,9 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CartDto {
-
     private UUID cartId;
     private List<Long> offeredCourseIds = new ArrayList<>();
     private Boolean isActive;
     private Long familyMemberId;
+
 }

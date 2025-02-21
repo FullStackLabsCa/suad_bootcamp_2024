@@ -26,5 +26,11 @@ logging:
     org:
       springframework:
         cache=DEBUG:
-stripe:
-  secretKey: sk_test_51QpaHIGxFYAFJSJhwbFX5vEuzeyHJWAOdh2aELdI1sFknAewV9brvKNUBDszgDLlvRmKzUr50XK5a2HOjThPWTTp00IZnYgcQE
+#stripe:
+#  secretKey: sk_test_51QpaHIGxFYAFJSJhwbFX5vEuzeyHJWAOdh2aELdI1sFknAewV9brvKNUBDszgDLlvRmKzUr50XK5a2HOjThPWTTp00IZnYgcQE
+#server:
+#  port: 30002
+#  ssl:
+#    key-store: classpath:keystore.p12
+#    key-store-password: java17
+#    key-password: java17

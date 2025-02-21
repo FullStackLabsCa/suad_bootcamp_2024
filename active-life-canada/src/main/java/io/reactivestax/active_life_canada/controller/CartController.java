@@ -3,6 +3,8 @@ package io.reactivestax.active_life_canada.controller;
 
 import io.reactivestax.active_life_canada.dto.CartDto;
 import io.reactivestax.active_life_canada.service.CartService;
+import jakarta.servlet.Filter;
+import jakarta.servlet.http.HttpServlet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/cart")
 @Slf4j
-public class CartController {
+public class CartController extends HttpServlet {
 
     @Autowired
     private CartService cartService;

@@ -4,8 +4,10 @@ package io.reactivestax.active_life_canada.controller;
 import io.reactivestax.active_life_canada.dto.FamilyMemberDto;
 import io.reactivestax.active_life_canada.enums.StatusLevel;
 import io.reactivestax.active_life_canada.service.FamilyMemberService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("api/v1/authentication")
@@ -33,7 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login/2fa")
-    public ResponseEntity<String> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+    public ResponseEntity<Map<String, String>> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
         return ResponseEntity.ok(authenticationService.login2FA(loginRequestDto, session));
     }
 

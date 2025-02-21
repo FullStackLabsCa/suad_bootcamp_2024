@@ -25,7 +25,6 @@ public class OfferedCourseController {
        return ResponseEntity.ok(offeredCourseService.save(offeredCourseDto));
     }
 
-
     @PutMapping("/{offeredCourseId}")
     public ResponseEntity<OfferedCourseDto> updateOfferedCourse(@PathVariable Long offeredCourseId, @RequestBody OfferedCourseDto offeredCourseDto) {
         return ResponseEntity.ok(offeredCourseService.updateOfferedCourse(offeredCourseId, offeredCourseDto));
