@@ -1,5 +1,6 @@
 package io.reactivestax.active_life_canada.security;
 
+import io.reactivestax.active_life_canada.constant.SecurityConstants;
 import io.reactivestax.active_life_canada.service.FamilyMemberService;
 import io.reactivestax.active_life_canada.utility.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -30,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader != null && authorizationHeader.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             String token = authorizationHeader.substring(7);
             String username = jwtUtil.extractUsername(token);
             String role = jwtUtil.extractUserRole(token);

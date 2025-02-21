@@ -28,6 +28,7 @@ import io.reactivestax.active_life_canada.utility.JwtUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,10 +71,15 @@ public class AuthenticationService {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Transactional
     public FamilyMemberDto signUpAndCreateFamilyGroup(SignUpDto signUpDto) {
-        FamilyGroup familyGroup = familyGroupService.saveGroupByFamilyGroupDto(FamilyGroupDto.builder().familyPin(signUpDto.getFamilyPin()).groupOwner(signUpDto.getName()).build());
+        FamilyGroup familyGroup = familyGroupService.saveGroupByFamilyGroupDto(FamilyGroupDto.builder()
+                .familyPin(passwordEncoder.encode(signUpDto.getFamilyPin()))
+                .groupOwner(signUpDto.getName()).build());
 
         FamilyMember familyMember = familyMemberMapper.toFamilyMember(signUpDto);
         familyMember.setFamilyGroup(familyGroup);
@@ -92,9 +98,14 @@ public class AuthenticationService {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(loginRequestDto.getFamilyMemberId());
         FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
 
-        if (!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroup.getFamilyPin())) {
+        if(!passwordEncoder.matches(loginRequestDto.getFamilyPin(), familyGroup.getFamilyPin())){
             throw new UnauthorizedException("Invalid FamilyPin...");
+
         }
+
+//        if (!loginRequestDto.getFamilyPin().equalsIgnoreCase(familyGroup.getFamilyPin())) {
+//            throw new UnauthorizedException("Invalid FamilyPin...");
+//        }
         /*  call for the 2fa*/
         /*  send the otp on preferred contact*/
         OtpDTO generationOtpDto = OtpDTO.builder()
