@@ -12,9 +12,9 @@ spring:
     user: admin
     password: admin
   datasource:
-    url: jdbc:postgresql://localhost:5432/mydatabase
+    url: jdbc:postgresql://localhost:5432/active_life_db
     username: postgres
-    password: postgres
+    password: admin
   jpa:
     hibernate:
       ddl-auto: update
