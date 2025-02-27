@@ -21,7 +21,6 @@ spring:
     show-sql: true
 queue:
   name: active-life-queue
-
 logging:
   level:
     root: error
