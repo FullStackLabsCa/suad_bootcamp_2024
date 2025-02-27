@@ -35,7 +35,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated() //Require authentication for all other requests
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
