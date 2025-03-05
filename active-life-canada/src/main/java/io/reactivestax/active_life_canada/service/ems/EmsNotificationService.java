@@ -17,7 +17,7 @@ public class EmsNotificationService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String EMS_BASE_URL = "http://localhost:8081/api/v1/ems";
+    private static final String EMS_BASE_URL = "https://localhost:8081/api/v1/ems";
 
     public void sendEmailSignUpNotification(EmailDTO emailDTO) {
         String emailUrl = EMS_BASE_URL + "/email";

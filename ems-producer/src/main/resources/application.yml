@@ -6,7 +6,7 @@ spring:
     user: admin
     password: admin
   datasource:
-    url: jdbc:postgresql://localhost:5432/ems_database
+    url: jdbc:postgresql://localhost:5432/ems_db
     username: postgres
     password: postgres
   jpa:
@@ -20,5 +20,15 @@ otp:
   verification-block-time-hours: 2
 queue:
   name: ems-queue
+
 server:
   port: 8081
+  ssl:
+    key-store: classpath:ems-keystore.jks
+    key-store-password: changeit
+    key-store-type: JKS
+    trust-store: classpath:ems-truststore.jks
+    trust-store-password: changeit
+    trust-store-type: JKS
+    enabled: true
+    client-auth: need

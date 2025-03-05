@@ -121,7 +121,7 @@ public class AuthenticationService {
         return StatusLevel.SUCCESS;
     }
 
-    public Map<String, String> login2FA(LoginRequestDto loginRequestDto, HttpSession session) {
+    public Map<String, String> login2FA(LoginRequestDto loginRequestDto) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(loginRequestDto.getFamilyMemberId());
         OtpDTO validateOtpDto = OtpDTO.builder()
                 .email(familyMember.getEmailId())

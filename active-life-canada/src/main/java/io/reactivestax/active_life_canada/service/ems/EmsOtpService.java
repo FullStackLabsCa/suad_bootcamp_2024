@@ -20,7 +20,7 @@ public class EmsOtpService {
     private RestTemplate restTemplate;
 
 
-    private static final String EMS_BASE_URL = "http://localhost:8081/api/v1/otp";
+    private static final String EMS_BASE_URL = "https://localhost:8081/api/v1/otp";
 
     public void sendOTP(OtpDTO otpDTO, String type) {
         String url = "";

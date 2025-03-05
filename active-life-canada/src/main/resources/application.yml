@@ -14,7 +14,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/active_life_db
     username: postgres
-    password: admin
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update
@@ -42,10 +42,11 @@ server:
     key-store: classpath:active-life-canada-keystore.jks
     key-store-password: changeit
     key-store-type: JKS
-    trust-store: classpath:active-life-canada-truststore.jks
-    trust-store-password: changeit
-    trust-store-type: JKS
-    client-auth: NEED  # Enforce two-way SSL
+
+
+#  trust-store: classpath:active-life-canada-truststore.jks
+#  trust-store-password: changeit
+#  trust-store-type: JKS
 
 
 

@@ -35,8 +35,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login/2fa")
-    public ResponseEntity<Map<String, String>> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
-        return ResponseEntity.ok(authenticationService.login2FA(loginRequestDto, session));
+    public ResponseEntity<Map<String, String>> loginFamilyMember2fa(@RequestBody LoginRequestDto loginRequestDto) {
+        return ResponseEntity.ok(authenticationService.login2FA(loginRequestDto));
     }
 
 }
