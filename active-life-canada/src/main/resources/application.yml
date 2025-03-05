@@ -36,6 +36,18 @@ management:
 springdoc:
   show-actuator: true
 
+server:
+  port: 8080
+  ssl:
+    key-store: classpath:active-life-canada-keystore.jks
+    key-store-password: changeit
+    key-store-type: JKS
+    trust-store: classpath:active-life-canada-truststore.jks
+    trust-store-password: changeit
+    trust-store-type: JKS
+    client-auth: NEED  # Enforce two-way SSL
+
+
 
 #stripe:
 #  secretKey: sk_test_51QpaHIGxFYAFJSJhwbFX5vEuzeyHJWAOdh2aELdI1sFknAewV9brvKNUBDszgDLlvRmKzUr50XK5a2HOjThPWTTp00IZnYgcQE
