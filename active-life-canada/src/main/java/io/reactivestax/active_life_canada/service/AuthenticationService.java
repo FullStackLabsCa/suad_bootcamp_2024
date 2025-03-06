@@ -140,7 +140,6 @@ public class AuthenticationService {
             response.put("token", token);
             return response;
         }
-
         throw new UsernameNotFoundException("Invalid User credentials..");
     }
 

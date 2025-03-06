@@ -1,6 +1,19 @@
 spring:
   application:
     name: active-life-canada
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          okta:
+#            token-uri: https://dev-56466430.okta.com/oauth2/ausnnzk61dE5M8SLz5d7/v1/token
+#        registration:
+#          okta:
+#            authorization-grant-type: client_credentials
+#            client-id: 0oannzx5smfbvCdfw5d7
+#            client-name: okta-client
+#            client-secret: HY_Dmmo2sq1x68GTL3gCtH7U9nkaSblbT6UzVxD4DyF9piWmHfd62KxJniciSNoi
+#            scope: ems.sms
   redis:
     host: localhost
     port: 6379
@@ -42,6 +55,13 @@ server:
     key-store: classpath:active-life-canada-keystore.jks
     key-store-password: changeit
     key-store-type: JKS
+
+okta:
+  client-id: 0oannzx5smfbvCdfw5d7
+  client-secret: HY_Dmmo2sq1x68GTL3gCtH7U9nkaSblbT6UzVxD4DyF9piWmHfd62KxJniciSNoi
+  issuer-uri: https://your-okta-domain/oauth2/default
+  token-uri: https://dev-56466430.okta.com/oauth2/ausnnzk61dE5M8SLz5d7/v1/token
+
 
 
 #  trust-store: classpath:active-life-canada-truststore.jks

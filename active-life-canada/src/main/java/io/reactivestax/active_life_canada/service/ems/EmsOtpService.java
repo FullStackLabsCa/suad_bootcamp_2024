@@ -1,7 +1,9 @@
 package io.reactivestax.active_life_canada.service.ems;
 
+import io.reactivestax.active_life_canada.constant.AppConstants;
 import io.reactivestax.active_life_canada.dto.ems.OtpDTO;
 import io.reactivestax.active_life_canada.enums.Status;
+import io.reactivestax.active_life_canada.service.OktaTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -19,20 +21,16 @@ public class EmsOtpService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private OktaTokenService oktaTokenService;
 
-    private static final String EMS_BASE_URL = "https://localhost:8081/api/v1/otp";
+
 
     public void sendOTP(OtpDTO otpDTO, String type) {
-        String url = "";
-        if (type.equalsIgnoreCase("email")) {
-            url = EMS_BASE_URL + "/email";
-        } else if (type.equalsIgnoreCase("phone")) {
-            url = EMS_BASE_URL + "/phone";
-        } else {
-            url = EMS_BASE_URL + "/sms";
-        }
+        String url = AppConstants.EMS_BASE_URL + "/" + (type.equalsIgnoreCase("email") ? "email" :
+                type.equalsIgnoreCase("phone") ? "phone" : "sms");
 
-        HttpHeaders headers = createAuthHeaders();
+        HttpHeaders headers = createAuthHeaders(type);
         HttpEntity<OtpDTO> requestEntity = new HttpEntity<>(otpDTO, headers);
         ResponseEntity<OtpDTO> responseEntity = restTemplate.exchange(
                 url,
@@ -45,8 +43,8 @@ public class EmsOtpService {
 
 
     public Status verifyOTP(OtpDTO otpDTO) {
-        String url = EMS_BASE_URL + "/verify/activeLife" ;
-        HttpHeaders headers = createAuthHeaders();
+        String url = AppConstants.EMS_BASE_URL + "/verify/activeLife" ;
+        HttpHeaders headers = createAuthHeaders("sms");
         HttpEntity<OtpDTO> requestEntity = new HttpEntity<>(otpDTO, headers);
         ResponseEntity<Status> responseEntity = restTemplate.exchange(
                 url,
@@ -57,9 +55,10 @@ public class EmsOtpService {
         return responseEntity.getBody();
     }
 
-    private HttpHeaders createAuthHeaders() {
+    private HttpHeaders createAuthHeaders(String type) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/json");
+        httpHeaders.setBearerAuth(oktaTokenService.getAccessToken(type));
         return httpHeaders;
     }
 }

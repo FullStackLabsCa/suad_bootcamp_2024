@@ -35,20 +35,20 @@ public class AppConfig {
         RestTemplateBuilder builder = new RestTemplateBuilder();
 
         // Create an SSLContext that bypasses SSL validation
-//        SSLContext sslContext = SSLContextBuilder.create()
-//                .loadTrustMaterial((X509Certificate[] chain, String authType) -> true) // Trust all certificates
-//                .build();
-
-        SSLContext sslContext = SSLContextBuilder
-                .create()
-                .loadKeyMaterial(
-                        new ClassPathResource("active-life-canada-keystore.jks").getFile(),
-                        "changeit".toCharArray(),
-                        "changeit".toCharArray())
-                .loadTrustMaterial(
-                        new ClassPathResource("active-life-canada-truststore.jks").getFile(),
-                        "changeit".toCharArray())
+        SSLContext sslContext = SSLContextBuilder.create()
+                .loadTrustMaterial((X509Certificate[] chain, String authType) -> true) // Trust all certificates
                 .build();
+
+//        SSLContext sslContext = SSLContextBuilder
+//                .create()
+//                .loadKeyMaterial(
+//                        new ClassPathResource("active-life-canada-keystore.jks").getFile(),
+//                        "changeit".toCharArray(),
+//                        "changeit".toCharArray())
+//                .loadTrustMaterial(
+//                        new ClassPathResource("active-life-canada-truststore.jks").getFile(),
+//                        "changeit".toCharArray())
+//                .build();
 
         // Create SSLConnectionSocketFactory with the SSLContext and NoopHostnameVerifier
         SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
