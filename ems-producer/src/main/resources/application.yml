@@ -1,6 +1,11 @@
 spring:
   application:
     name: spring-boot-ems
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://dev-56466430.okta.com/oauth2/ausnnzk61dE5M8SLz5d7/v1/keys #it provides the public key to verify the digital sign of incoming token
   artemis:
     broker-url: tcp://localhost:61616
     user: admin
@@ -27,8 +32,8 @@ server:
     key-store: classpath:ems-keystore.jks
     key-store-password: changeit
     key-store-type: JKS
-    trust-store: classpath:ems-truststore.jks
-    trust-store-password: changeit
-    trust-store-type: JKS
-    enabled: true
-    client-auth: need
+#    trust-store: classpath:ems-truststore.jks
+#    trust-store-password: changeit
+#    trust-store-type: JKS
+#    enabled: true
+#    client-auth: need

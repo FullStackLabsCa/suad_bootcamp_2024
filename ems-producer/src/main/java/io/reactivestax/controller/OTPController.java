@@ -6,6 +6,7 @@ import io.reactivestax.service.OTPService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,15 +17,18 @@ public class OTPController {
     private OTPService otpService;
 
     @PostMapping("/sms")
+//    @PreAuthorize("hasAuthority('SCOPE_ems.sms')")
     public ResponseEntity<OtpDTO> createOtpForSms(@Valid @RequestBody OtpDTO otpDTO) {
         return ResponseEntity.ok(otpService.createOtpForSms(otpDTO));
     }
 
     @PostMapping("/call")
+    @PreAuthorize("hasAuthority('SCOPE_ems.call')")
     public ResponseEntity<OtpDTO> createOtpForCall(@Valid @RequestBody OtpDTO otpDTO) {
         return ResponseEntity.ok(otpService.createOtpForPhone(otpDTO));
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ems.email')")
     @PostMapping("/email")
     public ResponseEntity<OtpDTO> createOtpForEmail(@Valid @RequestBody OtpDTO otpDTO) {
         return ResponseEntity.ok(otpService.createOtpForEmail(otpDTO));

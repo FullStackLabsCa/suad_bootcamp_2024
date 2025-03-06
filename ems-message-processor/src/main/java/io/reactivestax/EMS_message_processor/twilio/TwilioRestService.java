@@ -26,10 +26,10 @@ public class TwilioRestService {
     @Value("${twilio.phone.number}")
     private String twilioPhoneNumber;
 
-    @Value("${twilio.auth-token}")
+    @Value("${twilio.auth.token}")
     private String authToken;
 
-    @Value("${twilio.account-sid}")
+    @Value("${twilio.account.sid}")
     private String accountSID;
 
     @Autowired
