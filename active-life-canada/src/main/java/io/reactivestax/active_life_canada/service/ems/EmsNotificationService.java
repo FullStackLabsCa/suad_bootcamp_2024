@@ -4,9 +4,11 @@ import io.reactivestax.active_life_canada.constant.AppConstants;
 import io.reactivestax.active_life_canada.dto.ems.EmailDTO;
 import io.reactivestax.active_life_canada.dto.ems.PhoneDTO;
 import io.reactivestax.active_life_canada.dto.ems.SmsDTO;
-import io.reactivestax.active_life_canada.service.OktaTokenService;
+import io.reactivestax.active_life_canada.service.outh.OktaTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
@@ -21,6 +23,9 @@ public class EmsNotificationService {
 
     @Autowired
     private OktaTokenService oktaTokenService;
+
+    @Autowired
+    private OAuth2AuthorizedClientService authorizedClientService;
 
 
 
@@ -68,7 +73,7 @@ public class EmsNotificationService {
     private HttpHeaders createAuthHeaders(String type) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/json");
-        httpHeaders.setBearerAuth(oktaTokenService.getAccessToken(type));
+        httpHeaders.setBearerAuth(oktaTokenService.getOAuthToken());
         return httpHeaders;
     }
 }

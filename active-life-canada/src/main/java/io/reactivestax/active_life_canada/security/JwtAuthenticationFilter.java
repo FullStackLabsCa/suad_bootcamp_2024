@@ -10,6 +10,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Map;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -46,6 +50,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+
+//                if (jwtUtil.validateToken(token, username, userId)) {
+//                    OAuth2User oAuth2User = new DefaultOAuth2User(
+//                            Collections.singleton(new SimpleGrantedAuthority(role)),
+//                            Map.of("sub", username),
+//                            "sub"
+//                    );
+//
+//                    OAuth2AuthenticationToken authentication = new OAuth2AuthenticationToken(
+//                            oAuth2User, oAuth2User.getAuthorities(), "okta"
+//                    );
+//
+//                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//                    SecurityContextHolder.getContext().setAuthentication(authentication);
+//                }
             }
         }
         filterChain.doFilter(request, response);

@@ -2,6 +2,7 @@ package io.reactivestax.active_life_canada.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,31 +22,22 @@ import java.util.Objects;
 @RestController
 public class RestApiClientController {
 
+    @Autowired
+    RestTemplate restTemplate;
+
     private static final Logger log = LoggerFactory.getLogger(RestApiClientController.class);
 
-    @Value("${spring.resource-uri:https://localhost:8081/api/v1/ems}")
+    @Value("${spring.resource-uri:https://localhost:8081/ems/sms}")
     private String resourceUri;
 
 
-    @GetMapping("/call-api")
-    Map<String, String> restTemplate(@RegisteredOAuth2AuthorizedClient("okta") OAuth2AuthorizedClient authorizedClient) {
+    @GetMapping("api/v1/call-api")
+    String restTemplate(@RegisteredOAuth2AuthorizedClient("okta") OAuth2AuthorizedClient authorizedClient) {
         OAuth2AccessToken accessToken = Objects.requireNonNull(authorizedClient).getAccessToken();
         log.info("Issued: {}, Expires {} ", accessToken.getIssuedAt().toString(), accessToken.getExpiresAt().toString());
         log.info("Scopes: {} ", accessToken.getScopes().toString());
         log.info("Token: {} ", accessToken.getTokenValue());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken.getTokenValue());
-        HttpEntity request = new HttpEntity(headers);
-
         // Make the actual HTTP GET request
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange(resourceUri, HttpMethod.GET, request, String.class);
-
-        Map<String, String> model = new HashMap<>();
-        model.put("apiResponse", response.getBody());
-        model.put("oauthGrantType", "client credentials flow");
-        model.put("accessToken", authorizedClient.getAccessToken().getTokenValue());
-        return model;
+      return accessToken.getTokenValue();
     }
 }
