@@ -1,10 +1,7 @@
 package io.reactivestax.activelifecanada.service;
 
 
-import io.reactivestax.activelifecanada.domain.FamilyGroup;
-import io.reactivestax.activelifecanada.domain.FamilyMember;
-import io.reactivestax.activelifecanada.domain.LoginRequest;
-import io.reactivestax.activelifecanada.domain.SignUpRequest;
+import io.reactivestax.activelifecanada.domain.*;
 import io.reactivestax.activelifecanada.dto.FamilyGroupDto;
 import io.reactivestax.activelifecanada.dto.FamilyMemberDto;
 import io.reactivestax.activelifecanada.dto.LoginRequestDto;
@@ -16,6 +13,7 @@ import io.reactivestax.activelifecanada.dto.ems.SmsDTO;
 import io.reactivestax.activelifecanada.enums.Status;
 import io.reactivestax.activelifecanada.enums.StatusLevel;
 import io.reactivestax.activelifecanada.exception.UnauthorizedException;
+import io.reactivestax.activelifecanada.mapper.FamilyGroupMapper;
 import io.reactivestax.activelifecanada.mapper.FamilyMemberMapper;
 import io.reactivestax.activelifecanada.mapper.LoginRequestMapper;
 import io.reactivestax.activelifecanada.repository.FamilyMemberRepository;
@@ -28,12 +26,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Connection;
+import java.util.*;
+import java.util.stream.Stream;
 
 
 @Service
@@ -72,12 +70,18 @@ public class AuthenticationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private FamilyGroupMapper familyGroupMapper;
+
 
     @Transactional
     public FamilyMemberDto signUpAndCreateFamilyGroup(SignUpDto signUpDto) {
-        FamilyGroup familyGroup = familyGroupService.saveGroupByFamilyGroupDto(FamilyGroupDto.builder()
+        FamilyGroup familyGroup = familyGroupService.saveGroup(FamilyGroup.builder()
                 .familyPin(passwordEncoder.encode(signUpDto.getFamilyPin()))
-                .groupOwner(signUpDto.getName()).build());
+                .groupOwner(signUpDto.getName())
+                .isGroupOwner(true)
+                .build()
+        );
 
         FamilyMember familyMember = familyMemberMapper.toFamilyMember(signUpDto);
         familyMember.setFamilyGroup(familyGroup);
@@ -92,11 +96,12 @@ public class AuthenticationService {
         return familyMemberMapper.toDto(familyMember);
     }
 
+
     public StatusLevel loginFamilyMember(LoginRequestDto loginRequestDto) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(loginRequestDto.getFamilyMemberId());
         FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
 
-        if(!passwordEncoder.matches(loginRequestDto.getFamilyPin(), familyGroup.getFamilyPin())){
+        if (!passwordEncoder.matches(loginRequestDto.getFamilyPin(), familyGroup.getFamilyPin())) {
             throw new UnauthorizedException("Invalid FamilyPin...");
         }
 
@@ -116,6 +121,7 @@ public class AuthenticationService {
 
         emsOtpService.sendOTP(generationOtpDto, familyMember.getPreferredContact());
         return StatusLevel.SUCCESS;
+
     }
 
     public Map<String, String> login2FA(LoginRequestDto loginRequestDto) {
@@ -127,7 +133,8 @@ public class AuthenticationService {
                 .build();
 
         Status status = emsOtpService.verifyOTP(validateOtpDto);
-        if(status.equals(Status.VALID)){
+        if (status.equals(Status.VALID)) {
+            familyMember.setIsActive(true);
             Map<String, String> userData = new HashMap<>();
             userData.put("userName", familyMember.getName());
             userData.put("role", "ROLE_ADMIN");
@@ -158,4 +165,29 @@ public class AuthenticationService {
             emsNotificationService.sendPhoneNotification(phoneDTO);
         }
     }
+
+    public FamilyGroupDto getFamilyGroupDetails(Long familyMemberId) {
+        FamilyGroup familyGroup = familyGroupService.findById(familyMemberId);
+        FamilyMember familyMember = familyMemberService.findFamilyMemberById(familyMemberId);
+        if (!familyGroup.getGroupOwner().equalsIgnoreCase(familyMember.getName())) {
+            familyGroup.setFamilyMember(List.of(familyMember));
+        }
+
+      long totalCourseRegistered = familyGroup.getFamilyMember().stream()
+                .mapToLong(member -> member.getCourseRegistrations().size())
+                .sum();
+
+
+        Double totalCost = familyGroup.getFamilyMember().stream()
+                .flatMap(member -> member.getCourseRegistrations().stream())
+                .map(CourseRegistration::getCost)
+                .reduce(0.0, Double::sum);
+
+
+        FamilyGroupDto dto = familyGroupMapper.toDto(familyGroup);
+        dto.setTotalCostOfEnrolledCourses(totalCost);
+        dto.setTotalCourseEnrolled(totalCourseRegistered);
+        return dto;
+    }
+
 }

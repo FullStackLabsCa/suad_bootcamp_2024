@@ -1,6 +1,7 @@
 package io.reactivestax.activelifecanada.controller;
 
 
+import io.reactivestax.activelifecanada.dto.FamilyGroupDto;
 import io.reactivestax.activelifecanada.dto.FamilyMemberDto;
 import io.reactivestax.activelifecanada.dto.LoginRequestDto;
 import io.reactivestax.activelifecanada.dto.SignUpDto;
@@ -11,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
@@ -40,4 +38,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.login2FA(loginRequestDto));
     }
 
+    @GetMapping("/familyGroup/{memberId}")
+    public ResponseEntity<FamilyGroupDto> familyGroupDetails(@PathVariable Long memberId) {
+        return ResponseEntity.ok(authenticationService.getFamilyGroupDetails(memberId));
+    }
 }

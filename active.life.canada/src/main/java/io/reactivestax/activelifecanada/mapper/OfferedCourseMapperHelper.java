@@ -15,10 +15,10 @@ public class OfferedCourseMapperHelper {
 //    @Autowired
 //    private OfferedCourseFeeMapper offeredCourseFeeMapper;
 
-    @Named("mapCourseIdToCourse")
-    public Course mapToCourse(Long courseId) {
-        return courseId != null ? courseRepository.findById(courseId).orElse(null) : null;
-    }
+//    @Named("mapCourseIdToCourse")
+//    public Course mapToCourse(Long courseId) {
+//        return courseId != null ? courseRepository.findById(courseId).orElse(null) : null;
+//    }
 
 //    @Named("mapCourseFeeDtoToFee")
 //    public OfferedCourseFee mapToCourseFee(OfferedCourseFeeDto offeredCourseFeeDto) {

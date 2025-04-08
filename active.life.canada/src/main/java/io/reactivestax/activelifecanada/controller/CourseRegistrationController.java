@@ -24,6 +24,11 @@ public class CourseRegistrationController {
        return ResponseEntity.ok(courseRegistrationService.save(familyMemberId, courseRegistrationDto));
     }
 
+//    @PostMapping("/all")
+//    public ResponseEntity<CourseRegistrationDto> enrollToOfferedCourse(@RequestHeader("X-family-member-id") Long familyMemberId, @RequestBody List<CourseRegistrationDto> courseRegistrationDtos) {
+//        return ResponseEntity.ok(courseRegistrationService.save(familyMemberId, courseRegistrationDto));
+//    }
+
     @GetMapping("/{memberId}")
     public ResponseEntity<List<CourseRegistrationDto>> getEnrolledCourses(@PathVariable Long memberId) {
         return ResponseEntity.ok(courseRegistrationService.findEnrolledCourses(memberId));

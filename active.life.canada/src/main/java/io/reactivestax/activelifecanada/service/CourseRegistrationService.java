@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @Service
@@ -53,9 +54,9 @@ public class CourseRegistrationService {
     public CourseRegistrationDto save(Long familyMemberId, CourseRegistrationDto registrationDto) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(familyMemberId);
 
-       if(Boolean.FALSE.equals(familyMember.getIsActive())) {
-           throw new UnauthorizedException("User is not active and unauthorized for Course registration");
-       }
+//       if(Boolean.FALSE.equals(familyMember.getIsActive())) {
+//           throw new UnauthorizedException("User is not active and unauthorized for Course registration");
+//       }
 
         OfferedCourse offeredCourse = offeredCourseService.findById(registrationDto.getOfferedCourseId());
         CourseRegistration entity = courseRegistrationMapper.toEntity(registrationDto);
@@ -78,6 +79,10 @@ public class CourseRegistrationService {
         offeredCourse.setNumberOfSeats(offeredCourse.getNumberOfSeats() - 1);
         courseRegistrationRepository.save(entity);
         return courseRegistrationMapper.toDto(entity);
+    }
+
+    public List<CourseRegistrationDto> bulkRegistrationToOfferedCourse(Long familyMemberId, List<CourseRegistrationDto> registrationDtos) {
+       return registrationDtos.stream().map(courseRegistrationDto -> save(familyMemberId, courseRegistrationDto)).toList();
     }
 
 
@@ -121,4 +126,10 @@ public class CourseRegistrationService {
         entity.setFamilyMember(familyMember);
         entity.setOfferedCourse(offeredCourse);
     }
+
+//    public CourseRegistrationDto toDto(CourseRegistration courseRegistration){
+//        CourseRegistrationDto dto = courseRegistrationMapper.toDto(courseRegistration);
+////        dto.set
+//
+//    }
 }

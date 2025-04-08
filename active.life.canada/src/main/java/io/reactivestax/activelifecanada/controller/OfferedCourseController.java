@@ -20,7 +20,7 @@ public class OfferedCourseController {
     @Autowired
     private OfferedCourseService offeredCourseService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public ResponseEntity<OfferedCourseDto> addOfferedCourse(@RequestBody OfferedCourseDto offeredCourseDto) {
        return ResponseEntity.ok(offeredCourseService.save(offeredCourseDto));
     }

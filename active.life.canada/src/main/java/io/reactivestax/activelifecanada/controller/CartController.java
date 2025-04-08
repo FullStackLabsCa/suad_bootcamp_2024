@@ -2,13 +2,16 @@ package io.reactivestax.activelifecanada.controller;
 
 
 import io.reactivestax.activelifecanada.dto.CartDto;
+import io.reactivestax.activelifecanada.dto.CourseRegistrationDto;
 import io.reactivestax.activelifecanada.service.CartService;
 import jakarta.servlet.http.HttpServlet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -21,13 +24,13 @@ public class CartController extends HttpServlet {
     private CartService cartService;
 
     @PostMapping
-    public ResponseEntity<CartDto> save(@RequestHeader("X-family-member-id") Long familyMemberId, @RequestBody CartDto cartDto) {
-       return ResponseEntity.ok(cartService.save(familyMemberId, cartDto));
+    public ResponseEntity<List<CourseRegistrationDto>> save(@RequestHeader("X-family-member-id") Long familyMemberId, @RequestBody CartDto cartDto) {
+       return ResponseEntity.ok(cartService.saveAndEnrollToCourse(familyMemberId, cartDto));
     }
 
-    @GetMapping("/{cartId}")
-    public ResponseEntity<CartDto> getEnrolledCourses(@PathVariable UUID cartId) {
-        return ResponseEntity.ok(cartService.getCart(cartId));
+    @GetMapping("/{familyMemberId}")
+    public ResponseEntity<CartDto> getEnrolledCourses(@PathVariable Long familyMemberId) {
+        return ResponseEntity.ok(cartService.getCart(familyMemberId));
     }
 
     @PutMapping
@@ -36,8 +39,8 @@ public class CartController extends HttpServlet {
     }
 
     @DeleteMapping("/deleteCart/{cartId}")
-    public ResponseEntity<String> withDrawFromOfferedCourse(@PathVariable UUID cartId) {
-       return  ResponseEntity.ok(cartService.deleteCart(cartId));
+    public ResponseEntity<String> withDrawFromOfferedCourse(@PathVariable Long familyMemberId) {
+       return  ResponseEntity.ok(cartService.deleteCart(familyMemberId));
     }
 
 }

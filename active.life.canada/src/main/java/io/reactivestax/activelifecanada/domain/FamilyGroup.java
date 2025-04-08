@@ -21,6 +21,7 @@ public class FamilyGroup {
     private Double credits = 0.0;
     private String status = "inActive";
     private String groupOwner;
+    private Boolean isGroupOwner;
     private Integer failedLoginAttempts;
 
     @OneToMany(mappedBy = "familyGroup", cascade = CascadeType.ALL)

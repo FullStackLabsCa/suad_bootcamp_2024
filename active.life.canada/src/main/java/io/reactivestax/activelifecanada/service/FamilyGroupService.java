@@ -30,4 +30,5 @@ public class FamilyGroupService {
     public FamilyGroup findById(Long id){
        return familyGroupRepository.findById(id).get();
     }
+
 }

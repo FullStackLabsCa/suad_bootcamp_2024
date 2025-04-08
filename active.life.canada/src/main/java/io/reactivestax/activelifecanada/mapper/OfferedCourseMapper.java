@@ -8,9 +8,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {OfferedCourseMapperHelper.class})
 public interface OfferedCourseMapper {
 
-    @Mapping(source = "courseId", target = "course", qualifiedByName = "mapCourseIdToCourse")
+//    @Mapping(source = "courseId", target = "course", qualifiedByName = "mapCourseIdToCourse")
     OfferedCourse toEntity(OfferedCourseDto offeredCourseDto);
 
-    @Mapping(source = "course.courseId", target = "courseId")
+//    @Mapping(source = "course.courseId", target = "courseId")
     OfferedCourseDto toDto(OfferedCourse offeredCourse);
 }

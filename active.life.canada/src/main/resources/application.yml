@@ -49,7 +49,6 @@ springdoc:
   show-actuator: true
 
 server:
-  port: 8080
   ssl:
     key-store: classpath:active-life-canada-keystore.jks
     key-store-password: changeit

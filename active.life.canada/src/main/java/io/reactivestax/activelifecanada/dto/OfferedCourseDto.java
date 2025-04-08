@@ -2,6 +2,8 @@ package io.reactivestax.activelifecanada.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.reactivestax.activelifecanada.domain.Course;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
@@ -19,7 +21,13 @@ import java.util.List;
 @NoArgsConstructor
 public class OfferedCourseDto {
 
+    private Long offeredCourseId;
+
     private String barCode;
+
+    private String courseName;
+
+    private String courseDescription;
 
     @NotNull(message = "Start Date cannot be null")
     @FutureOrPresent(message = "Start Date can not be past date")
@@ -57,7 +65,6 @@ public class OfferedCourseDto {
 
     @NotNull(message = "Course ID is required.")
     private Long courseId;
-
 
     private Boolean availableForEnrollment;
 

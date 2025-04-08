@@ -20,7 +20,6 @@ public class FamilyMemberDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dob;
-
     private String gender;
     private String emailId;
     private String streetNumber;

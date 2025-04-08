@@ -8,9 +8,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {FamilyMemberMapperHelper.class, FamilyGroupMapperHelper.class})
 public interface FamilyGroupMapper {
 
-    @Mapping(source = "familyMemberIds", target = "familyMember", qualifiedByName = "mapFamilyMembers")
+//    @Mapping(source = "familyMemberIds", target = "familyMember", qualifiedByName = "mapFamilyMembers")
     FamilyGroup toEntity(FamilyGroupDto familyGroupDto);
     
-    @Mapping(source = "familyMember", target = "familyMemberIds", qualifiedByName = "mapFamilyMemberIds")
+//    @Mapping(source = "familyMember", target = "familyMemberIds", qualifiedByName = "mapFamilyMemberIds")
     FamilyGroupDto toDto(FamilyGroup familyGroup);
 }

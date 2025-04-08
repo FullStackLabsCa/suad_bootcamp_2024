@@ -1,6 +1,7 @@
 package io.reactivestax.activelifecanada.service;
 
 
+import io.reactivestax.activelifecanada.domain.Course;
 import io.reactivestax.activelifecanada.domain.OfferedCourse;
 import io.reactivestax.activelifecanada.domain.OfferedCourseFee;
 import io.reactivestax.activelifecanada.dto.*;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @Service
@@ -38,7 +41,7 @@ public class OfferedCourseService {
     public OfferedCourseDto save(OfferedCourseDto offeredCourseDto) {
         OfferedCourse entity = toOfferedCourseEntity(offeredCourseDto);
         offeredCourseRepository.save(entity);
-        return toOfferedCourseDto(entity);
+        return toDto(entity);
     }
 
     public OfferedCourse toOfferedCourseEntity(OfferedCourseDto offeredCourseDto) {
@@ -76,7 +79,7 @@ public class OfferedCourseService {
         }
         offeredCourse.setLastUpdatedTimeStamp(LocalDateTime.now());
         offeredCourseRepository.save(offeredCourse);
-        return toOfferedCourseDto(offeredCourse);
+        return toDto(offeredCourse);
     }
 
     private void updateOfferedCourseFee(OfferedCourseDto offeredCourseDto, OfferedCourse offeredCourse) {
@@ -90,8 +93,25 @@ public class OfferedCourseService {
     }
 
     public List<OfferedCourseDto> getAllOfferedCourse() {
-        List<OfferedCourse> offeredCourses = offeredCourseRepository.findAll();
-        return offeredCourses.stream().map(this::toOfferedCourseDto).toList();
+        return  offeredCourseRepository.findAll().stream().map(this::toDto).toList();
+//       return offeredCourses.stream().peek( offeredCourse -> {
+//            Course course = offeredCourse.getCourse();
+//            if(course!=null){
+//                course.setOfferedCourse(Collections.emptyList());
+//            }
+//        }).map(this::toOfferedCourseDto).toList();
+
+    }
+
+
+    public OfferedCourseDto toDto(OfferedCourse offeredCourse){
+        OfferedCourseDto dto = offeredCourseMapper.toDto(offeredCourse);
+        dto.setCourseId(offeredCourse.getCourse().getCourseId());
+        dto.setCourseName(offeredCourse.getCourse().getName());
+        dto.setCourseDescription(offeredCourse.getCourse().getDescription());
+        List<OfferedCourseFeeDto> offeredCourseFeeDto = offeredCourse.getOfferedCourseFees().stream().map(offeredCourseFeeMapper::toDto).toList();
+        dto.setOfferedCourseFeeDto(offeredCourseFeeDto);
+        return dto;
     }
 
     public OfferedCourse findById(Long offeredCourseId){
@@ -101,7 +121,7 @@ public class OfferedCourseService {
 
     public OfferedCourseDto getOfferedCourse(Long offeredCourseId) {
         OfferedCourse offeredCourse = findById(offeredCourseId);
-        return toOfferedCourseDto(offeredCourse);
+        return toDto(offeredCourse);
     }
 
     public StatusLevel deleteOfferedCourse(Long offeredCourseId) {

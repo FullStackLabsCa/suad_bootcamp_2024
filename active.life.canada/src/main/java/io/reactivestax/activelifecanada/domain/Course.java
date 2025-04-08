@@ -41,5 +41,6 @@ public class Course {
     private LocalDateTime lastUpdateTimeStamp;
 
     private Long createdBy;
+
     private Long lastUpdatedBy;
 }
