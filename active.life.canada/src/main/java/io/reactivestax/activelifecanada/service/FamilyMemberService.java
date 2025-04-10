@@ -41,7 +41,7 @@ public class FamilyMemberService {
 
     @Transactional
     public FamilyMemberDto addFamilyMembers(Long familyGroupId, FamilyMemberDto familyDto) {
-        FamilyGroup familyGroup = familyGroupService.findById(familyGroupId);
+        FamilyGroup familyGroup = familyGroupService.findByGroupId(familyGroupId);
         FamilyMember familyMember = familyMemberMapper.toEntity(familyDto);
         familyMember.setFamilyGroup(familyGroup);
         familyGroup.getFamilyMember().add(familyMember);
@@ -89,7 +89,7 @@ public class FamilyMemberService {
             return StatusLevel.FAILED;
         }
         FamilyMember familyMember = findFamilyMemberById(familyMemberId);
-        FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
+        FamilyGroup familyGroup = familyGroupService.findByGroupId(familyMember.getFamilyGroup().getFamilyGroupId());
         familyGroup.setStatus("active");
         familyMember.setIsActive(true);
         familyGroupService.saveGroup(familyGroup);

@@ -18,4 +18,5 @@ public class FamilyGroupDto {
     private List<FamilyMember> familyMember;
     private Long totalCourseEnrolled;
     private Double totalCostOfEnrolledCourses;
+    private Long totalWithdrawCourses;
 }

@@ -4,7 +4,6 @@ package io.reactivestax.activelifecanada.service;
 import io.reactivestax.activelifecanada.domain.*;
 import io.reactivestax.activelifecanada.dto.*;
 import io.reactivestax.activelifecanada.exception.ResourceNotFoundException;
-import io.reactivestax.activelifecanada.exception.UnauthorizedException;
 import io.reactivestax.activelifecanada.mapper.CourseRegistrationMapper;
 import io.reactivestax.activelifecanada.repository.FamilyCourseRegistrationRepository;
 import io.reactivestax.activelifecanada.repository.FamilyMemberRepository;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 @Service
@@ -99,7 +97,7 @@ public class CourseRegistrationService {
             throw new ResourceNotFoundException("This course is already dropped");
         }
         FamilyMember member = familyMemberService.findFamilyMemberById(courseRegistration.getFamilyMember().getFamilyMemberId());
-        FamilyGroup familyGroup = familyGroupService.findById(member.getFamilyGroup().getFamilyGroupId());
+        FamilyGroup familyGroup = familyGroupService.findByGroupId(member.getFamilyGroup().getFamilyGroupId());
         familyGroup.setCredits(courseRegistration.getCost());
         courseRegistration.setIsWithdraw(true);
         courseRegistration.setWithdrawCredits(courseRegistration.getWithdrawCredits() + (courseRegistration.getCost()));
@@ -127,9 +125,4 @@ public class CourseRegistrationService {
         entity.setOfferedCourse(offeredCourse);
     }
 
-//    public CourseRegistrationDto toDto(CourseRegistration courseRegistration){
-//        CourseRegistrationDto dto = courseRegistrationMapper.toDto(courseRegistration);
-////        dto.set
-//
-//    }
 }

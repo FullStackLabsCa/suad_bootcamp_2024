@@ -26,12 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Connection;
 import java.util.*;
-import java.util.stream.Stream;
 
 
 @Service
@@ -99,7 +96,7 @@ public class AuthenticationService {
 
     public StatusLevel loginFamilyMember(LoginRequestDto loginRequestDto) {
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(loginRequestDto.getFamilyMemberId());
-        FamilyGroup familyGroup = familyGroupService.findById(familyMember.getFamilyGroup().getFamilyGroupId());
+        FamilyGroup familyGroup = familyGroupService.findByGroupId(familyMember.getFamilyGroup().getFamilyGroupId());
 
         if (!passwordEncoder.matches(loginRequestDto.getFamilyPin(), familyGroup.getFamilyPin())) {
             throw new UnauthorizedException("Invalid FamilyPin...");
@@ -167,19 +164,25 @@ public class AuthenticationService {
     }
 
     public FamilyGroupDto getFamilyGroupDetails(Long familyMemberId) {
-        FamilyGroup familyGroup = familyGroupService.findById(familyMemberId);
+        FamilyGroup familyGroup = familyGroupService.findByMemberId(familyMemberId);
         FamilyMember familyMember = familyMemberService.findFamilyMemberById(familyMemberId);
         if (!familyGroup.getGroupOwner().equalsIgnoreCase(familyMember.getName())) {
             familyGroup.setFamilyMember(List.of(familyMember));
         }
 
       long totalCourseRegistered = familyGroup.getFamilyMember().stream()
-                .mapToLong(member -> member.getCourseRegistrations().size())
-                .sum();
+              .flatMap(member -> member.getCourseRegistrations().stream())
+              .filter(courseRegistration -> !courseRegistration.getIsWithdraw())
+                .count();
 
+        long withDrawCount = familyGroup.getFamilyMember().stream()
+                .flatMap(member -> member.getCourseRegistrations().stream())
+                .filter(CourseRegistration::getIsWithdraw)
+                .count();
 
         Double totalCost = familyGroup.getFamilyMember().stream()
                 .flatMap(member -> member.getCourseRegistrations().stream())
+                .filter(courseRegistration -> !courseRegistration.getIsWithdraw())
                 .map(CourseRegistration::getCost)
                 .reduce(0.0, Double::sum);
 
@@ -187,7 +190,7 @@ public class AuthenticationService {
         FamilyGroupDto dto = familyGroupMapper.toDto(familyGroup);
         dto.setTotalCostOfEnrolledCourses(totalCost);
         dto.setTotalCourseEnrolled(totalCourseRegistered);
+        dto.setTotalWithdrawCourses(withDrawCount);
         return dto;
     }
-
 }

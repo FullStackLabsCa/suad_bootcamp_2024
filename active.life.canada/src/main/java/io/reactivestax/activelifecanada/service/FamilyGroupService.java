@@ -27,8 +27,13 @@ public class FamilyGroupService {
         return familyGroupRepository.save(familyGroup);
     }
 
-    public FamilyGroup findById(Long id){
+    public FamilyGroup findByGroupId(Long id){
        return familyGroupRepository.findById(id).get();
     }
+
+    public FamilyGroup findByMemberId(Long memberId){
+        return familyGroupRepository.findByFamilyMemberFamilyMemberId(memberId).get();
+    }
+
 
 }
