@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.reactivestax</groupId>
-	<artifactId>EMS-message-processor</artifactId>
+	<artifactId>processor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>EMS-message-processor</name>
 	<description>Ems messgae processor consumer app </description>

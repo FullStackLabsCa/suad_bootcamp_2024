@@ -10,3 +10,4 @@ public class EmsMessageProcessorApplication {
 		SpringApplication.run(EmsMessageProcessorApplication.class, args);
 	}
 }
+

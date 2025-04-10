@@ -8,12 +8,12 @@
     <name>suad_bootcamp_2024</name>
     <url>http://maven.apache.org</url>
     <modules>
-        <module>active-life-canada</module>
+        <module>active.life.canada</module>
         <module>bnym</module>
-        <module>cache-library</module>
-        <module>ems-message-processor</module>
-        <module>ems-producer</module>
-        <module>pipeline-multithreaded-trade-processing/trading-app/producer</module>
-        <module>pipeline-multithreaded-trade-processing/trading-app/consumer</module>
+        <module>cache.library</module>
+        <module>ems.message.processor</module>
+        <module>ems.producer</module>
+        <module>pipeline.multithreaded.trade.processing/trading.app/producer</module>
+        <module>pipeline.multithreaded.trade.processing/trading.app/consumer</module>
     </modules>
 </project>

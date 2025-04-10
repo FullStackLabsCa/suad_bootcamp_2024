@@ -16,6 +16,7 @@ public class TradeProducerRunner {
         startProducer();
     }
 
+
     private static void startProducer() throws Exception {
         log.info("Starting in Producer Mode...");
 
