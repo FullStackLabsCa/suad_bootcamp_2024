@@ -57,12 +57,11 @@ public class MessagePublisherService {
         Optional.ofNullable(getQueueMessageSender())
                 .ifPresent(messageSender -> {
                     try {
-                        messageSender.sendMessageToQueue(queueName, trade.getTradeIdentifier());
+                        messageSender.sendMessageToQueueOrTopic(queueName, trade.getTradeIdentifier(), trade.getAccountNumber());
                     } catch (IOException | TimeoutException | InterruptedException e) {
                         log.info("Assigned trade ID {} to queue {} {}", trade.getTradeIdentifier(), trade.getTradeIdentifier(), partitionNumber);
                         throw new RuntimeException(e.getMessage());
                     }
                 });
     }
-
 }

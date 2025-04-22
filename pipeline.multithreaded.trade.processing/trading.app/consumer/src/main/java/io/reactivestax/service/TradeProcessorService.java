@@ -47,7 +47,7 @@ public class TradeProcessorService implements TradeProcessor {
                     executePositionTransaction(trade);
                 } else {
                     log.debug("times {} {}", trade.getCusip(), countSec.incrementAndGet());
-                    throw new RuntimeException(); // For checking the max retry mechanism throwing error and catching it in retry mechanism.....
+//                    throw new RuntimeException(); // For checking the max retry mechanism throwing error and catching it in retry mechanism.....
                 }
             } catch (SQLException e) {
                 log.info("Exception while processing journal entries");

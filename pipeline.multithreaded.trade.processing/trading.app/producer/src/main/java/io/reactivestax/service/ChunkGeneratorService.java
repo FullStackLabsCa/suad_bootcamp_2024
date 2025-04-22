@@ -79,6 +79,7 @@ public class ChunkGeneratorService implements ChunkGenerator {
             String relativePath = readFromApplicationPropertiesStringFormat("chunks.file.path") + "trades_chunk_" + (i + 1) + ".csv";
             String outputFile = Paths.get(resourceDirectory, relativePath).toString(); //Paths.get(resource) retrieves the baseFilePath tills the resources and concatenate with the chunks file path
 
+
             executorService.submit(() -> {
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {

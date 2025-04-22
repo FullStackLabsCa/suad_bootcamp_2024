@@ -23,15 +23,15 @@ public class RabbitMQMessageSender implements MessageSender {
     }
 
     @Override
-    public Boolean sendMessageToQueue(String queueName, String message) {
+    public Boolean sendMessageToQueueOrTopic(String queueOrTopicName, String message, String accountNumber) {
         try {
             RabbitMQUtils.getRabbitMQChannel().basicPublish(
                     readFromApplicationPropertiesStringFormat("queue.exchange.name"),
-                    queueName,
+                    queueOrTopicName,
                     null,
                     message.getBytes(StandardCharsets.UTF_8)
             );
-            log.info(" [x] Sent  {}  with routing key {} ", message, queueName);
+            log.info(" [x] Sent  {}  with routing key {} ", message, queueOrTopicName);
             return true;
         } catch (Exception e) {
             log.error(e.getMessage());

@@ -67,12 +67,12 @@ class MessagePublisherServiceTest {
 
 
             when(trade.getTradeIdentifier()).thenReturn("trade123");
-            when(messageSender.sendMessageToQueue(any(), any())).thenReturn(true);
+            when(messageSender.sendMessageToQueueOrTopic(any(), any(), any())).thenReturn(true);
 
             messagePublisherService.figureTheNextQueue(trade);
 
             mockedUtility.verify(Utility::roundRobin, times(1));
-            verify(messageSender, times(1)).sendMessageToQueue("testQueue0", "trade123");
+            verify(messageSender, times(1)).sendMessageToQueueOrTopic("testQueue0", "trade123", "");
         }
     }
 
@@ -92,12 +92,12 @@ class MessagePublisherServiceTest {
             mockedUtility.when(Utility::random).thenReturn(1);
 
             when(trade.getTradeIdentifier()).thenReturn("trade123");
-            when(messageSender.sendMessageToQueue(any(), any())).thenReturn(true);
+            when(messageSender.sendMessageToQueueOrTopic(any(), any(), any())).thenReturn(true);
 
             messagePublisherService.figureTheNextQueue(trade);
 
             mockedUtility.verify(Utility::random, times(1));
-            verify(messageSender, times(1)).sendMessageToQueue("testQueue0", "trade123");
+            verify(messageSender, times(1)).sendMessageToQueueOrTopic("testQueue0", "trade123", "");
         }
     }
 
@@ -115,7 +115,7 @@ class MessagePublisherServiceTest {
             messagePublisherService.figureTheNextQueue(trade);
 
             // Verify no interaction with messageSender as it's null
-            verify(messageSender, never()).sendMessageToQueue(anyString(), anyString());
+            verify(messageSender, never()).sendMessageToQueueOrTopic(anyString(), anyString(), anyString());
         }
     }
 }

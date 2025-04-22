@@ -36,7 +36,7 @@ public class RabbitMQMessageSenderTest {
             RabbitMQMessageSender rabbitMQMessageSender = RabbitMQMessageSender.getInstance();
 
 
-            Boolean result = rabbitMQMessageSender.sendMessageToQueue("testQueue", "TradeId001");
+            Boolean result = rabbitMQMessageSender.sendMessageToQueueOrTopic("testQueue", "TradeId001", "");
 
             // Verify interactions and assertions
             //here when the real method is called the getMQChannel() method is mocked which we are verifying below with the mocked channel and real method
@@ -57,7 +57,7 @@ public class RabbitMQMessageSenderTest {
             Mockito.doThrow(new IOException("Simulated Exception")).when(mockChannel)
                     .basicPublish(anyString(), anyString(), any(), any());
 
-            Boolean booleanResult = RabbitMQMessageSender.getInstance().sendMessageToQueue("testQueue", "TradeId002");
+            Boolean booleanResult = RabbitMQMessageSender.getInstance().sendMessageToQueueOrTopic("testQueue", "TradeId002", "");
             assertFalse(booleanResult);
 
         }

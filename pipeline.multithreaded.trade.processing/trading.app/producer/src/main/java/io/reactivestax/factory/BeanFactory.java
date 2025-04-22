@@ -6,6 +6,7 @@ import io.reactivestax.types.contract.MessageSender;
 import io.reactivestax.types.contract.repository.PayloadRepository;
 import io.reactivestax.types.contract.repository.TransactionUtil;
 import io.reactivestax.types.exceptions.InvalidPersistenceTechnologyException;
+import io.reactivestax.utility.messaging.KafkaProducer;
 import io.reactivestax.utility.messaging.RabbitMQMessageSender;
 import io.reactivestax.utility.database.DBUtils;
 import io.reactivestax.utility.database.HibernateUtil;
@@ -33,6 +34,7 @@ public class BeanFactory {
 
 
     private static final String RABBITMQ_MESSAGING_TECHNOLOGY = "rabbitmq";
+    private static final String KAFKA_EVENT_STREAMING_TECHNOLOGY = "kafka";
     private static final String IN_MEMORY_MESSAGING_TECHNOLOGY = "inmemory";
 
     private static final String HIBERNATE_PERSISTENCE_TECHNOLOGY = "hibernate";
@@ -44,6 +46,7 @@ public class BeanFactory {
 
         Map<String, Supplier<MessageSender>> messageSenderMap = new HashMap<>();
         messageSenderMap.put(RABBITMQ_MESSAGING_TECHNOLOGY, RabbitMQMessageSender::getInstance);
+        messageSenderMap.put(KAFKA_EVENT_STREAMING_TECHNOLOGY, KafkaProducer::getInstance);
         messageSenderMap.put(IN_MEMORY_MESSAGING_TECHNOLOGY, null);
         Optional<String> optionalPersistenceTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("messaging.technology"));
         return optionalPersistenceTechnology
@@ -83,5 +86,4 @@ public class BeanFactory {
     public static void setChunksFileMappingQueue(String fileName) {
         chunksFileMappingQueue.add(fileName);
     }
-
 }

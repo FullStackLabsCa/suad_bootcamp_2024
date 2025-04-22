@@ -2,10 +2,7 @@ package io.reactivestax.service;
 
 import io.reactivestax.task.FileTradeProcessor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 @Slf4j
 public class ConsumerSubmitterService {

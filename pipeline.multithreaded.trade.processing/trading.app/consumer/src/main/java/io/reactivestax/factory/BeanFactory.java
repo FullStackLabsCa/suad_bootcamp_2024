@@ -4,6 +4,7 @@ import io.reactivestax.repository.hibernate.HibernateTradePayloadRepository;
 import io.reactivestax.types.contract.QueueLoader;
 import io.reactivestax.types.contract.repository.*;
 import io.reactivestax.types.exception.InvalidPersistenceTechnologyException;
+import io.reactivestax.utility.messaging.KafkaConsumer;
 import io.reactivestax.utility.messaging.RabbitMQLoader;
 import io.reactivestax.repository.hibernate.HibernateJournalEntryRepository;
 import io.reactivestax.repository.hibernate.HibernateSecuritiesReferenceRepository;
@@ -39,6 +40,7 @@ public class BeanFactory {
     private static final List<LinkedBlockingDeque<String>> QUEUE_LIST = new ArrayList<>();
 
     private static final String RABBITMQ_MESSAGING_TECHNOLOGY = "rabbitmq";
+    private static final String KAFKA_STREAMING_MESSAGING_TECHNOLOGY = "kafka";
     private static final String IN_MEMORY_MESSAGING_TECHNOLOGY = "inmemory";
 
     private static final String HIBERNATE_PERSISTENCE_TECHNOLOGY = "hibernate";
@@ -50,6 +52,7 @@ public class BeanFactory {
 
         Map<String, Supplier<QueueLoader>> queueLoaderMap = new HashMap<>();
         queueLoaderMap.put(RABBITMQ_MESSAGING_TECHNOLOGY, RabbitMQLoader::getInstance);
+        queueLoaderMap.put(KAFKA_STREAMING_MESSAGING_TECHNOLOGY, KafkaConsumer::getInstance);
         queueLoaderMap.put(IN_MEMORY_MESSAGING_TECHNOLOGY, null);
 
         Optional<String> optionalMessagingTechnology = Optional.ofNullable(readFromApplicationPropertiesStringFormat("messaging.technology"));

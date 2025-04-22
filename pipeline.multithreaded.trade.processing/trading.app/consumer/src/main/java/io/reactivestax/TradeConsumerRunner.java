@@ -24,7 +24,8 @@ public class TradeConsumerRunner {
         ExecutorService executorService = Executors.newFixedThreadPool(readFromApplicationPropertiesIntegerFormat("trade.processor.thread.poolSize"));
 
         IntStream.range(0, readFromApplicationPropertiesIntegerFormat("queue.count")).forEach(i ->
-                ConsumerSubmitterService.getInstance().startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i)
+//                ConsumerSubmitterService.getInstance().startConsumer(executorService, readFromApplicationPropertiesStringFormat("queue.name") + i)
+                ConsumerSubmitterService.getInstance().startConsumer(executorService,   String.valueOf(i)) //for consuming from specific partition in kafka.........
         );
     }
 }

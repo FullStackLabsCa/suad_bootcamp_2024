@@ -43,9 +43,7 @@ public class RabbitMQMessageCallBack implements DeliverCallback {
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         } catch (Exception exception) {
             Map<String, Object> headers = delivery.getProperties().getHeaders();
-            int retries = headers != null && headers.containsKey(RabbitMQHeaders.X_RETRIES.getHeaderKey())
-                    ? (int) headers.get(RabbitMQHeaders.X_RETRIES.getHeaderKey())
-                    : 0;
+            int retries = headers != null && headers.containsKey(RabbitMQHeaders.X_RETRIES.getHeaderKey()) ? (int) headers.get(RabbitMQHeaders.X_RETRIES.getHeaderKey()) : 0;
             retryMessagePublish(delivery, exception, retries, message);
         }
     }
@@ -61,12 +59,10 @@ public class RabbitMQMessageCallBack implements DeliverCallback {
                 log.error(e.getMessage());
             }
         } else {
-            AMQP.BasicProperties retryProps = new AMQP.BasicProperties.Builder()
-                    .headers(Map.of(RabbitMQHeaders.X_RETRIES.getHeaderKey(), retries + 1)) // Increment retry count
+            AMQP.BasicProperties retryProps = new AMQP.BasicProperties.Builder().headers(Map.of(RabbitMQHeaders.X_RETRIES.getHeaderKey(), retries + 1)) // Increment retry count
                     .build();
 
-            channel.basicPublish(readFromApplicationPropertiesStringFormat("queue.dlx.exchange"),
-                    delivery.getEnvelope().getRoutingKey(), retryProps, delivery.getBody());
+            channel.basicPublish(readFromApplicationPropertiesStringFormat("queue.dlx.exchange"), delivery.getEnvelope().getRoutingKey(), retryProps, delivery.getBody());
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
             log.info(" [x] Retrying message: {} Retry # {}", message, (retries + 1));
         }

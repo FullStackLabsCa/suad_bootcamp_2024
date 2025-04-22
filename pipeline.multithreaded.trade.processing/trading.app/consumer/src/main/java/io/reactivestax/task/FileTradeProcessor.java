@@ -2,6 +2,7 @@ package io.reactivestax.task;
 
 import io.reactivestax.types.contract.QueueLoader;
 import lombok.Getter;
+import org.apache.kafka.common.TopicPartition;
 
 import java.util.concurrent.Callable;
 
