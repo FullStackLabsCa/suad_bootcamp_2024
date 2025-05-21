@@ -80,4 +80,3 @@ public class SecurityConfig {
         return new JdbcOAuth2AuthorizedClientService(jdbcOperations, clientRegistrationRepository);
     }
 }
-

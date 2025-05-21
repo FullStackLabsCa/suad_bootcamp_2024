@@ -64,4 +64,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
+/*    What happens on each request:
+    The JWT is sent in the HTTP request (usually as Authorization: Bearer <token>).
+
+   A custom filter (often extending OncePerRequestFilter) intercepts the request.
+    The filter:
+    Extracts the JWT
+    Validates it
+    Parses the claims (username, roles, etc.)
+    Builds an Authentication object
+    Sets it into SecurityContextHolder
+    After that, the request continues with an authenticated context
+    */
 }

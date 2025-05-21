@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  artemis:
+    image: vromero/activemq-artemis
+    container_name: artemis
+    restart: always
+    environment:
+      ARTEMIS_USERNAME: admin
+      ARTEMIS_PASSWORD: admin
+    ports:
+      - "61616:61616"  # AMQP port for Artemis
+      - "8161:8161"    # Web console port
+    volumes:
+      - artemis_data:/var/lib/artemis-instance
+
+volumes:
+  postgres_data:
+  artemis_data:

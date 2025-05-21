@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.CompletableFuture;
 
 @Data
 @Entity
@@ -11,6 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class FacilityFunction {
+
+
 
     @EmbeddedId
     private FacilityFunctionId id;
