@@ -6,7 +6,8 @@ spring:
     user: admin
     password: admin
   datasource:
-    url: jdbc:postgresql://localhost:5432/ems_db
+#    url: jdbc:postgresql://localhost:5432/ems_db
+    url: jdbc:postgresql://postgres:5432/ems_db
     username: postgres
     password: postgres
   jpa:
@@ -21,4 +22,4 @@ twilio:
   phone:
     number: +17753638106
   auth:
-    token: 98a113c4dbab1808842dec7b86203069
+    token: 90edf48d0696a90ec70cb340cbbb7563
